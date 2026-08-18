@@ -29,8 +29,8 @@ export default function TermsOfUse() {
 
         <Section icon={<Network size={20} />} title={zh ? '2. 服务与发行范围' : '2. Service and Distribution'}>
           <p>{zh
-            ? '本项目提供私聊、群聊、联系人、加密消息、语音消息、附件、消息同步、定时删除、二维码、两步验证、拉黑，以及 ntfy/APNs 通知。不提供朋友圈、时间线、公开内容发布、举报审核后台、语音或视频通话。生产客户端必须内嵌 Tor，并仅连接由用户选择的 v3 .onion 服务地址。iOS 版本计划通过 Apple App Store 发布；Android APK 仅通过项目 GitHub Releases 发布，不通过 Google Play，也不集成 Google 推送服务。'
-            : 'The project provides private and group chat, contacts, encrypted messaging, voice messages, attachments, synchronization, expiring messages, QR features, two-factor authentication, blocking, and ntfy/APNs notifications. It provides no social feed, timeline, public publishing, report-review dashboard, or voice/video calling. Production clients must embed Tor and connect only to a user-selected v3 .onion server. iOS distribution is intended for the Apple App Store; Android APKs are distributed only through the project’s GitHub Releases, not Google Play, and do not include Google push services.'}</p>
+            ? '本项目提供私聊、群聊、联系人、加密消息、语音消息、附件、消息同步、定时删除、二维码、两步验证和拉黑；Android 还可使用 ntfy 接收后台通知。不提供朋友圈、时间线、公开内容发布、举报审核后台、语音或视频通话。iOS 不使用 APNs，当前不提供系统后台远程通知；Android 与 iOS 均不集成 Apple 或 Google 推送服务。生产客户端必须内嵌 Tor，并仅连接由用户选择的 v3 .onion 服务地址。iOS 版本计划通过 Apple App Store 发布；Android APK 仅通过项目 GitHub Releases 发布，不通过 Google Play。'
+            : 'The project provides private and group chat, contacts, encrypted messaging, voice messages, attachments, synchronization, expiring messages, QR features, two-factor authentication, and blocking; Android can additionally use ntfy for background notifications. It provides no social feed, timeline, public publishing, report-review dashboard, or voice/video calling. iOS does not use APNs and currently provides no system background remote notifications; neither Android nor iOS integrates Apple or Google push services. Production clients must embed Tor and connect only to a user-selected v3 .onion server. iOS distribution is intended for the Apple App Store, while Android APKs are distributed only through the project’s GitHub Releases and not Google Play.'}</p>
         </Section>
 
         <Section icon={<Lock size={20} />} title={zh ? '3. 账号、密钥与安全责任' : '3. Accounts, Keys, and Security'}>
@@ -47,14 +47,14 @@ export default function TermsOfUse() {
 
         <Section icon={<Database size={20} />} title={zh ? '5. 数据、附件与删除' : '5. Data, Attachments, and Deletion'}>
           <p>{zh
-            ? '账号和路由所需元数据、加密消息、服务器端附件及推送订阅会保存在所选服务器。文件不使用 Cloudflare R2，而保存在服务器持久卷并由服务器传输。定时删除、退出登录、清理本地缓存或删除账号的效果受离线设备、备份、收件人副本和服务器运营方式限制，不构成对所有副本即时、不可恢复删除的保证。上传内容前请确认您拥有必要权利。'
-            : 'The selected server stores account/routing metadata, encrypted messages, server-side attachments, and push subscriptions. Files do not use Cloudflare R2; they remain on the server volume and are transferred by the server. Expiry, logout, cache clearing, or account deletion may be limited by offline devices, backups, recipient copies, and operator practices and does not guarantee immediate, irrecoverable deletion of every copy. Upload only content you have the right to use.'}</p>
+            ? '账号和路由所需元数据、加密消息、服务器端附件，以及用户启用的 ntfy 订阅会保存在所选服务器。项目不创建或保存 APNs 设备令牌。文件不使用 Cloudflare R2，而保存在服务器持久卷并由服务器传输。定时删除、退出登录、清理本地缓存或删除账号的效果受离线设备、备份、收件人副本和服务器运营方式限制，不构成对所有副本即时、不可恢复删除的保证。上传内容前请确认您拥有必要权利。'
+            : 'The selected server stores account and routing metadata, encrypted messages, server-side attachments, and user-enabled ntfy subscriptions. The project does not create or retain APNs device tokens. Files do not use Cloudflare R2; they remain on the server volume and are transferred by the server. Expiry, logout, cache clearing, or account deletion may be limited by offline devices, backups, recipient copies, and operator practices and does not guarantee immediate, irrecoverable deletion of every copy. Upload only content you have the right to use.'}</p>
         </Section>
 
         <Section icon={<Shield size={20} />} title={zh ? '6. 开源、自托管与第三方服务' : '6. Open Source, Self-hosting, and Third Parties'}>
           <p>{zh
-            ? 'PaperPhoneLite 按 AGPL-3.0 开源许可证提供。自托管运营者负责服务器安全、Tor onion service、备份、保留期限、适用法律和通知配置。ntfy 服务商和 Apple APNs 会按各自条款处理通知所需数据；是否使用公共 ntfy 实例由运营者决定。本项目不控制第三方服务，也不为其行为承担责任。'
-            : 'PaperPhoneLite is provided under the AGPL-3.0 license. Self-hosting operators are responsible for server security, the Tor onion service, backups, retention, applicable law, and notification configuration. The ntfy provider and Apple APNs process notification data under their own terms; the operator chooses whether to use a public ntfy instance. The project does not control or accept responsibility for third-party services.'}</p>
+            ? 'PaperPhoneLite 按 AGPL-3.0 开源许可证提供。自托管运营者负责服务器安全、Tor onion service、备份、保留期限、适用法律和通知配置。启用 ntfy 时，ntfy 服务商会按其条款处理通知所需数据；是否使用公共 ntfy 实例由运营者决定。本项目不使用 Apple APNs，也不控制或为其他第三方服务的行为承担责任。'
+            : 'PaperPhoneLite is provided under the AGPL-3.0 license. Self-hosting operators are responsible for server security, the Tor onion service, backups, retention, applicable law, and notification configuration. When ntfy is enabled, its provider processes notification data under its own terms, and the operator chooses whether to use a public ntfy instance. The project does not use Apple APNs and does not control or accept responsibility for other third-party services.'}</p>
         </Section>
 
         <Section icon={<Shield size={20} />} title={zh ? '7. 可用性、免责声明与责任限制' : '7. Availability, Disclaimer, and Liability'}>

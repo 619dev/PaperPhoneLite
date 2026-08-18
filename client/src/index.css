@@ -20,11 +20,11 @@
   --text-muted: #aeaeb2;
   --text-inverse: #ffffff;
 
-  --accent: #d4a017;
-  --accent-light: #e8c44a;
-  --accent-dark: #b8860b;
-  --accent-bg: rgba(212, 160, 23, 0.10);
-  --accent-glow: rgba(212, 160, 23, 0.25);
+  --accent: #00a6b2;
+  --accent-light: #38c6cf;
+  --accent-dark: #006d77;
+  --accent-bg: rgba(0, 166, 178, 0.10);
+  --accent-glow: rgba(0, 166, 178, 0.25);
 
   --success: #30d158;
   --warning: #ff9f0a;
@@ -32,7 +32,7 @@
   --info: #0a84ff;
 
   --border: rgba(0, 0, 0, 0.06);
-  --border-active: rgba(212, 160, 23, 0.4);
+  --border-active: rgba(0, 166, 178, 0.4);
   --shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.08);
 
@@ -90,10 +90,10 @@
   --text-muted: #636366;
   --text-inverse: #000000;
 
-  --accent-glow: rgba(212, 160, 23, 0.35);
+  --accent-glow: rgba(0, 166, 178, 0.35);
 
   --border: rgba(255, 255, 255, 0.06);
-  --border-active: rgba(212, 160, 23, 0.5);
+  --border-active: rgba(0, 166, 178, 0.5);
   --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 8px 48px rgba(0, 0, 0, 0.5);
 
@@ -761,10 +761,10 @@ textarea.input {
   justify-content: center;
   padding: 24px;
   background: linear-gradient(160deg,
-    #f5f0e8 0%,
-    #ede4d4 30%,
-    #d4c5a9 70%,
-    #c7b898 100%);
+    #f0fbfb 0%,
+    #e0f5f6 30%,
+    #c5e8ea 70%,
+    #a9d8dc 100%);
   position: relative;
   overflow: hidden;
 }
@@ -775,7 +775,7 @@ textarea.input {
   position: absolute;
   top: -120px; right: -80px;
   width: 300px; height: 300px;
-  background: radial-gradient(circle, rgba(212, 160, 23, 0.25) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0, 166, 178, 0.25) 0%, transparent 70%);
   border-radius: 50%;
   animation: float-orb 6s ease-in-out infinite;
 }
@@ -785,7 +785,7 @@ textarea.input {
   position: absolute;
   bottom: -100px; left: -60px;
   width: 250px; height: 250px;
-  background: radial-gradient(circle, rgba(212, 160, 23, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0, 166, 178, 0.15) 0%, transparent 70%);
   border-radius: 50%;
   animation: float-orb 8s ease-in-out infinite reverse;
 }
@@ -797,17 +797,17 @@ textarea.input {
 
 [data-theme="dark"] .login-page {
   background: linear-gradient(160deg,
-    #0a0a14 0%,
-    #141428 50%,
-    #1e1e3c 100%);
+    #061416 0%,
+    #08272b 50%,
+    #0a3b40 100%);
 }
 
 [data-theme="dark"] .login-page::before {
-  background: radial-gradient(circle, rgba(212, 160, 23, 0.12) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0, 166, 178, 0.12) 0%, transparent 70%);
 }
 
 [data-theme="dark"] .login-page::after {
-  background: radial-gradient(circle, rgba(212, 160, 23, 0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0, 166, 178, 0.08) 0%, transparent 70%);
 }
 
 .login-card {
@@ -828,7 +828,7 @@ textarea.input {
   width: 72px;
   height: 72px;
   border-radius: var(--radius-lg);
-  filter: drop-shadow(0 4px 16px rgba(212, 160, 23, 0.3));
+  filter: drop-shadow(0 4px 16px rgba(0, 166, 178, 0.3));
 }
 
 .login-title {
@@ -864,14 +864,14 @@ textarea.input {
   gap: 6px;
   padding: 8px 10px;
   background: var(--accent-bg);
-  border: 0.5px solid rgba(212, 160, 23, 0.15);
+  border: 0.5px solid rgba(0, 166, 178, 0.15);
   border-radius: var(--radius-md);
   transition: all var(--duration) var(--ease);
 }
 
 .security-badge:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(212, 160, 23, 0.12);
+  box-shadow: 0 4px 12px rgba(0, 166, 178, 0.12);
 }
 
 .security-icon { font-size: 16px; flex-shrink: 0; }
@@ -955,7 +955,7 @@ textarea.input {
 .login-lang button.active {
   background: var(--accent-bg);
   color: var(--accent);
-  border-color: rgba(212, 160, 23, 0.3);
+  border-color: rgba(0, 166, 178, 0.3);
   box-shadow: 0 0 8px var(--accent-glow);
 }
 
@@ -1189,7 +1189,7 @@ textarea.input {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(180deg, #0a0a14 0%, #000000 100%);
+  background: linear-gradient(180deg, #061416 0%, #000000 100%);
   position: relative;
 }
 
@@ -1222,9 +1222,9 @@ textarea.input {
 }
 
 @keyframes pulse-ring {
-  0% { box-shadow: 0 0 0 0 rgba(212, 160, 23, 0.4), 0 0 40px var(--accent-glow); }
-  70% { box-shadow: 0 0 0 20px rgba(212, 160, 23, 0), 0 0 40px var(--accent-glow); }
-  100% { box-shadow: 0 0 0 0 rgba(212, 160, 23, 0), 0 0 40px var(--accent-glow); }
+  0% { box-shadow: 0 0 0 0 rgba(0, 166, 178, 0.4), 0 0 40px var(--accent-glow); }
+  70% { box-shadow: 0 0 0 20px rgba(0, 166, 178, 0), 0 0 40px var(--accent-glow); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 166, 178, 0), 0 0 40px var(--accent-glow); }
 }
 
 .call-name {
@@ -1843,7 +1843,7 @@ textarea.input {
 .privacy-hero {
   text-align: center;
   padding: 32px 24px 24px;
-  background: linear-gradient(135deg, var(--accent-bg) 0%, rgba(212, 160, 23, 0.08) 100%);
+  background: linear-gradient(135deg, var(--accent-bg) 0%, rgba(0, 166, 178, 0.08) 100%);
   border-bottom: 0.5px solid var(--glass-border);
 }
 
@@ -1955,8 +1955,8 @@ textarea.input {
 }
 
 .privacy-card.highlight {
-  background: linear-gradient(135deg, rgba(212, 160, 23, 0.08), rgba(212, 160, 23, 0.04));
-  border-color: rgba(212, 160, 23, 0.2);
+  background: linear-gradient(135deg, rgba(0, 166, 178, 0.08), rgba(0, 166, 178, 0.04));
+  border-color: rgba(0, 166, 178, 0.2);
 }
 
 .privacy-card.highlight ul li {

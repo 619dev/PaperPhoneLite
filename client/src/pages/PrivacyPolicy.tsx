@@ -66,20 +66,20 @@ export default function PrivacyPolicy() {
 
         <Section icon={<Bell size={20} />} title={zh ? '6. 通知服务与第三方' : '6. Notifications and Third Parties'}>
           <p>{zh
-            ? 'Android 通知仅使用 ntfy：服务器会向运营者配置的 ntfy 实例发送主题、通知标题和正文；使用公共实例时，该实例运营者会处理这些数据。iOS 通知仅使用 Apple Push Notification service（APNs）：设备令牌及通知载荷会发送给 Apple。通知内容可能出现在锁屏，请在操作系统中调整预览设置。本项目不使用 Web Push、FCM、Firebase 或 OneSignal，也不集成 Google 推送或服务框架。'
-            : 'Android notifications use only ntfy: the server sends a topic, notification title, and body to the operator-configured ntfy instance; a public instance processes that data under its operator’s policy. iOS notifications use only Apple Push Notification service (APNs): device tokens and notification payloads are sent to Apple. Notification content may appear on a lock screen, so adjust OS preview settings as needed. The project does not use Web Push, FCM, Firebase, or OneSignal and includes no Google push or service framework.'}</p>
+            ? 'Android 可使用 ntfy 接收后台通知：服务器会向运营者配置的 ntfy 实例发送主题、通知标题和正文；使用公共实例时，该实例运营者会按其政策处理这些数据。iOS 客户端不使用 Apple Push Notification service（APNs），当前也不提供系统后台远程通知；应用打开且保持连接时仍可显示应用内消息提醒。本项目不使用 APNs、Web Push、FCM、Firebase 或 OneSignal，也不集成 Apple 或 Google 的推送框架。ntfy 通知内容可能出现在锁屏，请在 ntfy App 和操作系统中调整预览设置。'
+            : 'Android can use ntfy for background notifications: the server sends a topic, notification title, and body to the operator-configured ntfy instance, and a public instance processes that data under its operator’s policy. The iOS client does not use Apple Push Notification service (APNs) and currently provides no system background remote notifications; in-app message alerts can still appear while the app is open and connected. The project uses no APNs, Web Push, FCM, Firebase, or OneSignal and integrates neither Apple nor Google push frameworks. ntfy notification content may appear on a lock screen, so adjust preview settings in the ntfy app and operating system.'}</p>
         </Section>
 
         <Section icon={<Users size={20} />} title={zh ? '7. 使用目的与信息披露' : '7. Purposes and Disclosure'}>
           <p>{zh
-            ? '数据仅用于创建和保护账号、连接联系人和群组、路由与同步消息、传输文件、提供通知、检测滥用、排查故障和履行法律义务。项目不出售个人信息，不提供广告或跨应用追踪。服务器运营者、ntfy 实例运营者、Apple、基础设施供应商或依法提出要求的机构可能在各自角色和法律范围内接触相关数据。'
-            : 'Data is used to create and secure accounts, connect contacts and groups, route and synchronize messages, transfer files, deliver notifications, detect abuse, troubleshoot, and comply with law. The project does not sell personal information and provides no advertising or cross-app tracking. A server operator, ntfy instance operator, Apple, infrastructure provider, or legally authorized authority may access relevant data within its role and applicable law.'}</p>
+            ? '数据仅用于创建和保护账号、连接联系人和群组、路由与同步消息、传输文件、提供已启用的通知、检测滥用、排查故障和履行法律义务。项目不出售个人信息，不提供广告或跨应用追踪。服务器运营者、启用 ntfy 时的实例运营者、基础设施供应商或依法提出要求的机构可能在各自角色和法律范围内接触相关数据；本项目不会为通知目的向 Apple 提交设备令牌或通知载荷。'
+            : 'Data is used to create and secure accounts, connect contacts and groups, route and synchronize messages, transfer files, provide enabled notifications, detect abuse, troubleshoot, and comply with law. The project does not sell personal information and provides no advertising or cross-app tracking. A server operator, an ntfy instance operator when ntfy is enabled, an infrastructure provider, or a legally authorized authority may access relevant data within its role and applicable law. The project does not submit device tokens or notification payloads to Apple for notification delivery.'}</p>
         </Section>
 
         <Section icon={<Trash2 size={20} />} title={zh ? '8. 保留、删除与您的选择' : '8. Retention, Deletion, and Your Choices'}>
           <p>{zh
-            ? '消息可设置永不删除或在 1、3、7、30 天后自动删除。您可以清理本地缓存、撤销设备会话、拉黑用户或提交账号删除请求。账号删除会触发服务器数据库中的关联记录删除，但离线设备、接收方副本、推送服务记录和服务器备份可能按各自周期继续存在。删除前请自行导出或备份需要的数据。具体访问、更正、删除或异议权取决于适用法律，应联系所选服务器运营者。'
-            : 'Messages may be retained indefinitely or expire after 1, 3, 7, or 30 days. You may clear local cache, revoke device sessions, block users, or request account deletion. Account deletion triggers removal of related server database records, but offline devices, recipient copies, push-provider records, and server backups may persist according to their own cycles. Export or back up anything needed before deletion. Rights of access, correction, deletion, or objection depend on applicable law and should be directed to the selected server operator.'}</p>
+            ? '消息可设置永不删除或在 1、3、7、30 天后自动删除。您可以清理本地缓存、撤销设备会话、拉黑用户或提交账号删除请求。账号删除会触发服务器数据库中的关联记录删除，但离线设备、接收方副本、已启用的 ntfy 服务记录和服务器备份可能按各自周期继续存在。删除前请自行导出或备份需要的数据。具体访问、更正、删除或异议权取决于适用法律，应联系所选服务器运营者。'
+            : 'Messages may be retained indefinitely or expire after 1, 3, 7, or 30 days. You may clear local cache, revoke device sessions, block users, or request account deletion. Account deletion triggers removal of related server database records, but offline devices, recipient copies, records held by an enabled ntfy service, and server backups may persist according to their own cycles. Export or back up anything needed before deletion. Rights of access, correction, deletion, or objection depend on applicable law and should be directed to the selected server operator.'}</p>
         </Section>
 
         <Section icon={<Baby size={20} />} title={zh ? '9. 未成年人' : '9. Children'}>

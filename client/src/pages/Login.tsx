@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { get, post, put } from '../api/http'
 import { useStore } from '../store'
 import { useI18n } from '../hooks/useI18n'
-import { ShieldCheck, Lock, Shield, Link, Atom, Server, Wifi, ChevronDown, ChevronUp, Check } from 'lucide-react'
+import { ShieldCheck, Shield, Server, Wifi, ChevronDown, ChevronUp, Check } from 'lucide-react'
 import { allLangs, langNames, LangCode } from '../i18n'
 import { generateKeyPair, generateSignKeyPair, signMessage, initSodium } from '../crypto/ratchet'
 import { setKeys, getKeys, loadFromIndexedDB } from '../crypto/keystore'
@@ -297,26 +297,6 @@ export default function Login() {
         </div>
         <h1 className="login-title">{t('app.name')}</h1>
         <p className="login-subtitle">{t('auth.subtitle')}</p>
-
-        {/* Security Features */}
-        <div className="security-badges">
-          <div className="security-badge">
-            <span className="security-icon"><Lock size={16} /></span>
-            <span className="security-text">{t('security.local_keys')}</span>
-          </div>
-          <div className="security-badge">
-            <span className="security-icon"><Shield size={16} /></span>
-            <span className="security-text">{t('security.e2e')}</span>
-          </div>
-          <div className="security-badge">
-            <span className="security-icon"><Link size={16} /></span>
-            <span className="security-text">{t('security.forward')}</span>
-          </div>
-          <div className="security-badge">
-            <span className="security-icon"><Atom size={16} /></span>
-            <span className="security-text">{t('security.quantum')}</span>
-          </div>
-        </div>
 
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="input-group">
