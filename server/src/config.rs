@@ -15,29 +15,7 @@ pub struct Config {
     pub redis_port: u16,
     pub redis_pass: Option<String>,
 
-    // Web Push (VAPID)
-    pub vapid_public_key: Option<String>,
-    pub vapid_private_key: Option<String>,
-    pub vapid_subject: Option<String>,
-
-    // Firebase Cloud Messaging (FCM)
-    pub fcm_project_id: Option<String>,
-    pub fcm_client_email: Option<String>,
-    pub fcm_private_key: Option<String>,
-    // FCM Push Relay (for self-hosted servers without Firebase credentials)
-    pub fcm_relay_secret: Option<String>,   // Set on the relay host to enable the relay endpoint
-    pub fcm_relay_url: Option<String>,      // Set on self-hosted servers: URL of the relay
-    pub fcm_relay_key: Option<String>,      // Set on self-hosted servers: shared key to auth with relay
-
-    // OneSignal
-    pub onesignal_app_id: Option<String>,
-    pub onesignal_rest_key: Option<String>,
-    // OneSignal Push Relay (for self-hosted servers without OneSignal credentials)
-    pub onesignal_relay_secret: Option<String>,  // Set on the relay host to enable the relay endpoint
-    pub onesignal_relay_url: Option<String>,     // Set on self-hosted servers: URL of the relay
-    pub onesignal_relay_key: Option<String>,     // Set on self-hosted servers: shared key to auth with relay
-
-    // ntfy Push (for Chinese Android devices without GMS)
+    // ntfy Push (for Android without Google services)
     pub ntfy_base_url: String,
     pub ntfy_token: Option<String>,
 
@@ -76,23 +54,6 @@ impl Config {
             redis_host: env_or("REDIS_HOST", "localhost"),
             redis_port: env_or("REDIS_PORT", "6379").parse().unwrap_or(6379),
             redis_pass: env_opt("REDIS_PASS"),
-
-            vapid_public_key: env_opt("VAPID_PUBLIC_KEY"),
-            vapid_private_key: env_opt("VAPID_PRIVATE_KEY"),
-            vapid_subject: env_opt("VAPID_SUBJECT"),
-
-            fcm_project_id: env_opt("FCM_PROJECT_ID"),
-            fcm_client_email: env_opt("FCM_CLIENT_EMAIL"),
-            fcm_private_key: env_opt("FCM_PRIVATE_KEY"),
-            fcm_relay_secret: env_opt("FCM_RELAY_SECRET"),
-            fcm_relay_url: env_opt("FCM_RELAY_URL"),
-            fcm_relay_key: env_opt("FCM_RELAY_KEY"),
-
-            onesignal_app_id: env_opt("ONESIGNAL_APP_ID"),
-            onesignal_rest_key: env_opt("ONESIGNAL_REST_KEY"),
-            onesignal_relay_secret: env_opt("ONESIGNAL_RELAY_SECRET"),
-            onesignal_relay_url: env_opt("ONESIGNAL_RELAY_URL"),
-            onesignal_relay_key: env_opt("ONESIGNAL_RELAY_KEY"),
 
             ntfy_base_url: env_or("NTFY_BASE_URL", "https://ntfy.sh"),
             ntfy_token: env_opt("NTFY_TOKEN"),

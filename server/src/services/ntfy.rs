@@ -3,7 +3,7 @@ use crate::config::Config;
 /// Send push notification to a user via ntfy (https://ntfy.sh)
 ///
 /// ntfy is used as a fallback push channel for Chinese Android devices
-/// where FCM (Google Cloud Messaging) is unavailable due to lack of GMS.
+/// without relying on Google services.
 /// Each user subscribes to a unique ntfy topic from the ntfy mobile app.
 pub async fn push_to_user(db: &sqlx::MySqlPool, config: &Config, user_id: &str, title: &str, body: &str) {
     let base_url = &config.ntfy_base_url;

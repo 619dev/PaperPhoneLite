@@ -10,7 +10,7 @@ PaperPhoneLite ist ein leichtgewichtiger Ende-zu-Ende-verschlüsselter Messenger
 - Zuverlässige WebSocket-Synchronisierung, Offline-Warteschlange und kontogetrennter Cache.
 - Automatische Nachrichtenlöschung nach 1, 3, 7 oder 30 Tagen.
 - Freundschaftsanfragen, Notizen, Tags, Sperren und QR-Gruppeneinladungen.
-- TOTP-Zwei-Faktor-Authentifizierung und Push über Web Push, FCM, OneSignal, ntfy und APNS.
+- TOTP-Zwei-Faktor-Authentifizierung; Push ausschließlich über ntfy auf Android und APNs auf iOS.
 - Dateien bis 500 MB ausschließlich auf dem persistenten Server-Volume.
 - Acht Oberflächensprachen.
 
@@ -19,6 +19,8 @@ PaperPhoneLite ist ein leichtgewichtiger Ende-zu-Ende-verschlüsselter Messenger
 Produktionsclients für Android, iOS, Windows und macOS müssen Tor einbetten, vor der Anmeldung den Tor-Bootstrap abwarten und `.onion`-Verbindungen ohne Clearnet-Fallback über isolierte SOCKS5-Verbindungen führen. `client/` enthält nur den gemeinsam genutzten UI-Quellcode. Browser und PWAs sind keine unterstützten Produktionsclients.
 
 Moments, Timeline, alle Audio-/Videoanrufe, LiveKit, Cloudflare R2, Meldungen und das Moderations-Dashboard wurden entfernt. Die Produktion wird mit Docker Compose und einem Tor-v3-Onion-Service betrieben. Die Zeabur-Vorlage dient nur Entwicklung oder Migration. Siehe [DEPLOY_EN.md](DEPLOY_EN.md).
+
+Die iOS-App ist für den Apple App Store vorgesehen. Android-APKs werden ausschließlich über [GitHub Releases](https://github.com/619dev/PaperPhoneLite/releases) verteilt, nicht über Google Play; Google-Push- und Service-Frameworks werden nicht integriert.
 
 Wenn Ihnen das Projekt hilft, spendieren Sie mir bitte eine Dose Cola.
 

@@ -8,8 +8,6 @@ import { disconnectWs } from '../api/socket'
 import { get, post, put, del, uploadFile } from '../api/http'
 import { allLangs, langNames, LangCode } from '../i18n'
 import { QRCodeCanvas } from '../components/QRCode'
-import { isPushSupported, isPushSubscribed, subscribePush, unsubscribePush } from '../api/push'
-import { logoutOneSignal } from '../api/onesignal'
 import { Camera, ChevronLeft, ChevronRight, Smartphone, Check, Copy, KeyRound, Shield, Fingerprint, Moon, Globe, Bell, Monitor, CheckCircle, FileText, ExternalLink, Wifi, Trash2, AlertTriangle } from 'lucide-react'
 import { clearOfflineCache } from '../utils/offlineCache'
 import { PRESENTATION_CODECS, type PresentationCodecId } from '../crypto/presentationCodec'
@@ -31,15 +29,6 @@ export default function Profile() {
 
   const [subView, setSubView] = useState<SubView>(null)
   const [clearingCache, setClearingCache] = useState(false)
-
-  // Push notifications state
-  const [pushEnabled, setPushEnabled] = useState(false)
-  const [pushLoading, setPushLoading] = useState(false)
-  const pushSupported = isPushSupported()
-
-  useEffect(() => {
-    isPushSubscribed().then(setPushEnabled)
-  }, [])
 
   // ntfy state
   const [ntfyTopic, setNtfyTopic] = useState('')
@@ -65,30 +54,6 @@ export default function Profile() {
       .catch(() => {})
   }, [])
 
-  const togglePush = async () => {
-    setPushLoading(true)
-    try {
-      if (pushEnabled) {
-        await unsubscribePush()
-        setPushEnabled(false)
-      } else {
-        const ok = await subscribePush()
-        setPushEnabled(ok)
-        if (!ok) {
-          // Check why it failed
-          if ('Notification' in window && Notification.permission === 'denied') {
-            alert(t('profile.push_blocked') || 'Notifications are blocked. Please enable them in your browser settings.')
-          } else {
-            alert(t('profile.push_failed') || 'Failed to enable notifications. Check console for details.')
-          }
-        }
-      }
-    } catch (e) {
-      console.error('[Push] Toggle failed:', e)
-    }
-    setPushLoading(false)
-  }
-
   const handleLogout = async () => {
     // Revoke the durable device session before removing local credentials.
     // If offline, local logout still completes and the token expires server-side.
@@ -103,7 +68,6 @@ export default function Profile() {
     // breaking sender key distributions for all group members.
     // Only clear sender key cache (it will be re-fetched on next login).
     clearAllSenderKeys()
-    logoutOneSignal()
     logout()
     navigate('/login')
   }
@@ -137,7 +101,6 @@ export default function Profile() {
       await post('/api/users/delete', { password: deletePassword })
       disconnectWs()
       clearKeys()
-      logoutOneSignal()
       logout()
       navigate('/login')
     } catch (err: any) {
@@ -233,15 +196,7 @@ export default function Profile() {
           <span className="value">{clearingCache ? t('common.loading') : ''}</span>
         </div>
 
-        {/* Push notifications */}
-        {pushSupported && (
-          <div className="settings-item" onClick={togglePush} style={{ opacity: pushLoading ? 0.5 : 1 }}>
-            <span className="label"><Bell size={16} /> {t('profile.notifications')}</span>
-            <div className={`toggle ${pushEnabled ? 'active' : ''}`} />
-          </div>
-        )}
-
-        {/* ntfy Push for Chinese Android */}
+        {/* ntfy Push for Android without Google services */}
         {isAndroid && ntfyTopic && (
           <>
             <div className="divider" />

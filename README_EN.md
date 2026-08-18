@@ -15,7 +15,7 @@ PaperPhoneLite is a lightweight end-to-end encrypted messenger built with React/
 | 👥 Group chat | Up to 2,000 members, Sender Key encrypted mode, Do Not Disturb, notices, and member management |
 | 💬 Rich messaging | Text, images, video, documents, voice, emoji, Telegram stickers, read receipts, and typing indicators |
 | ⏱️ Expiring messages | Never, 1 day, 3 days, 7 days, or 30 days; configurable by either DM participant and by group owners |
-| 🔔 Push notifications | Web Push, FCM, OneSignal, ntfy, and APNS |
+| 🔔 Push notifications | ntfy on Android and APNs on iOS, with no Google push framework |
 | 🔑 Two-factor authentication | Google Authenticator-compatible TOTP with eight one-time recovery codes |
 | 📷 QR invitations | Add friends or join groups by QR code, with expiring group invitations |
 | 📤 Server-local files | Files up to 500MB remain on a persistent server volume and are transferred by the Rust server |
@@ -25,6 +25,11 @@ PaperPhoneLite is a lightweight end-to-end encrypted messenger built with React/
 Version 3.0.0 removes Moments, Timeline, all direct/group voice and video calls, LiveKit, and Cloudflare R2. Files remain on a persistent server volume and are transferred by the Rust server. Self-hosting uses no Nginx: a Tor v3 onion service maps directly to the backend while MySQL and Redis remain private.
 
 `client/` contains the shared UI source for Android, iOS, Windows, and macOS native shells. Production clients must embed Tor, wait for Tor bootstrap before authentication, and never fall back to clearnet for `.onion` addresses. Ordinary browsers and PWAs are not supported production clients.
+
+## Application distribution
+
+- The iOS client is intended for Apple App Store distribution and uses APNs.
+- Android APKs are distributed only from this repository's [GitHub Releases](https://github.com/619dev/PaperPhoneLite/releases), use ntfy, and will not be published on Google Play or include Google push/service frameworks.
 
 See [DEPLOY_EN.md](DEPLOY_EN.md). License: AGPL-3.0.
 

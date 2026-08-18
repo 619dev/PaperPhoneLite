@@ -1,183 +1,105 @@
+import type { ReactNode } from 'react'
+import { Baby, Bell, ChevronLeft, Database, Eye, Lock, Network, RefreshCw, Server, Shield, Trash2, Users } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useI18n } from '../hooks/useI18n'
-import { useStore } from '../store'
-import { ChevronLeft, Shield, Lock, Eye, Server, Users, Cookie, Baby, RefreshCw } from 'lucide-react'
 
 export default function PrivacyPolicy() {
-  const { t } = useI18n()
   const navigate = useNavigate()
-  const lang = useStore(s => s.lang)
-  const isZH = lang === 'zh'
+  const { lang, t } = useI18n()
+  const zh = lang === 'zh'
 
   return (
     <div className="page" id="privacy-policy-page">
       <div className="page-header">
-        <button className="back-btn" onClick={() => navigate(-1)}>
-          <ChevronLeft size={20} />
-        </button>
+        <button className="back-btn" onClick={() => navigate(-1)}><ChevronLeft size={20} /></button>
         <h1>{t('privacy.title')}</h1>
       </div>
       <div className="page-body privacy-policy-body">
-        {/* Hero */}
         <div className="privacy-hero">
-          <div className="privacy-hero-icon">
-            <Shield size={40} />
-          </div>
-          <h2 className="privacy-hero-title">{t('privacy.hero_title')}</h2>
-          <p className="privacy-hero-subtitle">{t('privacy.hero_subtitle')}</p>
+          <div className="privacy-hero-icon"><Shield size={40} /></div>
+          <h2 className="privacy-hero-title">PaperPhoneLite</h2>
+          <p className="privacy-hero-subtitle">{zh ? '隐私声明' : 'Privacy Policy'}</p>
         </div>
+        <div className="privacy-updated">{zh ? '生效及更新日期：2026年8月18日' : 'Effective and updated: August 18, 2026'}</div>
 
-        {/* Last updated */}
-        <div className="privacy-updated">
-          {t('privacy.last_updated')}: 2026-04-24
-        </div>
+        <Section icon={<Eye size={20} />} title={zh ? '1. 适用范围与责任主体' : '1. Scope and Data Controller'}>
+          <p>{zh
+            ? '本声明说明 PaperPhoneLite 客户端和服务端软件如何处理数据。PaperPhoneLite 是可自托管的开源项目；您选择连接的服务器运营者通常决定该实例的数据保留、备份、通知服务和法律合规，并可能是相关数据的实际控制者。请同时阅读该运营者公布的隐私规则。'
+            : 'This Policy explains how the PaperPhoneLite client and server software process data. PaperPhoneLite is self-hostable open-source software. The operator of the server you select ordinarily determines that instance’s retention, backups, notification services, and legal compliance and may be the relevant data controller. Review any privacy terms published by that operator as well.'}</p>
+        </Section>
 
-        {/* Introduction */}
-        <div className="privacy-section">
-          <p className="privacy-text">
-            {isZH
-              ? 'PaperPhoneLite（以下简称"我们"）非常重视您的隐私保护。本隐私政策旨在向您说明我们如何收集、使用、存储和保护您的个人信息。使用我们的服务即表示您同意本政策中描述的做法。'
-              : 'PaperPhoneLite ("we", "us", or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, store, and protect your personal information when you use our service. By using PaperPhoneLite, you agree to the practices described in this policy.'}
-          </p>
-        </div>
+        <Section icon={<Database size={20} />} title={zh ? '2. 我们处理的信息' : '2. Information Processed'}>
+          <h4>{zh ? '账号与关系数据' : 'Account and relationship data'}</h4>
+          <p>{zh
+            ? '用户名、昵称、密码哈希、头像、两步验证状态、好友关系、备注、标签、拉黑关系、群组、成员和邀请信息。注册不强制要求手机号或电子邮箱。'
+            : 'Username, nickname, password hash, avatar, two-factor status, friendships, remarks, tags, blocks, groups, memberships, and invitations. Registration does not require a phone number or email address.'}</p>
+          <h4>{zh ? '通信和路由元数据' : 'Communication and routing metadata'}</h4>
+          <p>{zh
+            ? '发送方和接收方或群组标识、消息标识、类型、时间、投递/已读状态、客户端序号、自动删除设置、密钥版本，以及维持 WebSocket、同步和防重复投递所需的信息。项目没有朋友圈、时间线、公开帖子或举报审核数据。'
+            : 'Sender and recipient or group identifiers, message identifiers, type, time, delivery/read status, client sequence, expiry settings, key version, and information needed for WebSocket operation, synchronization, and deduplication. The project has no social feed, timeline, public-post, or report-review data.'}</p>
+          <h4>{zh ? '设备与会话数据' : 'Device and session data'}</h4>
+          <p>{zh
+            ? '设备名称和类型、操作系统、客户端或浏览器标识、会话标识、登录和最后活动时间、刷新令牌哈希，以及服务器可见的连接信息。Tor 用于降低来源 IP 暴露，但服务器、设备或推送服务仍可能产生其他可关联元数据。'
+            : 'Device name and type, operating system, client or browser identifier, session identifier, login and last-active times, refresh-token hash, and connection information visible to the server. Tor reduces source-IP exposure, but the server, device, or push provider may still create other linkable metadata.'}</p>
+        </Section>
 
-        {/* Section 1: Data Collection */}
-        <div className="privacy-section">
-          <div className="privacy-section-header">
-            <Eye size={20} />
-            <h3>{isZH ? '1. 信息收集' : '1. Information We Collect'}</h3>
-          </div>
-          <div className="privacy-card">
-            <h4>{isZH ? '账户信息' : 'Account Information'}</h4>
-            <p>{isZH
-              ? '注册时，我们仅收集您提供的用户名、昵称和密码哈希值。我们不要求您提供手机号码、电子邮箱或其他个人身份信息。'
-              : 'When you register, we only collect the username, nickname, and password hash you provide. We do not require your phone number, email address, or other personally identifiable information.'}</p>
-          </div>
-          <div className="privacy-card">
-            <h4>{isZH ? '消息数据' : 'Message Data'}</h4>
-            <p>{isZH
-              ? '所有私聊消息均使用端到端加密（E2EE）技术保护。我们无法读取您的消息内容。服务器仅存储加密后的密文，用于消息投递。群聊消息以明文形式传输和存储。'
-              : 'All private messages are protected with end-to-end encryption (E2EE). We cannot read your message content. Our servers only store encrypted ciphertext for message delivery. Group chat messages are transmitted and stored in plaintext.'}</p>
-          </div>
-          <div className="privacy-card">
-            <h4>{isZH ? '设备信息' : 'Device Information'}</h4>
-            <p>{isZH
-              ? '为了会话管理和安全目的，我们收集基本的设备信息（如浏览器类型、操作系统），用于「登录设备」功能。'
-              : 'For session management and security purposes, we collect basic device information (such as browser type, operating system) for the "Devices" feature.'}</p>
-          </div>
-        </div>
+        <Section icon={<Lock size={20} />} title={zh ? '3. 消息加密与限制' : '3. Message Encryption and Limits'}>
+          <p>{zh
+            ? '私聊使用 X25519 与 ML-KEM-768 混合密钥协商并以 XSalsa20-Poly1305 加密；加密群聊使用 Sender Key。身份私钥和 Sender Key 保存在本地设备，服务器存储并转发密文。可选的“消息隐私”密码在端到端加密前增加一层本地加密，密码不会上传或自动同步。'
+            : 'Private chats use hybrid X25519 and ML-KEM-768 key agreement with XSalsa20-Poly1305 encryption; encrypted groups use Sender Keys. Identity private keys and Sender Keys stay on local devices while the server stores and relays ciphertext. The optional “message privacy” password adds local encryption before normal end-to-end encryption and is never uploaded or automatically synchronized.'}</p>
+          <p>{zh
+            ? '端到端加密不隐藏账号关系、群成员、时间、消息类型、大小和投递状态等运行所需元数据，也不能保护已被控制的设备、截图、收件人保存或转发的内容。安全号码应由通信双方独立核对。'
+            : 'End-to-end encryption does not conceal operational metadata such as account relationships, group membership, time, message type, size, or delivery status, and cannot protect a compromised device, screenshots, or content saved or forwarded by a recipient. Participants should independently verify safety numbers.'}</p>
+        </Section>
 
-        {/* Section 2: Encryption */}
-        <div className="privacy-section">
-          <div className="privacy-section-header">
-            <Lock size={20} />
-            <h3>{isZH ? '2. 加密与安全' : '2. Encryption & Security'}</h3>
-          </div>
-          <div className="privacy-card highlight">
-            <p>{isZH
-              ? 'PaperPhoneLite 采用业界领先的混合量子安全加密方案：'
-              : 'PaperPhoneLite uses industry-leading hybrid quantum-safe encryption:'}</p>
-            <ul>
-              <li>{isZH ? 'X25519 椭圆曲线密钥交换' : 'X25519 Elliptic Curve Diffie-Hellman'}</li>
-              <li>{isZH ? 'Kyber KEM 后量子密钥封装' : 'Kyber KEM post-quantum key encapsulation'}</li>
-              <li>{isZH ? 'Double Ratchet 前向加密协议' : 'Double Ratchet forward secrecy protocol'}</li>
-              <li>{isZH ? '所有密钥仅存储在您的本地设备上' : 'All encryption keys are stored only on your local device'}</li>
-            </ul>
-          </div>
-        </div>
+        <Section icon={<Server size={20} />} title={zh ? '4. 文件与数据存储' : '4. Files and Data Storage'}>
+          <p>{zh
+            ? '上传的图片、视频、语音和文档保存在您选择服务器的持久卷中，由 Rust 服务端传输，单文件上限为 500MB；本项目不使用 Cloudflare R2。客户端还会在 localStorage 和 IndexedDB 中保存登录状态、设置、本地密钥、联系人、群组、消息及媒体缓存。服务器运营者负责存储位置、备份、访问控制和保留期限。'
+            : 'Uploaded images, video, voice, and documents remain on the selected server’s persistent volume and are transferred by the Rust server, with a 500MB per-file limit; the project does not use Cloudflare R2. The client also stores login state, settings, local keys, contacts, groups, messages, and media cache in localStorage and IndexedDB. The server operator is responsible for storage location, backups, access control, and retention.'}</p>
+        </Section>
 
-        {/* Section 3: Data Storage */}
-        <div className="privacy-section">
-          <div className="privacy-section-header">
-            <Server size={20} />
-            <h3>{isZH ? '3. 数据存储' : '3. Data Storage'}</h3>
-          </div>
-          <div className="privacy-card">
-            <p>{isZH
-              ? '您的数据存储在您自行部署或选择的服务器上。PaperPhoneLite 是开源软件，支持自托管部署。我们不运营中心化的数据存储服务。您可以随时通过自动删除消息功能清除历史消息。'
-              : 'Your data is stored on the server you deploy or choose. PaperPhoneLite is open-source software that supports self-hosted deployment. We do not operate a centralized data storage service. You can clear message history at any time using the auto-delete messages feature.'}</p>
-          </div>
-        </div>
+        <Section icon={<Network size={20} />} title={zh ? '5. Tor 网络' : '5. Tor Network'}>
+          <p>{zh
+            ? '生产客户端必须内嵌 Tor，等待 bootstrap 完成，并仅通过隔离的代理连接 v3 .onion 服务，不允许明网回退。Tor 旨在隐藏来源 IP 和服务器公开 IP，但无法保证绝对匿名，也无法消除设备指纹、账号行为、通知服务或用户主动披露形成的关联。Tor 软件和网络由 Tor Project 及其参与者独立提供。'
+            : 'Production clients must embed Tor, wait for bootstrap, and connect only to a v3 .onion service through an isolated proxy with no clearnet fallback. Tor is intended to conceal source and public server IP addresses but cannot guarantee absolute anonymity or eliminate linkage from device fingerprints, account behavior, notification services, or voluntary disclosure. Tor software and the network are independently provided by the Tor Project and its participants.'}</p>
+        </Section>
 
-        {/* Section 4: Data Sharing */}
-        <div className="privacy-section">
-          <div className="privacy-section-header">
-            <Users size={20} />
-            <h3>{isZH ? '4. 信息共享' : '4. Information Sharing'}</h3>
-          </div>
-          <div className="privacy-card">
-            <p>{isZH
-              ? '我们不会将您的个人信息出售、出租或以其他方式提供给第三方。以下情况除外：'
-              : 'We do not sell, rent, or otherwise provide your personal information to third parties, except in the following cases:'}</p>
-            <ul>
-              <li>{isZH ? '经您明确同意' : 'With your explicit consent'}</li>
-              <li>{isZH ? '法律法规要求' : 'Required by applicable laws or regulations'}</li>
-              <li>{isZH ? '保护我们的合法权益' : 'To protect our legitimate interests'}</li>
-            </ul>
-          </div>
-        </div>
+        <Section icon={<Bell size={20} />} title={zh ? '6. 通知服务与第三方' : '6. Notifications and Third Parties'}>
+          <p>{zh
+            ? 'Android 通知仅使用 ntfy：服务器会向运营者配置的 ntfy 实例发送主题、通知标题和正文；使用公共实例时，该实例运营者会处理这些数据。iOS 通知仅使用 Apple Push Notification service（APNs）：设备令牌及通知载荷会发送给 Apple。通知内容可能出现在锁屏，请在操作系统中调整预览设置。本项目不使用 Web Push、FCM、Firebase 或 OneSignal，也不集成 Google 推送或服务框架。'
+            : 'Android notifications use only ntfy: the server sends a topic, notification title, and body to the operator-configured ntfy instance; a public instance processes that data under its operator’s policy. iOS notifications use only Apple Push Notification service (APNs): device tokens and notification payloads are sent to Apple. Notification content may appear on a lock screen, so adjust OS preview settings as needed. The project does not use Web Push, FCM, Firebase, or OneSignal and includes no Google push or service framework.'}</p>
+        </Section>
 
-        {/* Section 5: Cookies */}
-        <div className="privacy-section">
-          <div className="privacy-section-header">
-            <Cookie size={20} />
-            <h3>{isZH ? '5. Cookie 与本地存储' : '5. Cookies & Local Storage'}</h3>
-          </div>
-          <div className="privacy-card">
-            <p>{isZH
-              ? '我们使用 localStorage 和 IndexedDB 存储您的登录状态、加密密钥和应用设置。这些数据仅保存在您的设备上，不会被发送至任何第三方服务器。'
-              : 'We use localStorage and IndexedDB to store your login state, encryption keys, and application settings. This data is stored only on your device and is not sent to any third-party servers.'}</p>
-          </div>
-        </div>
+        <Section icon={<Users size={20} />} title={zh ? '7. 使用目的与信息披露' : '7. Purposes and Disclosure'}>
+          <p>{zh
+            ? '数据仅用于创建和保护账号、连接联系人和群组、路由与同步消息、传输文件、提供通知、检测滥用、排查故障和履行法律义务。项目不出售个人信息，不提供广告或跨应用追踪。服务器运营者、ntfy 实例运营者、Apple、基础设施供应商或依法提出要求的机构可能在各自角色和法律范围内接触相关数据。'
+            : 'Data is used to create and secure accounts, connect contacts and groups, route and synchronize messages, transfer files, deliver notifications, detect abuse, troubleshoot, and comply with law. The project does not sell personal information and provides no advertising or cross-app tracking. A server operator, ntfy instance operator, Apple, infrastructure provider, or legally authorized authority may access relevant data within its role and applicable law.'}</p>
+        </Section>
 
-        {/* Section 6: Children */}
-        <div className="privacy-section">
-          <div className="privacy-section-header">
-            <Baby size={20} />
-            <h3>{isZH ? '6. 未成年人保护' : '6. Children\'s Privacy'}</h3>
-          </div>
-          <div className="privacy-card">
-            <p>{isZH
-              ? '我们的服务不面向 13 岁以下的儿童。如果我们发现无意中收集了儿童的个人信息，将立即采取措施删除相关数据。'
-              : 'Our service is not directed to children under the age of 13. If we discover that we have inadvertently collected personal information from a child, we will take steps to delete that information promptly.'}</p>
-          </div>
-        </div>
+        <Section icon={<Trash2 size={20} />} title={zh ? '8. 保留、删除与您的选择' : '8. Retention, Deletion, and Your Choices'}>
+          <p>{zh
+            ? '消息可设置永不删除或在 1、3、7、30 天后自动删除。您可以清理本地缓存、撤销设备会话、拉黑用户或提交账号删除请求。账号删除会触发服务器数据库中的关联记录删除，但离线设备、接收方副本、推送服务记录和服务器备份可能按各自周期继续存在。删除前请自行导出或备份需要的数据。具体访问、更正、删除或异议权取决于适用法律，应联系所选服务器运营者。'
+            : 'Messages may be retained indefinitely or expire after 1, 3, 7, or 30 days. You may clear local cache, revoke device sessions, block users, or request account deletion. Account deletion triggers removal of related server database records, but offline devices, recipient copies, push-provider records, and server backups may persist according to their own cycles. Export or back up anything needed before deletion. Rights of access, correction, deletion, or objection depend on applicable law and should be directed to the selected server operator.'}</p>
+        </Section>
 
-        {/* Section 7: Changes */}
-        <div className="privacy-section">
-          <div className="privacy-section-header">
-            <RefreshCw size={20} />
-            <h3>{isZH ? '7. 政策更新' : '7. Changes to This Policy'}</h3>
-          </div>
-          <div className="privacy-card">
-            <p>{isZH
-              ? '我们可能会不时更新本隐私政策。更新后的政策将在应用内公布。继续使用我们的服务即表示您接受更新后的政策。'
-              : 'We may update this Privacy Policy from time to time. Updated policies will be published within the application. Your continued use of our service constitutes acceptance of the updated policy.'}</p>
-          </div>
-        </div>
+        <Section icon={<Baby size={20} />} title={zh ? '9. 未成年人' : '9. Children'}>
+          <p>{zh
+            ? 'PaperPhoneLite 不面向 13 岁以下儿童，也不会故意收集其个人信息。不同地区可能规定更高的数字同意年龄；未达到当地适用年龄的用户应在监护人同意和监督下使用，或停止使用。发现儿童数据时，请联系相应服务器运营者请求处理。'
+            : 'PaperPhoneLite is not directed to children under 13 and does not knowingly collect their personal information. Some regions impose a higher age of digital consent; users below the locally applicable age should use the service only with guardian consent and supervision or stop using it. Contact the relevant server operator if child data is identified.'}</p>
+        </Section>
 
-        {/* Section 8: Contact */}
-        <div className="privacy-section">
-          <div className="privacy-section-header">
-            <h3>{isZH ? '8. 联系我们' : '8. Contact Us'}</h3>
-          </div>
-          <div className="privacy-card">
-            <p>{isZH
-              ? '如果您对本隐私政策有任何疑问或建议，请通过以下方式联系我们：'
-              : 'If you have any questions or suggestions about this Privacy Policy, please contact us:'}</p>
-            <ul>
-              <li>{isZH ? '应用名称：PaperPhoneLite' : 'App: PaperPhoneLite'}</li>
-              <li>{isZH ? '公司名称：FM619 Technolog LTD' : 'Company: FM619 Technolog LTD'}</li>
-              <li>{isZH ? '电子邮件：' : 'Email: '}<a href="mailto:4722522@gmail.com">4722522@gmail.com</a></li>
-            </ul>
-          </div>
-        </div>
+        <Section icon={<RefreshCw size={20} />} title={zh ? '10. 安全、变更与联系' : '10. Security, Changes, and Contact'}>
+          <p>{zh
+            ? '我们采取加密、密码哈希、会话撤销和 Tor-only 连接等措施，但任何系统都无法保证绝对安全。本声明可能随版本更新；重大变更会在应用或仓库中公布。项目层面的问题可发送至 4722522@gmail.com；实例数据请求应优先联系您选择的服务器运营者。'
+            : 'Measures include encryption, password hashing, session revocation, and Tor-only connections, but no system can guarantee absolute security. This Policy may change with a release; material changes will be published in the app or repository. Project-level questions may be sent to 4722522@gmail.com; instance-specific data requests should first go to the server operator you selected.'}</p>
+        </Section>
 
-        {/* Footer */}
-        <div className="privacy-footer">
-          <p>© {new Date().getFullYear()} FM619 Technolog LTD. {isZH ? '保留所有权利。' : 'All rights reserved.'}</p>
-        </div>
+        <div className="privacy-footer"><p>© {new Date().getFullYear()} FM619 Technolog LTD.</p></div>
       </div>
     </div>
   )
+}
+
+function Section({ icon, title, children }: { icon: ReactNode; title: string; children: ReactNode }) {
+  return <div className="privacy-section"><div className="privacy-section-header">{icon}<h3>{title}</h3></div><div className="privacy-card">{children}</div></div>
 }

@@ -462,13 +462,7 @@ async fn push_offline_message(state: &Arc<AppState>, sender_id: &str, recipient_
     ).bind(sender_id).fetch_optional(&state.db).await.ok().flatten();
     let name = sender.map(|(n, u)| if n.is_empty() { u } else { n }).unwrap_or("Someone".to_string());
 
-    // Web Push
-    crate::services::push::push_to_user(&state.db, &state.config, recipient_id, &name, "sent you a message").await;
-    // OneSignal
-    crate::services::onesignal::push_to_user(&state.db, &state.config, recipient_id, &name, "sent you a message").await;
-    // FCM (Capacitor native)
-    crate::services::fcm::push_to_user(&state.db, &state.config, recipient_id, &name, "sent you a message").await;
-    // ntfy (Chinese Android without GMS)
+    // ntfy (Android without Google services)
     crate::services::ntfy::push_to_user(&state.db, &state.config, recipient_id, &name, "sent you a message").await;
     // APNS (iOS native)
     crate::services::apns::push_to_user(&state.db, &state.config, recipient_id, &name, "sent you a message").await;

@@ -19,7 +19,7 @@ PaperPhoneLite 是轻量级端到端加密即时通讯项目，使用 React 19/T
 | 👥 群聊 | 最多 2000 人；加密群使用 Sender Key 协议，并支持免打扰、公告和成员管理 |
 | 👫 好友系统 | 好友申请需对方确认，支持验证消息、备注和多标签分组 |
 | ⏱️ 消息自动删除 | 支持永不、1 天、3 天、7 天、30 天五档；私聊双方可设置，群聊仅群主可设置 |
-| 🔔 消息推送 | 支持 Web Push、FCM、OneSignal、ntfy 和 APNS |
+| 🔔 消息推送 | Android 使用 ntfy，iOS 使用 APNs；不集成任何 Google 推送框架 |
 | 🌐 多语言 | 中文、英文、日语、韩语、法语、德语、俄语、西班牙语 |
 | 💬 丰富消息 | 文字、图片、视频、文档、语音、Emoji、Telegram 贴纸、已读状态和输入状态 |
 | 📤 服务端文件存储 | 单文件最大 500MB，文件仅保存在服务端持久卷，由 Rust 服务端传输 |
@@ -33,6 +33,11 @@ PaperPhoneLite 是轻量级端到端加密即时通讯项目，使用 React 19/T
 3.0.0 已彻底移除朋友圈、时间线、单聊语音/视频通话、群聊语音/视频通话、LiveKit 与 Cloudflare R2。文件只写入服务端持久卷并由服务端传输。自托管模板不使用 Nginx，Tor v3 onion service 直接转发至 Rust 服务端；数据库和 Redis 不公开端口。
 
 UI 源码位于 `client/`，供 Android、iOS、Windows、macOS 原生壳复用。生产客户端必须内嵌 Tor，必须等待 Tor bootstrap 完成后才能登录，并禁止 `.onion` 地址回退到明网。普通浏览器/PWA 不是受支持的生产客户端。
+
+## 应用发布
+
+- iOS 客户端计划通过 Apple App Store 发布，并使用 APNs。
+- Android APK 仅通过本仓库的 [GitHub Releases](https://github.com/619dev/PaperPhoneLite/releases) 发布，使用 ntfy，不发布到 Google Play，也不集成 Google 推送或服务框架。
 
 部署见 [DEPLOY_CN.md](DEPLOY_CN.md)，英文见 [README_EN.md](README_EN.md)。
 

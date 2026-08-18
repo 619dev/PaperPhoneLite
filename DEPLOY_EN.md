@@ -21,4 +21,10 @@ This follows the SimpleX `HiddenServiceDir`/`HiddenServicePort` pattern, adapted
 
 Import `zeabur.yaml` only for a development or migration deployment of the server, MySQL, and Redis. It does not deploy a client. Zeabur must expose a platform HTTP domain and therefore does not satisfy the production Tor-only requirement.
 
+## Notifications and client distribution
+
+The server supports only ntfy and APNs. Android uses `NTFY_BASE_URL`/`NTFY_TOKEN` without Google services; iOS uses `APNS_TEAM_ID`, `APNS_KEY_ID`, `APNS_PRIVATE_KEY`, and `APNS_BUNDLE_ID`. Web Push, FCM, and OneSignal configuration is no longer supported.
+
+The iOS client is intended for Apple App Store submission. Android APKs are uploaded only to this repository's GitHub Releases and are not published on Google Play.
+
 Back up all volumes before upgrades. Verify `/health`, WebSocket messaging, all attachment types, and file persistence after restart.

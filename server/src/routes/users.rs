@@ -362,9 +362,9 @@ async fn delete_account(
         .execute(&state.db).await.ok();
 
     // Delete the user record (CASCADE handles: prekeys, friends, group_members,
-    // moments, moment_likes, moment_comments, push_subscriptions, onesignal_players,
+    // moments, moment_likes, moment_comments,
     // sessions, friend_tags, friend_tag_assignments, user_totp, moment_privacy,
-    // timeline_posts, timeline_likes, timeline_comments, group_invites, fcm_tokens,
+    // timeline_posts, timeline_likes, timeline_comments, group_invites,
     // ntfy_subscriptions, apns_tokens)
     sqlx::query("DELETE FROM users WHERE id = ?")
         .bind(uid)
