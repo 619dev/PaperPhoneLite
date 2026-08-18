@@ -45,7 +45,7 @@ UI 源码位于 `client/`，供 Android、iOS、Windows、macOS 原生壳复用�
 - iOS 客户端计划通过 Apple App Store 发布，并使用 APNs。
 - Android APK 仅通过本仓库的 [GitHub Releases](https://github.com/619dev/PaperPhoneLite/releases) 发布，使用 ntfy，不发布到 Google Play，也不集成 Google 推送或服务框架。
 
-部署见 [DEPLOY_CN.md](DEPLOY_CN.md)，英文见 [README_EN.md](README_EN.md)。
+中文部署指南见 [DEPLOY_CN.md](DEPLOY_CN.md)，英文部署指南见 [DEPLOY_EN.md](DEPLOY_EN.md)。
 
 ```bash
 cd client && npm install && npm run build
