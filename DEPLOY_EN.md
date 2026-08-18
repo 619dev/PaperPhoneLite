@@ -20,8 +20,8 @@ This follows the SimpleX `HiddenServiceDir`/`HiddenServicePort` pattern, adapted
 
 ## Notifications and client distribution
 
-The server supports only ntfy and APNs. Android uses `NTFY_BASE_URL`/`NTFY_TOKEN` without Google services; iOS uses `APNS_TEAM_ID`, `APNS_KEY_ID`, `APNS_PRIVATE_KEY`, and `APNS_BUNDLE_ID`. Web Push, FCM, and OneSignal configuration is no longer supported.
+Among the current production clients, only Android supports background remote notifications. Configure ntfy with `NTFY_BASE_URL`/`NTFY_TOKEN`; no Google services are required. The iOS client does not use APNs and currently provides no system background remote notifications, although in-app message alerts remain available while the app is open and connected. Production deployments do not need APNs, Web Push, FCM, Firebase, or OneSignal configuration.
 
-The iOS client is intended for Apple App Store submission. Android APKs are uploaded only to this repository's GitHub Releases and are not published on Google Play.
+The iOS client is intended for Apple App Store submission. Android APKs are uploaded only to the [Android client repository's GitHub Releases](https://github.com/619dev/ppl-android/releases) and are not published on Google Play.
 
 Back up all volumes before upgrades. Verify `/health`, WebSocket messaging, all attachment types, and file persistence after restart.

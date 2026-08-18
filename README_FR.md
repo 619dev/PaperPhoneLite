@@ -23,7 +23,7 @@ PaperPhoneLite est une messagerie légère chiffrée de bout en bout, sans fonct
 - Synchronisation WebSocket fiable, file hors ligne et cache isolé par compte.
 - Suppression automatique des messages après 1, 3, 7 ou 30 jours.
 - Demandes d’amis, remarques, étiquettes, blocage et invitations de groupe par QR.
-- 2FA TOTP et notifications exclusivement via ntfy sur Android et APNs sur iOS.
+- 2FA TOTP et notifications d’arrière-plan facultatives via ntfy sur Android. Le client iOS n’utilise pas APNs et ne propose actuellement aucune notification distante système en arrière-plan.
 - Fichiers jusqu’à 500 Mo conservés uniquement sur le volume persistant du serveur.
 - Huit langues d’interface.
 

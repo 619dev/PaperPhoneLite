@@ -20,8 +20,8 @@ Android/iOS/Windows/macOS 生产客户端必须内嵌 Tor，以隔离 SOCKS5 流
 
 ## 通知与客户端发布
 
-服务端只支持 ntfy 和 APNs。Android 使用 `NTFY_BASE_URL`/`NTFY_TOKEN`，不需要 Google 服务；iOS 使用 `APNS_TEAM_ID`、`APNS_KEY_ID`、`APNS_PRIVATE_KEY` 和 `APNS_BUNDLE_ID`。项目不再提供 Web Push、FCM 或 OneSignal 配置。
+当前生产客户端只有 Android 可使用后台远程通知，通过 `NTFY_BASE_URL`/`NTFY_TOKEN` 配置 ntfy，不需要 Google 服务。iOS 客户端不使用 APNs，当前不提供系统后台远程通知；应用打开并保持连接时仍可显示应用内消息提醒。生产部署无需配置 APNs、Web Push、FCM、Firebase 或 OneSignal。
 
-iOS 客户端计划提交 Apple App Store；Android APK 仅上传至本仓库的 GitHub Releases，不发布到 Google Play。
+iOS 客户端计划提交 Apple App Store；Android APK 仅上传至 [Android 客户端仓库的 GitHub Releases](https://github.com/619dev/ppl-android/releases)，不发布到 Google Play。
 
 升级前备份数据库和全部持久卷。部署后验证 `/health`、WebSocket、文字/图片/语音/文件消息和重启后的文件可读性。

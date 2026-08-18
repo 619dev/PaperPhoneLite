@@ -23,7 +23,7 @@ PaperPhoneLite ist ein leichtgewichtiger Ende-zu-Ende-verschlüsselter Messenger
 - Zuverlässige WebSocket-Synchronisierung, Offline-Warteschlange und kontogetrennter Cache.
 - Automatische Nachrichtenlöschung nach 1, 3, 7 oder 30 Tagen.
 - Freundschaftsanfragen, Notizen, Tags, Sperren und QR-Gruppeneinladungen.
-- TOTP-Zwei-Faktor-Authentifizierung; Push ausschließlich über ntfy auf Android und APNs auf iOS.
+- TOTP-Zwei-Faktor-Authentifizierung und optionale ntfy-Hintergrundbenachrichtigungen auf Android. Der iOS-Client verwendet kein APNs und bietet derzeit keine systemweiten Hintergrundbenachrichtigungen.
 - Dateien bis 500 MB ausschließlich auf dem persistenten Server-Volume.
 - Acht Oberflächensprachen.
 

@@ -12,9 +12,9 @@ All notable changes and new features are recorded here. Historical entries below
 - Added server-local persistent uploads and Tor v3 onion-only Compose deployment.
 - Added automatic host-side logging of the generated onion URL to `logs/onion-address.log`.
 - Removed standalone public Web/PWA production deployment; production clients now require an embedded Tor transport and `.onion` server addresses.
-- Removed Web Push, FCM, and OneSignal; notifications are limited to ntfy on Android and APNs on iOS.
+- Removed Web Push, APNs, FCM, and OneSignal from the production clients; optional background remote notifications are available through ntfy on Android, while iOS currently provides only in-app alerts when open and connected.
 - Defined distribution policy: Apple App Store for iOS and GitHub Releases for Android APKs, without Google Play or Google service frameworks.
-- Rewrote the in-app Terms of Use and Privacy Policy for the Tor-only, self-hosted architecture, server-local files, E2EE boundaries, and ntfy/APNs-only notifications.
+- Rewrote the in-app Terms of Use and Privacy Policy for the Tor-only, self-hosted architecture, server-local files, E2EE boundaries, Android ntfy notifications, and the absence of iOS background remote notifications.
 - Updated the Docker Compose deployment guides and all language READMEs.
 
 ## 2.4.7

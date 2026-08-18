@@ -4,7 +4,7 @@
 
 [Changelog](changelog.md)
 
-PaperPhoneLite is a lightweight end-to-end encrypted messenger built with React/TypeScript and Rust/Axum. It keeps private/group chat, attachments, voice messages, reliable synchronization, offline cache, expiring messages, push, QR codes, 2FA, and blocking.
+PaperPhoneLite is a lightweight end-to-end encrypted messenger built with React/TypeScript and Rust/Axum. It keeps private/group chat, attachments, voice messages, reliable synchronization, offline cache, expiring messages, Android ntfy background notifications, QR codes, 2FA, and blocking.
 
 <details>
 <summary>App screenshots</summary>
@@ -28,7 +28,7 @@ PaperPhoneLite is a lightweight end-to-end encrypted messenger built with React/
 | 👥 Group chat | Up to 2,000 members, Sender Key encrypted mode, Do Not Disturb, notices, and member management |
 | 💬 Rich messaging | Text, images, video, documents, voice, emoji, Telegram stickers, read receipts, and typing indicators |
 | ⏱️ Expiring messages | Never, 1 day, 3 days, 7 days, or 30 days; configurable by either DM participant and by group owners |
-| 🔔 Push notifications | ntfy on Android and APNs on iOS, with no Google push framework |
+| 🔔 Background notifications | Android can use ntfy; iOS does not use APNs and currently provides no system background remote notifications; no client integrates Apple or Google push frameworks |
 | 🔑 Two-factor authentication | Google Authenticator-compatible TOTP with eight one-time recovery codes |
 | 📷 QR invitations | Add friends or join groups by QR code, with expiring group invitations |
 | 📤 Server-local files | Files up to 500MB remain on a persistent server volume and are transferred by the Rust server |
@@ -43,7 +43,7 @@ After Docker Compose starts, the Tor container automatically records the complet
 
 ## Application distribution
 
-- The iOS client is intended for Apple App Store distribution and uses APNs.
+- The iOS client is intended for Apple App Store distribution; it does not use APNs and currently provides no system background remote notifications.
 - Android APKs are distributed only through the Android client repository's [GitHub Releases](https://github.com/619dev/ppl-android/releases), use ntfy, and will not be published on Google Play or include Google push/service frameworks.
 
 ## Client repositories
