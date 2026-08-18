@@ -1,5 +1,7 @@
 # PaperPhoneLite 3.0.0
 
+[简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
+
 PaperPhoneLite는 공개 소셜 기능이 없는 경량 종단간 암호화 메신저입니다.
 
 ## 기능
