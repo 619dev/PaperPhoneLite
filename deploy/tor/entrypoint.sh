@@ -8,6 +8,7 @@ address_log="${log_dir}/onion-address.log"
 
 mkdir -p "$hidden_service_dir" "$log_dir"
 chown -R tor:tor /var/lib/tor
+chmod 0700 "$hidden_service_dir"
 
 su-exec tor tor -f /etc/tor/torrc &
 tor_pid=$!
