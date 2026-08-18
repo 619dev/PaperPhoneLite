@@ -1,0 +1,6 @@
+Log notice stdout
+DataDirectory /var/lib/tor
+SocksPort 0
+HiddenServiceDir /var/lib/tor/paperphone-lite
+HiddenServiceVersion 3
+HiddenServicePort 80 server:3000

@@ -1,0 +1,83 @@
+# yaml-language-server: $schema=https://schema.zeabur.app/template.json
+apiVersion: zeabur.com/v1
+kind: Template
+metadata:
+  name: PaperPhoneLite
+spec:
+  description: PaperPhoneLite 3.0.0 encrypted chat with server-local files and no social feed or calls.
+  tags: [Chat, Security, Communication]
+  readme: |-
+    # PaperPhoneLite 3.0.0
+    This template deploys the Web client, Rust server, MySQL and Redis. Uploaded files use the server volume.
+    Zeabur exposes an HTTPS service domain, so it cannot provide the same origin-hiding guarantee as an onion-only VM. Use the Docker Compose Tor deployment for hidden-IP production.
+  variables:
+    - key: PUBLIC_DOMAIN
+      type: DOMAIN
+      name: Client Domain
+    - key: JWT_SECRET
+      type: STRING
+      name: JWT Secret
+    - key: DB_PASSWORD
+      type: STRING
+      name: Database Password
+    - key: REDIS_PASSWORD
+      type: STRING
+      name: Redis Password
+    - key: ADMIN_PASSWORD
+      type: STRING
+      name: Admin Password
+  services:
+    - name: MySQL
+      template: PREBUILT
+      spec:
+        source: { image: mysql:8.0 }
+        volumes: [{ id: data, dir: /var/lib/mysql }]
+        env:
+          MYSQL_ROOT_PASSWORD: { default: "${DB_PASSWORD}" }
+          MYSQL_DATABASE: { default: paperphonelite }
+          MYSQL_USER: { default: paperphonelite }
+          MYSQL_PASSWORD: { default: "${DB_PASSWORD}" }
+    - name: Redis
+      template: PREBUILT
+      spec:
+        source: { image: redis:7-alpine }
+        volumes: [{ id: data, dir: /data }]
+        command: redis-server --requirepass ${REDIS_PASSWORD}
+    - name: server
+      template: PREBUILT
+      dependencies: [MySQL, Redis]
+      spec:
+        source: { image: facilisvelox/paperphone-lite-server:3.0.0 }
+        ports: [{ id: web, port: 3000, type: HTTP }]
+        volumes: [{ id: uploads, dir: /var/lib/paperphone-lite/uploads }]
+        env:
+          PORT: { default: "3000" }
+          JWT_SECRET: { default: "${JWT_SECRET}" }
+          DB_HOST: { default: "${MYSQL_HOST}" }
+          DB_PORT: { default: "${MYSQL_PORT}" }
+          DB_USER: { default: paperphonelite }
+          DB_PASS: { default: "${DB_PASSWORD}" }
+          DB_NAME: { default: paperphonelite }
+          REDIS_HOST: { default: "${REDIS_HOST}" }
+          REDIS_PORT: { default: "${REDIS_PORT}" }
+          REDIS_PASS: { default: "${REDIS_PASSWORD}" }
+          UPLOAD_DIR: { default: /var/lib/paperphone-lite/uploads }
+          ADMIN_PATH: { default: /admin }
+          ADMIN_PASSWORD: { default: "${ADMIN_PASSWORD}" }
+          SERVER_URL: { default: "${ZEABUR_WEB_URL}", expose: true }
+    - name: client
+      template: PREBUILT
+      domainKey: PUBLIC_DOMAIN
+      dependencies: [server]
+      spec:
+        source: { image: facilisvelox/paperphone-lite-client:3.0.0 }
+        ports: [{ id: web, port: 8080, type: HTTP }]
+        env:
+          SERVER_URL: { default: "${SERVER_URL}" }
+localization:
+  zh-CN:
+    description: PaperPhoneLite 3.0.0 端到端加密聊天，文件仅保存在服务端，不包含社交动态与音视频通话。
+    readme: |-
+      # PaperPhoneLite 3.0.0
+      此模板部署 Web 客户端、Rust 服务端、MySQL 与 Redis，上传文件写入服务端持久卷。
+      Zeabur 必须公开 HTTPS 服务域名，无法提供 onion-only 主机的隐藏源站 IP 保证；需要隐藏 IP 的生产环境请使用 Docker Compose + Tor 部署。

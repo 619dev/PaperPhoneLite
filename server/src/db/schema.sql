@@ -1,0 +1,291 @@
+-- PaperPhoneLite IM — Database Schema
+-- MySQL 8.0+  |  utf8mb4  |  InnoDB
+--
+-- Auto-executed on server startup via sqlx.
+-- CREATE TABLE IF NOT EXISTS ensures idempotency.
+
+-- ── Users ─────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS users (
+  id          VARCHAR(36)   PRIMARY KEY,
+  username    VARCHAR(64)   NOT NULL UNIQUE,
+  nickname    VARCHAR(128)  NOT NULL,
+  avatar      VARCHAR(512)  DEFAULT NULL,
+  password    VARCHAR(255)  NOT NULL,
+  ik_pub      TEXT          NOT NULL,
+  spk_pub     TEXT          NOT NULL,
+  spk_sig     TEXT          NOT NULL,
+  kem_pub     TEXT          NOT NULL,
+  created_at  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  last_seen   DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  is_online   TINYINT(1)    NOT NULL DEFAULT 0,
+  INDEX idx_username (username)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── One-Time PreKeys (X3DH OPKs) ─────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS prekeys (
+  id          INT UNSIGNED    AUTO_INCREMENT PRIMARY KEY,
+  user_id     VARCHAR(36)     NOT NULL,
+  key_id      INT             NOT NULL,
+  opk_pub     TEXT            NOT NULL,
+  used        TINYINT(1)      NOT NULL DEFAULT 0,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_user_unused (user_id, used)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Friendships ───────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS friends (
+  id          INT UNSIGNED    AUTO_INCREMENT PRIMARY KEY,
+  user_id     VARCHAR(36)     NOT NULL,
+  friend_id   VARCHAR(36)     NOT NULL,
+  status      ENUM('pending','accepted','blocked') NOT NULL DEFAULT 'pending',
+  auto_delete INT             NOT NULL DEFAULT 604800,
+  remark      VARCHAR(128)    DEFAULT NULL,
+  message     VARCHAR(512)    DEFAULT NULL,
+  created_at  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_pair (user_id, friend_id),
+  FOREIGN KEY (user_id)   REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (friend_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Groups ────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS `groups` (
+  id          VARCHAR(36)   PRIMARY KEY,
+  name        VARCHAR(128)  NOT NULL,
+  avatar      VARCHAR(512)  DEFAULT NULL,
+  owner_id    VARCHAR(36)   NOT NULL,
+  notice      TEXT          DEFAULT NULL,
+  auto_delete INT           NOT NULL DEFAULT 604800,
+  created_at  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (owner_id) REFERENCES users(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Group Members ─────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS group_members (
+  group_id    VARCHAR(36)   NOT NULL,
+  user_id     VARCHAR(36)   NOT NULL,
+  role        ENUM('owner','admin','member') NOT NULL DEFAULT 'member',
+  muted       TINYINT(1)    NOT NULL DEFAULT 0,
+  joined_at   DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (group_id, user_id),
+  FOREIGN KEY (group_id) REFERENCES `groups`(id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id)  REFERENCES users(id)    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Messages ──────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS messages (
+  id          VARCHAR(36)   PRIMARY KEY,
+  type        ENUM('private','group') NOT NULL,
+  from_id     VARCHAR(36)   NOT NULL,
+  to_id       VARCHAR(36)   NOT NULL,
+  ciphertext  LONGTEXT      NOT NULL,
+  header      TEXT          DEFAULT NULL,
+  self_ciphertext LONGTEXT  DEFAULT NULL,
+  self_header TEXT          DEFAULT NULL,
+  msg_type    ENUM('text','image','file','voice','system','sticker','video') NOT NULL DEFAULT 'text',
+  nonce       TEXT          DEFAULT NULL,
+  sender_key_version INT    DEFAULT NULL,
+  created_at  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  delivered   TINYINT(1)    NOT NULL DEFAULT 0,
+  read_at     DATETIME      DEFAULT NULL,
+  server_seq  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  client_msg_id VARCHAR(64) DEFAULT NULL,
+  UNIQUE KEY uk_message_server_seq (server_seq),
+  UNIQUE KEY uk_sender_client_msg (from_id, client_msg_id),
+  INDEX idx_to_undelivered (to_id, delivered, created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Push Subscriptions (Web Push / VAPID) ─────────────────────────────────
+CREATE TABLE IF NOT EXISTS push_subscriptions (
+  id          BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id     VARCHAR(36)     NOT NULL,
+  endpoint    TEXT            NOT NULL,
+  p256dh      TEXT            NOT NULL,
+  auth        TEXT            NOT NULL,
+  user_agent  VARCHAR(255)    DEFAULT NULL,
+  created_at  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_user_endpoint (user_id, endpoint(512)),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_push_user (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── OneSignal Players (Median.co native push) ────────────────────────────
+CREATE TABLE IF NOT EXISTS onesignal_players (
+  id          BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id     VARCHAR(36)     NOT NULL,
+  player_id   VARCHAR(64)     NOT NULL,
+  platform    VARCHAR(16)     DEFAULT NULL,
+  created_at  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_player (player_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_os_user (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Sessions (Login Device Tracking) ─────────────────────────────────────
+CREATE TABLE IF NOT EXISTS sessions (
+  id           VARCHAR(36)   PRIMARY KEY,
+  user_id      VARCHAR(36)   NOT NULL,
+  device_name  VARCHAR(128)  DEFAULT NULL,
+  device_type  VARCHAR(16)   DEFAULT NULL,
+  os           VARCHAR(64)   DEFAULT NULL,
+  browser      VARCHAR(64)   DEFAULT NULL,
+  ip_address   VARCHAR(45)   DEFAULT NULL,
+  last_active  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_at   DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  revoked      TINYINT(1)    NOT NULL DEFAULT 0,
+  refresh_token_hash CHAR(64) DEFAULT NULL,
+  refresh_expires_at DATETIME DEFAULT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_sess_user (user_id, revoked)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Reliability migrations for existing installations ───────────────────
+ALTER TABLE messages ADD COLUMN server_seq BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, ADD UNIQUE KEY uk_message_server_seq (server_seq);
+ALTER TABLE messages ADD COLUMN client_msg_id VARCHAR(64) DEFAULT NULL, ADD UNIQUE KEY uk_sender_client_msg (from_id, client_msg_id);
+ALTER TABLE sessions ADD COLUMN refresh_token_hash CHAR(64) DEFAULT NULL;
+ALTER TABLE sessions ADD COLUMN refresh_expires_at DATETIME DEFAULT NULL;
+
+-- ── Friend Tags ──────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS friend_tags (
+  id          BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id     VARCHAR(36)   NOT NULL,
+  name        VARCHAR(32)   NOT NULL,
+  color       VARCHAR(7)    DEFAULT '#2196F3',
+  created_at  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_user_tag (user_id, name),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_ft_user (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Friend Tag Assignments (many-to-many) ────────────────────────────────
+CREATE TABLE IF NOT EXISTS friend_tag_assignments (
+  tag_id      BIGINT UNSIGNED NOT NULL,
+  friend_id   VARCHAR(36)     NOT NULL,
+  PRIMARY KEY (tag_id, friend_id),
+  FOREIGN KEY (tag_id)    REFERENCES friend_tags(id) ON DELETE CASCADE,
+  FOREIGN KEY (friend_id) REFERENCES users(id)       ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── TOTP Two-Factor Authentication ───────────────────────────────────────
+CREATE TABLE IF NOT EXISTS user_totp (
+  user_id         VARCHAR(36)   PRIMARY KEY,
+  totp_secret     VARCHAR(64)   NOT NULL,
+  recovery_codes  TEXT          DEFAULT NULL,
+  enabled         TINYINT(1)    NOT NULL DEFAULT 0,
+  created_at      DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Group Invites (QR code invite links with expiration) ─────────────────
+CREATE TABLE IF NOT EXISTS group_invites (
+  id          VARCHAR(36)   PRIMARY KEY,
+  group_id    VARCHAR(36)   NOT NULL,
+  created_by  VARCHAR(36)   NOT NULL,
+  expires_at  DATETIME      NOT NULL,
+  created_at  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (group_id)   REFERENCES `groups`(id) ON DELETE CASCADE,
+  FOREIGN KEY (created_by) REFERENCES users(id)    ON DELETE CASCADE,
+  INDEX idx_gi_group (group_id),
+  INDEX idx_gi_expires (expires_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Migrations (idempotent) ─────────────────────────────────────────────
+-- These ALTER statements may fail with "Duplicate column name" if already applied;
+-- the schema runner ignores such errors.
+ALTER TABLE friends ADD COLUMN remark VARCHAR(128) DEFAULT NULL AFTER auto_delete;
+ALTER TABLE friends ADD COLUMN message VARCHAR(512) DEFAULT NULL AFTER remark;
+
+-- ── FCM Tokens (Capacitor native push via Firebase Cloud Messaging) ──────
+CREATE TABLE IF NOT EXISTS fcm_tokens (
+  id          BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id     VARCHAR(36)     NOT NULL,
+  fcm_token   TEXT            NOT NULL,
+  platform    VARCHAR(16)     DEFAULT 'android',
+  created_at  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_fcm_token (user_id, fcm_token(512)),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_fcm_user (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── ntfy Subscriptions (push via ntfy.sh for Chinese Android without GMS) ──
+CREATE TABLE IF NOT EXISTS ntfy_subscriptions (
+  id          BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id     VARCHAR(36)     NOT NULL,
+  ntfy_topic  VARCHAR(64)     NOT NULL,
+  platform    VARCHAR(16)     DEFAULT 'android',
+  created_at  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_ntfy (user_id, ntfy_topic),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_ntfy_user (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Content Reports (UGC moderation) ────────────────────────────────────
+CREATE TABLE IF NOT EXISTS reports (
+  id            BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  reporter_id   VARCHAR(36)     NOT NULL,
+  target_type   VARCHAR(32)     NOT NULL,
+  target_id     VARCHAR(64)     NOT NULL,
+  reason        VARCHAR(64)     NOT NULL,
+  detail        TEXT            DEFAULT NULL,
+  status        ENUM('pending','reviewed','dismissed') NOT NULL DEFAULT 'pending',
+  created_at    DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (reporter_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_report_status (status, created_at),
+  INDEX idx_report_target (target_type, target_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── User Blocks ─────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS user_blocks (
+  id            BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id       VARCHAR(36)     NOT NULL,
+  blocked_id    VARCHAR(36)     NOT NULL,
+  created_at    DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_block (user_id, blocked_id),
+  FOREIGN KEY (user_id)    REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (blocked_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_block_user (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── APNS Tokens (iOS native push via Apple Push Notification Service) ────
+CREATE TABLE IF NOT EXISTS apns_tokens (
+  id          BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id     VARCHAR(36)     NOT NULL,
+  apns_token  VARCHAR(255)    NOT NULL,
+  platform    VARCHAR(16)     DEFAULT 'ios',
+  created_at  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_apns_token (user_id, apns_token),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_apns_user (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Group Encryption (Sender Keys for E2E encrypted groups) ─────────────
+ALTER TABLE `groups` ADD COLUMN encrypted TINYINT(1) NOT NULL DEFAULT 0;
+
+-- Each member's sender key for an encrypted group (public metadata)
+CREATE TABLE IF NOT EXISTS group_sender_keys (
+  group_id      VARCHAR(36)     NOT NULL,
+  user_id       VARCHAR(36)     NOT NULL,
+  key_version   INT UNSIGNED    NOT NULL DEFAULT 1,
+  created_at    DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (group_id, user_id),
+  FOREIGN KEY (group_id) REFERENCES `groups`(id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id)  REFERENCES users(id)    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Per-recipient encrypted sender key distributions (1:1 encrypted via ECDH)
+CREATE TABLE IF NOT EXISTS group_sender_key_distributions (
+  id            BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  group_id      VARCHAR(36)     NOT NULL,
+  from_id       VARCHAR(36)     NOT NULL,
+  to_id         VARCHAR(36)     NOT NULL,
+  encrypted_key TEXT            NOT NULL,
+  header        TEXT            NOT NULL,
+  key_version   INT UNSIGNED    NOT NULL DEFAULT 1,
+  created_at    DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_gskd (group_id, from_id, to_id, key_version),
+  INDEX idx_gskd_to (to_id, group_id),
+  FOREIGN KEY (group_id) REFERENCES `groups`(id) ON DELETE CASCADE,
+  FOREIGN KEY (from_id)  REFERENCES users(id)    ON DELETE CASCADE,
+  FOREIGN KEY (to_id)    REFERENCES users(id)    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
