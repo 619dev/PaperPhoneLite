@@ -18,7 +18,7 @@ PaperPhoneLite は、公開ソーシャル機能を持たない軽量なエン�
 
 Android、iOS、Windows、macOS の本番クライアントは Tor を内蔵し、ログイン前に Tor の bootstrap 完了を待ち、`.onion` 通信を分離 SOCKS5 回線に限定して clearnet へフォールバックしてはいけません。`client/` は共有 UI ソースコードのみです。ブラウザと PWA は本番クライアントとしてサポートされません。
 
-Moments、Timeline、すべての通話、LiveKit、Cloudflare R2、通報、モデレーション画面は削除済みです。本番は Docker Compose と Tor v3 onion service を使用します。Zeabur テンプレートは開発・移行専用です。[DEPLOY_EN.md](DEPLOY_EN.md) を参照してください。
+Moments、Timeline、すべての通話、LiveKit、Cloudflare R2、通報、モデレーション画面は削除済みです。本番は Docker Compose と Tor v3 onion service のみを使用します。[DEPLOY_EN.md](DEPLOY_EN.md) を参照してください。
 
 iOS アプリは Apple App Store で配布予定です。Android APK は [GitHub Releases](https://github.com/619dev/PaperPhoneLite/releases) のみで公開し、Google Play には公開せず、Google のプッシュ／サービスフレームワークも組み込みません。
 

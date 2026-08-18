@@ -7,7 +7,8 @@ Install Docker Engine and Compose v2 on a host with outbound Tor connectivity. N
 ```bash
 cp server/.env.example .env
 # Set JWT_SECRET, DB_PASS, REDIS_PASS and MYSQL_ROOT_PASSWORD
-docker compose up -d --build
+docker compose pull
+docker compose up -d
 docker compose exec tor cat /var/lib/tor/paperphone-lite/hostname
 ```
 
@@ -16,10 +17,6 @@ Tor maps onion virtual port 80 directly to `server:3000`. Back up the `mysql_dat
 Production Android, iOS, Windows, and macOS clients must embed Tor, reach `http://<address>.onion` through an isolated SOCKS5 circuit, and block authentication and network requests until Tor bootstrap completes. `client/` is shared UI source only; ordinary browsers and PWAs are not supported production clients.
 
 This follows the SimpleX `HiddenServiceDir`/`HiddenServicePort` pattern, adapted to an HTTP/WebSocket application. Do not enable single-hop hidden services for an onion-only deployment.
-
-## Zeabur
-
-Import `zeabur.yaml` only for a development or migration deployment of the server, MySQL, and Redis. It does not deploy a client. Zeabur must expose a platform HTTP domain and therefore does not satisfy the production Tor-only requirement.
 
 ## Notifications and client distribution
 

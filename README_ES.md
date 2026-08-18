@@ -18,7 +18,7 @@ PaperPhoneLite es un mensajero ligero con cifrado de extremo a extremo y sin fun
 
 Los clientes de producción para Android, iOS, Windows y macOS deben integrar Tor, esperar a que finalice el arranque de Tor antes de iniciar sesión y usar circuitos SOCKS5 aislados para `.onion`, sin salida alternativa a clearnet. `client/` contiene solo el código fuente compartido de la interfaz. Los navegadores y las PWA no son clientes de producción compatibles.
 
-Se eliminaron Moments, Timeline, todas las llamadas, LiveKit, Cloudflare R2, los reportes y el panel de moderación. Producción usa Docker Compose y un servicio onion Tor v3. La plantilla Zeabur es solo para desarrollo o migración. Consulte [DEPLOY_EN.md](DEPLOY_EN.md).
+Se eliminaron Moments, Timeline, todas las llamadas, LiveKit, Cloudflare R2, los reportes y el panel de moderación. Producción usa exclusivamente Docker Compose y un servicio onion Tor v3. Consulte [DEPLOY_EN.md](DEPLOY_EN.md).
 
 La aplicación iOS se distribuirá mediante Apple App Store. Los APK de Android se publican únicamente en [GitHub Releases](https://github.com/619dev/PaperPhoneLite/releases), no en Google Play, y no incluyen marcos de servicios o push de Google.
 

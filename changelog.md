@@ -14,7 +14,7 @@ All notable changes and new features are recorded here. Historical entries below
 - Removed Web Push, FCM, and OneSignal; notifications are limited to ntfy on Android and APNs on iOS.
 - Defined distribution policy: Apple App Store for iOS and GitHub Releases for Android APKs, without Google Play or Google service frameworks.
 - Rewrote the in-app Terms of Use and Privacy Policy for the Tor-only, self-hosted architecture, server-local files, E2EE boundaries, and ntfy/APNs-only notifications.
-- Updated Zeabur, deployment guides, and all language READMEs.
+- Updated the Docker Compose deployment guides and all language READMEs.
 
 ## 2.4.7
 

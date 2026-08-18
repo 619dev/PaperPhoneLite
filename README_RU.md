@@ -18,7 +18,7 @@ PaperPhoneLite — лёгкий мессенджер со сквозным ши�
 
 Рабочие клиенты Android, iOS, Windows и macOS должны встраивать Tor, ждать завершения bootstrap до входа и направлять `.onion` через изолированные SOCKS5-цепочки без перехода в clearnet. `client/` содержит только общий исходный код интерфейса. Браузеры и PWA не поддерживаются как рабочие клиенты.
 
-Moments, Timeline, все звонки, LiveKit, Cloudflare R2, жалобы и панель модерации удалены. В рабочей среде используются Docker Compose и Tor v3 onion service. Шаблон Zeabur предназначен только для разработки или миграции. См. [DEPLOY_EN.md](DEPLOY_EN.md).
+Moments, Timeline, все звонки, LiveKit, Cloudflare R2, жалобы и панель модерации удалены. В рабочей среде используются только Docker Compose и Tor v3 onion service. См. [DEPLOY_EN.md](DEPLOY_EN.md).
 
 Приложение iOS предназначено для публикации в Apple App Store. APK для Android распространяются только через [GitHub Releases](https://github.com/619dev/PaperPhoneLite/releases), не публикуются в Google Play и не содержат push- или сервисных фреймворков Google.
 

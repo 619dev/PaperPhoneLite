@@ -2,8 +2,7 @@ name: paperphone-lite
 services:
   server:
     container_name: paperphone-lite-server
-    build: ./server
-    image: ${SERVER_IMAGE:-paperphone-lite-server:3.0.0}
+    image: ${SERVER_IMAGE:-facilisvelox/paperphone-lite-server:latest}
     environment:
       PORT: 3000
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
@@ -31,8 +30,7 @@ services:
     restart: unless-stopped
   tor:
     container_name: paperphone-lite-tor
-    build: ./deploy/tor
-    image: ${TOR_IMAGE:-paperphone-lite-tor:3.0.0}
+    image: ${TOR_IMAGE:-facilisvelox/paperphone-lite-tor:latest}
     volumes:
       - tor_hidden_service:/var/lib/tor/paperphone-lite
     depends_on:

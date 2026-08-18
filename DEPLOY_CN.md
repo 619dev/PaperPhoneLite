@@ -7,7 +7,8 @@
 ```bash
 cp server/.env.example .env
 # 编辑 .env，至少设置 JWT_SECRET、DB_PASS、REDIS_PASS、MYSQL_ROOT_PASSWORD
-docker compose up -d --build
+docker compose pull
+docker compose up -d
 docker compose exec tor cat /var/lib/tor/paperphone-lite/hostname
 ```
 
@@ -16,10 +17,6 @@ docker compose exec tor cat /var/lib/tor/paperphone-lite/hostname
 Android/iOS/Windows/macOS 生产客户端必须内嵌 Tor，以隔离 SOCKS5 流访问 `http://<地址>.onion`，并在 Tor bootstrap 完成前禁止登录和网络请求。`client/` 仅是跨平台 UI 源码；普通浏览器/PWA 不属于受支持的生产客户端。开发时可临时使用本机后端，不得将该方式用于生产。
 
 该模式参考 SimpleX 的 `HiddenServiceDir` 与 `HiddenServicePort` 配置，但 PaperPhoneLite 是 HTTP/WebSocket 应用，不是 SMP 服务器。不要启用 `HiddenServiceSingleHopMode`：onion-only 部署应保留标准三跳隐藏服务。
-
-## Zeabur
-
-导入 `zeabur.yaml` 仅部署 server、MySQL 和 Redis，不部署客户端。Zeabur 必须公开 HTTP 域名，不符合生产环境的 Tor-only 要求，仅用于开发或数据迁移。
 
 ## 通知与客户端发布
 

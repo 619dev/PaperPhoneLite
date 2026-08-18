@@ -28,7 +28,7 @@ PaperPhoneLite 是轻量级端到端加密即时通讯项目，使用 React 19/T
 | 📷 扫码加好友/入群 | 扫描二维码添加好友或加入群聊，群邀请可设置有效期 |
 | 🚫 拉黑 | 可拉黑其他用户，阻止后续消息交互 |
 | 🦅 Tor 隐藏服务 | Docker Compose 使用 Tor v3 onion service 直连 Rust 后端，MySQL 与 Redis 不公开端口 |
-| 🏗️ 可自托管 | 生产环境使用 Docker Compose + Tor v3 onion service；Zeabur 模板仅供开发或迁移 |
+| 🏗️ 可自托管 | 生产环境使用 Docker Compose + Tor v3 onion service，无需公开域名或应用端口 |
 
 3.0.0 已彻底移除朋友圈、时间线、单聊语音/视频通话、群聊语音/视频通话、LiveKit 与 Cloudflare R2。文件只写入服务端持久卷并由服务端传输。自托管模板不使用 Nginx，Tor v3 onion service 直接转发至 Rust 服务端；数据库和 Redis 不公开端口。
 
