@@ -59,9 +59,6 @@ pub struct Config {
     // Upload
     pub upload_dir: String,
 
-    // Admin panel
-    pub admin_path: String,
-    pub admin_password: String,
 }
 
 impl Config {
@@ -114,8 +111,6 @@ impl Config {
 
             upload_dir: env_or("UPLOAD_DIR", "./uploads"),
 
-            admin_path: env_or("ADMIN_PATH", "/admin"),
-            admin_password: env_or("ADMIN_PASSWORD", "admin123"),
         }
     }
 }

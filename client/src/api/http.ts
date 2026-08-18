@@ -1,10 +1,11 @@
 import { endSession, isExplicitLogoutSignal } from '../utils/session'
 import { useStore } from '../store'
+import { requireTorServer } from '../utils/torPolicy'
 
 let refreshInFlight: Promise<string | null> | null = null
 
 function getBase(): string {
-  return localStorage.getItem('serverUrl') || import.meta.env.VITE_API_URL || ''
+  return requireTorServer(localStorage.getItem('serverUrl') || import.meta.env.VITE_API_URL || '')
 }
 
 export async function api<T = any>(
@@ -178,7 +179,7 @@ export function uploadFileWithProgress(
 /**
  * If the server returns a relative file URL (starts with /), prepend
  * the API base URL so it resolves to the correct server in cross-domain
- * deployments (e.g. client on Vercel, server on Zeabur).
+ * deployments where the native shell reaches an onion server through Tor.
  * Exported so rendering code can also normalize URLs from the DB.
  */
 export function normalizeFileUrl(url: string | null | undefined): string {

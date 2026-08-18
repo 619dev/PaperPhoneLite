@@ -8,12 +8,9 @@ spec:
   tags: [Chat, Security, Communication]
   readme: |-
     # PaperPhoneLite 3.0.0
-    This template deploys the Web client, Rust server, MySQL and Redis. Uploaded files use the server volume.
-    Zeabur exposes an HTTPS service domain, so it cannot provide the same origin-hiding guarantee as an onion-only VM. Use the Docker Compose Tor deployment for hidden-IP production.
+    This compatibility template deploys only the Rust server, MySQL and Redis. Uploaded files use the server volume.
+    Production PaperPhoneLite clients require Tor and an onion server; Zeabur exposes an HTTPS domain and is therefore intended only for development or migration.
   variables:
-    - key: PUBLIC_DOMAIN
-      type: DOMAIN
-      name: Client Domain
     - key: JWT_SECRET
       type: STRING
       name: JWT Secret
@@ -23,9 +20,6 @@ spec:
     - key: REDIS_PASSWORD
       type: STRING
       name: Redis Password
-    - key: ADMIN_PASSWORD
-      type: STRING
-      name: Admin Password
   services:
     - name: MySQL
       template: PREBUILT
@@ -62,22 +56,11 @@ spec:
           REDIS_PORT: { default: "${REDIS_PORT}" }
           REDIS_PASS: { default: "${REDIS_PASSWORD}" }
           UPLOAD_DIR: { default: /var/lib/paperphone-lite/uploads }
-          ADMIN_PATH: { default: /admin }
-          ADMIN_PASSWORD: { default: "${ADMIN_PASSWORD}" }
           SERVER_URL: { default: "${ZEABUR_WEB_URL}", expose: true }
-    - name: client
-      template: PREBUILT
-      domainKey: PUBLIC_DOMAIN
-      dependencies: [server]
-      spec:
-        source: { image: facilisvelox/paperphone-lite-client:3.0.0 }
-        ports: [{ id: web, port: 8080, type: HTTP }]
-        env:
-          SERVER_URL: { default: "${SERVER_URL}" }
 localization:
   zh-CN:
     description: PaperPhoneLite 3.0.0 端到端加密聊天，文件仅保存在服务端，不包含社交动态与音视频通话。
     readme: |-
       # PaperPhoneLite 3.0.0
-      此模板部署 Web 客户端、Rust 服务端、MySQL 与 Redis，上传文件写入服务端持久卷。
-      Zeabur 必须公开 HTTPS 服务域名，无法提供 onion-only 主机的隐藏源站 IP 保证；需要隐藏 IP 的生产环境请使用 Docker Compose + Tor 部署。
+      此兼容模板仅部署 Rust 服务端、MySQL 与 Redis，上传文件写入服务端持久卷。
+      PaperPhoneLite 生产客户端必须使用 Tor 访问 onion 服务；Zeabur 会公开 HTTPS 域名，因此仅适用于开发或迁移。

@@ -1,5 +1,6 @@
 import { useStore } from '../store'
 import { ensureRefreshToken, refreshAccessToken } from './http'
+import { requireTorServer } from '../utils/torPolicy'
 
 type MessageHandler = (data: any) => void | Promise<void>
 
@@ -56,14 +57,12 @@ function getWsUrl(): string {
   // Derive from user-configured serverUrl or VITE_API_URL
   const apiUrl = localStorage.getItem('serverUrl') || import.meta.env.VITE_API_URL
   if (apiUrl) {
-    const url = apiUrl.replace(/\/$/, '') // trim trailing slash
+    const url = requireTorServer(apiUrl)
     const wsUrl = url.replace(/^http/, 'ws') // http→ws, https→wss
     return `${wsUrl}/ws`
   }
 
-  // Fallback: same host (frontend and backend co-located)
-  const proto = location.protocol === 'https:' ? 'wss:' : 'ws:'
-  return `${proto}//${location.host}/ws`
+  throw new Error('A Tor onion server address is required')
 }
 
 export function connectWs() {

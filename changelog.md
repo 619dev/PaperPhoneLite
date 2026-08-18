@@ -8,7 +8,9 @@ All notable changes and new features are recorded here. Historical entries below
 
 - Renamed the project to PaperPhoneLite.
 - Removed Moments, Timeline, all calls, LiveKit, Cloudflare R2, and Nginx deployment.
+- Removed user reporting, the moderation API and database table, and the server-side review dashboard.
 - Added server-local persistent uploads and Tor v3 onion-only Compose deployment.
+- Removed standalone public Web/PWA production deployment; production clients now require an embedded Tor transport and `.onion` server addresses.
 - Updated Zeabur, deployment guides, and all language READMEs.
 
 ## 2.4.7

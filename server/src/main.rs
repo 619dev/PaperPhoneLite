@@ -60,7 +60,7 @@ async fn main() {
     tracing::info!("✅ Upload directory ready: {}", upload_path);
 
     // CORS: mirror the request Origin so that credentialed/preflight requests
-    // work across Vercel (client) → Zeabur (server).
+    // work for development clients and native shells using the Tor transport.
     let cors = CorsLayer::new()
         .allow_origin(tower_http::cors::AllowOrigin::mirror_request())
         .allow_methods([
@@ -92,8 +92,6 @@ async fn main() {
         .route("/ws", get(ws::server::ws_handler))
         // API routes
         .nest("/api", routes::api_router())
-        // Admin panel
-        .nest(&state.config.admin_path, routes::admin::router())
         .layer(DefaultBodyLimit::max(500 * 1024 * 1024)) // 500 MB upload limit
         .layer(cors)
         .with_state(state);

@@ -16,8 +16,6 @@ services:
       REDIS_PORT: 6379
       REDIS_PASS: ${REDIS_PASS:?Set REDIS_PASS in .env}
       UPLOAD_DIR: /var/lib/paperphone-lite/uploads
-      ADMIN_PATH: ${ADMIN_PATH:-/admin}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Set ADMIN_PASSWORD in .env}
     volumes:
       - uploads:/var/lib/paperphone-lite/uploads
     expose: ["3000"]
@@ -72,13 +70,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    restart: unless-stopped
-  client:
-    profiles: ["web"]
-    container_name: paperphone-lite-client
-    build: ./client
-    image: ${CLIENT_IMAGE:-paperphone-lite-client:3.0.0}
-    ports: ["127.0.0.1:${WEB_PORT:-8080}:8080"]
     restart: unless-stopped
 volumes:
   mysql_data:

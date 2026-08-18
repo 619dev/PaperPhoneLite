@@ -235,11 +235,6 @@ export const zh: Record<string, string> = {
   'ntfy.download_ntfy': '下载 ntfy App',
   'ntfy.register_failed': '注册失败，请重试',
 
-  // PWA Install
-  'pwa.install_title': '添加到主屏幕',
-  'pwa.install_step1': '1. 点击底部 Safari 工具栏的分享按钮 ⬆️',
-  'pwa.install_step2': '2. 向下滑动，点击「添加到主屏幕」',
-  'pwa.install_step3': '3. 点击右上角的「添加」即可',
 
   // Call
   'call.incoming': '来电',
@@ -434,22 +429,6 @@ export const zh: Record<string, string> = {
   'terms.hero_title': '使用条款',
   'terms.hero_subtitle': '在使用 PaperPhoneLite 之前，请仔细阅读以下条款',
 
-  // Report
-  'report.title': '举报内容',
-  'report.reason': '举报原因',
-  'report.reason_offensive': '不当或冒犯性内容',
-  'report.reason_spam': '垃圾信息或广告',
-  'report.reason_harassment': '骚扰或欺凌',
-  'report.reason_violence': '暴力或威胁',
-  'report.reason_misinformation': '虚假信息',
-  'report.reason_other': '其他',
-  'report.detail_placeholder': '补充说明（可选）',
-  'report.submit': '提交举报',
-  'report.success': '举报已提交，我们将在24小时内处理。',
-  'report.failed': '举报提交失败，请重试。',
-  'report.report_post': '举报此动态',
-  'report.report_message': '举报此消息',
-  'report.report_user': '举报用户',
 
   // Block
   'block.user': '拉黑用户',

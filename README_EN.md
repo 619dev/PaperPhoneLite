@@ -1,9 +1,37 @@
 # PaperPhoneLite 3.0.0
 
-PaperPhoneLite is a lightweight end-to-end encrypted messenger built with React/TypeScript and Rust/Axum. It keeps private/group chat, attachments, voice messages, reliable synchronization, offline cache, expiring messages, push, QR codes, 2FA, reporting/blocking, and administration.
+PaperPhoneLite is a lightweight end-to-end encrypted messenger built with React/TypeScript and Rust/Axum. It keeps private/group chat, attachments, voice messages, reliable synchronization, offline cache, expiring messages, push, QR codes, 2FA, and blocking.
+
+## Features
+
+| Feature | Description |
+|---------|-------------|
+| 🔐 End-to-End Encryption | Hybrid X25519 + ML-KEM-768 key agreement and XSalsa20-Poly1305 message encryption with Signal-style safety number verification |
+| 🗝️ Zero-knowledge encryption scope | The server stores encrypted conversation ciphertext while processing only the account, contact/group, routing, and push metadata needed to operate the service |
+| 🎭 Text appearance and extra encryption | An optional device-local password and eight text appearances with manual and background auto-lock |
+| 🎤 Voice messages and effects | Voice recording plus local 0.8x, 1.0x, and 1.2x voice effects |
+| 📨 Reliable synchronization | Bidirectional WebSocket heartbeat, persistent outbox, idempotent client IDs, and server-sequence catch-up |
+| 📴 Offline access | Account-isolated contacts, groups, up to 2,000 messages per conversation, and media caching; queued sends retry when online |
+| 👥 Group chat | Up to 2,000 members, Sender Key encrypted mode, Do Not Disturb, notices, and member management |
+| 💬 Rich messaging | Text, images, video, documents, voice, emoji, Telegram stickers, read receipts, and typing indicators |
+| ⏱️ Expiring messages | Never, 1 day, 3 days, 7 days, or 30 days; configurable by either DM participant and by group owners |
+| 🔔 Push notifications | Web Push, FCM, OneSignal, ntfy, and APNS |
+| 🔑 Two-factor authentication | Google Authenticator-compatible TOTP with eight one-time recovery codes |
+| 📷 QR invitations | Add friends or join groups by QR code, with expiring group invitations |
+| 📤 Server-local files | Files up to 500MB remain on a persistent server volume and are transferred by the Rust server |
+| 🦅 Tor onion service | Compose maps a Tor v3 onion service directly to the Rust backend while MySQL and Redis remain private |
+| 🌐 Eight languages | Chinese, English, Japanese, Korean, French, German, Russian, and Spanish |
 
 Version 3.0.0 removes Moments, Timeline, all direct/group voice and video calls, LiveKit, and Cloudflare R2. Files remain on a persistent server volume and are transferred by the Rust server. Self-hosting uses no Nginx: a Tor v3 onion service maps directly to the backend while MySQL and Redis remain private.
 
-`client/` is the shared Web UI for future Android, iOS, Windows, and macOS shells. The Web build intentionally has no embedded Tor. Native shells must embed Tor and must never fall back to clearnet for onion addresses.
+`client/` contains the shared UI source for Android, iOS, Windows, and macOS native shells. Production clients must embed Tor, wait for Tor bootstrap before authentication, and never fall back to clearnet for `.onion` addresses. Ordinary browsers and PWAs are not supported production clients.
 
 See [DEPLOY_EN.md](DEPLOY_EN.md). License: AGPL-3.0.
+
+---
+
+If this project is useful to you, please buy me a can of cola.
+
+<img width="30%" height="30%" src="请我喝可乐.jpg" alt="Donation QR code">
+
+Telegram group: https://t.me/+vHJtvWJY_gEyMTUx

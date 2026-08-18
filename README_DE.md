@@ -1,5 +1,29 @@
 # PaperPhoneLite 3.0.0
 
-PaperPhoneLite ist ein leichtgewichtiger Ende-zu-Ende-verschlüsselter Messenger mit Einzel-/Gruppenchats, Anhängen, Sprachnachrichten, zuverlässiger Synchronisierung, Offline-Cache, Push, QR-Codes und 2FA.
+PaperPhoneLite ist ein leichtgewichtiger Ende-zu-Ende-verschlüsselter Messenger ohne öffentliche Social-Funktionen.
 
-Version 3.0.0 entfernt Moments, Timeline, alle Sprach-/Videoanrufe, LiveKit und Cloudflare R2. Dateien liegen ausschließlich auf einem persistenten Server-Volume. Beim Self-Hosting leitet ein Tor-v3-Onion-Service ohne Nginx direkt an den Rust-Server weiter; MySQL und Redis bleiben privat. Der Web-Client enthält absichtlich kein Tor; zukünftige native Clients müssen Tor einbetten und Clearnet-Fallback verhindern. Siehe [DEPLOY_EN.md](DEPLOY_EN.md).
+## Funktionen
+
+- Hybride X25519- und ML-KEM-768-Schlüsselvereinbarung, XSalsa20-Poly1305 und Sicherheitsnummern.
+- Einzel- und Gruppenchats mit Sender-Key-Verschlüsselung für bis zu 2.000 Mitglieder.
+- Text, Bilder, Videos, Dokumente, Sprachnachrichten, Emoji und Telegram-Sticker.
+- Zuverlässige WebSocket-Synchronisierung, Offline-Warteschlange und kontogetrennter Cache.
+- Automatische Nachrichtenlöschung nach 1, 3, 7 oder 30 Tagen.
+- Freundschaftsanfragen, Notizen, Tags, Sperren und QR-Gruppeneinladungen.
+- TOTP-Zwei-Faktor-Authentifizierung und Push über Web Push, FCM, OneSignal, ntfy und APNS.
+- Dateien bis 500 MB ausschließlich auf dem persistenten Server-Volume.
+- Acht Oberflächensprachen.
+
+## Tor ist erforderlich
+
+Produktionsclients für Android, iOS, Windows und macOS müssen Tor einbetten, vor der Anmeldung den Tor-Bootstrap abwarten und `.onion`-Verbindungen ohne Clearnet-Fallback über isolierte SOCKS5-Verbindungen führen. `client/` enthält nur den gemeinsam genutzten UI-Quellcode. Browser und PWAs sind keine unterstützten Produktionsclients.
+
+Moments, Timeline, alle Audio-/Videoanrufe, LiveKit, Cloudflare R2, Meldungen und das Moderations-Dashboard wurden entfernt. Die Produktion wird mit Docker Compose und einem Tor-v3-Onion-Service betrieben. Die Zeabur-Vorlage dient nur Entwicklung oder Migration. Siehe [DEPLOY_EN.md](DEPLOY_EN.md).
+
+Wenn Ihnen das Projekt hilft, spendieren Sie mir bitte eine Dose Cola.
+
+<img width="30%" height="30%" src="请我喝可乐.jpg" alt="Spenden-QR-Code">
+
+Telegram-Gruppe: https://t.me/+vHJtvWJY_gEyMTUx
+
+Lizenz: AGPL-3.0.

@@ -69,7 +69,6 @@ export const ja: Record<string, string> = {
   'profile.about': 'について', 'profile.logout': 'ログアウト',  'profile.tags': 'タグ', 'profile.my_qr': 'マイQRコード', 'profile.qr_scan_hint': 'このQRコードをスキャンして友達に追加',
   'profile.notifications': '通知',
   'ntfy.title': 'ntfy プッシュ（中国Android）', 'ntfy.description': 'お使いのAndroid端末がGoogleサービスに対応していない場合（Huaweiなど）、ntfyでプッシュ通知を受信できます。', 'ntfy.step1': '1. アプリストアからntfyアプリをインストール', 'ntfy.step2': '2. ntfyアプリで＋をタップし、以下のトピックを購読：', 'ntfy.step3': '3. 下のボタンをタップして登録', 'ntfy.register': 'プッシュ登録', 'ntfy.registered': '✅ 登録済み', 'ntfy.copy_topic': 'トピックをコピー', 'ntfy.copied': 'コピーしました', 'ntfy.download_ntfy': 'ntfyアプリをダウンロード', 'ntfy.register_failed': '登録に失敗しました。もう一度お試しください',
-  'pwa.install_title': 'ホーム画面に追加', 'pwa.install_step1': '1. Safariの共有ボタン ⬆️ をタップ', 'pwa.install_step2': '2.「ホーム画面に追加」をタップ', 'pwa.install_step3': '3. 右上の「追加」をタップ',
 
   'call.incoming': '着信', 'call.outgoing': '発信中...', 'call.connected': '通話中',
   'call.ended': '通話終了', 'call.video': 'ビデオ通話', 'call.voice': '音声通話',
@@ -134,7 +133,6 @@ export const ja: Record<string, string> = {
   'chat.ws_disconnected': '接続が切断されました。再接続中...', 'group.name_hint': 'グループ名を入力',
   'profile.push_blocked': '通知がブロックされています。ブラウザの設定で有効にしてください。', 'profile.push_failed': '通知を有効にできませんでした。詳細はコンソールを確認してください。', 'call.connecting': '接続中...',
   'terms.title': '利用規約', 'terms.agree_prefix': '以下を読み、同意します：', 'terms.agree_link': '利用規約', 'terms.must_agree': '続行するには利用規約への同意が必要です', 'terms.hero_title': '利用規約', 'terms.hero_subtitle': 'PaperPhoneLiteを利用する前に、この規約をよくお読みください',
-  'report.title': 'コンテンツを通報', 'report.reason': '通報理由', 'report.reason_offensive': '攻撃的または不適切なコンテンツ', 'report.reason_spam': 'スパムまたは広告', 'report.reason_harassment': '嫌がらせまたはいじめ', 'report.reason_violence': '暴力または脅迫', 'report.reason_misinformation': '誤情報', 'report.reason_other': 'その他', 'report.detail_placeholder': '追加詳細（任意）', 'report.submit': '通報を送信', 'report.success': '通報を送信しました。24時間以内に確認します。', 'report.failed': '通報の送信に失敗しました。もう一度お試しください。', 'report.report_post': '投稿を通報', 'report.report_message': 'メッセージを通報', 'report.report_user': 'ユーザーを通報',
   'block.user': 'ユーザーをブロック', 'block.confirm_title': 'このユーザーをブロックしますか？', 'block.confirm_desc': 'ブロックしたユーザーはあなたにメッセージを送信できず、そのコンテンツはフィードから削除されます。後で解除できます。', 'block.success': 'ユーザーをブロックしました', 'block.failed': 'ユーザーのブロックに失敗しました', 'unblock.user': 'ブロックを解除', 'unblock.success': 'ブロックを解除しました', 'unblock.failed': 'ブロック解除に失敗しました',
   'meeting.video_title': 'グループビデオ会議', 'meeting.voice_title': 'グループ音声会議', 'meeting.video': 'ビデオ会議', 'meeting.voice': '音声会議', 'meeting.invites_you': 'があなたを招待しています：', 'meeting.reject': '拒否', 'meeting.join': '参加', 'meeting.leave': '会議を退出', 'meeting.joining': '会議に参加中…', 'meeting.people_unit': '人', 'meeting.lecture_mode': '講義モード', 'meeting.discussion_mode': '自由討論', 'meeting.mute': 'ミュート', 'meeting.unmute': 'ミュート解除', 'meeting.start_video': 'ビデオを開始', 'meeting.stop_video': 'ビデオを停止', 'meeting.mute_all': '全員をミュート', 'meeting.me': '自分', 'meeting.more_people': 'その他の参加者：', 'meeting.host': 'ホスト', 'meeting.participants': '参加者', 'meeting.close': '閉じる', 'meeting.connection_failed': '会議サーバーに接続できません',
   "chat.encryption_send_failed": "暗号化に失敗したため、メッセージは送信されませんでした。",

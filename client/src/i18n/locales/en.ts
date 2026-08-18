@@ -225,11 +225,6 @@ export const en: Record<string, string> = {
   'ntfy.download_ntfy': 'Download ntfy App',
   'ntfy.register_failed': 'Registration failed, please try again',
 
-  // PWA Install
-  'pwa.install_title': 'Add to Home Screen',
-  'pwa.install_step1': '1. Tap the Share button ⬆️ in Safari toolbar',
-  'pwa.install_step2': '2. Scroll down and tap "Add to Home Screen"',
-  'pwa.install_step3': '3. Tap "Add" in the top-right corner',
 
   'call.incoming': 'Incoming Call',
   'call.outgoing': 'Calling...',
@@ -420,22 +415,6 @@ export const en: Record<string, string> = {
   'terms.hero_title': 'Terms of Use',
   'terms.hero_subtitle': 'Please read these terms carefully before using PaperPhoneLite',
 
-  // Report
-  'report.title': 'Report Content',
-  'report.reason': 'Reason for reporting',
-  'report.reason_offensive': 'Offensive or inappropriate content',
-  'report.reason_spam': 'Spam or advertising',
-  'report.reason_harassment': 'Harassment or bullying',
-  'report.reason_violence': 'Violence or threats',
-  'report.reason_misinformation': 'Misinformation',
-  'report.reason_other': 'Other',
-  'report.detail_placeholder': 'Additional details (optional)',
-  'report.submit': 'Submit Report',
-  'report.success': 'Report submitted. We will review it within 24 hours.',
-  'report.failed': 'Failed to submit report. Please try again.',
-  'report.report_post': 'Report Post',
-  'report.report_message': 'Report Message',
-  'report.report_user': 'Report User',
 
   // Block
   'block.user': 'Block User',

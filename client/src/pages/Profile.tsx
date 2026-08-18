@@ -10,7 +10,7 @@ import { allLangs, langNames, LangCode } from '../i18n'
 import { QRCodeCanvas } from '../components/QRCode'
 import { isPushSupported, isPushSubscribed, subscribePush, unsubscribePush } from '../api/push'
 import { logoutOneSignal } from '../api/onesignal'
-import { Camera, ChevronLeft, ChevronRight, Smartphone, Check, Copy, KeyRound, Shield, Fingerprint, Moon, Globe, Bell, Download as DownloadIcon, Monitor, CheckCircle, FileText, ExternalLink, Wifi, Trash2, AlertTriangle } from 'lucide-react'
+import { Camera, ChevronLeft, ChevronRight, Smartphone, Check, Copy, KeyRound, Shield, Fingerprint, Moon, Globe, Bell, Monitor, CheckCircle, FileText, ExternalLink, Wifi, Trash2, AlertTriangle } from 'lucide-react'
 import { clearOfflineCache } from '../utils/offlineCache'
 import { PRESENTATION_CODECS, type PresentationCodecId } from '../crypto/presentationCodec'
 import { disablePresentationCrypto, enablePresentationCrypto, getPresentationSettings, isPresentationUnlocked, lockPresentationCrypto, unlockPresentationCrypto, updatePresentationSettings } from '../crypto/presentationCrypto'
@@ -36,11 +36,6 @@ export default function Profile() {
   const [pushEnabled, setPushEnabled] = useState(false)
   const [pushLoading, setPushLoading] = useState(false)
   const pushSupported = isPushSupported()
-
-  // iOS standalone detection
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
-  const isStandalone = (window.navigator as any).standalone === true || window.matchMedia('(display-mode: standalone)').matches
-  const showIOSInstall = isIOS && !isStandalone
 
   useEffect(() => {
     isPushSubscribed().then(setPushEnabled)
@@ -244,27 +239,6 @@ export default function Profile() {
             <span className="label"><Bell size={16} /> {t('profile.notifications')}</span>
             <div className={`toggle ${pushEnabled ? 'active' : ''}`} />
           </div>
-        )}
-
-        {/* iOS PWA Install Guide */}
-        {showIOSInstall && (
-          <>
-            <div className="divider" />
-            <div style={{
-              margin: '0 16px', padding: '16px', borderRadius: 12,
-              background: 'linear-gradient(135deg, rgba(99,102,241,0.12), rgba(168,85,247,0.12))',
-              border: '1px solid rgba(99,102,241,0.2)',
-            }}>
-              <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 8 }}>
-                <DownloadIcon size={16} /> {t('pwa.install_title')}
-              </div>
-              <div style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.6 }}>
-                {t('pwa.install_step1')}<br />
-                {t('pwa.install_step2')}<br />
-                {t('pwa.install_step3')}
-              </div>
-            </div>
-          </>
         )}
 
         {/* ntfy Push for Chinese Android */}
