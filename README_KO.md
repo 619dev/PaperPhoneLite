@@ -35,7 +35,16 @@ Moments, Timeline, 모든 통화, LiveKit, Cloudflare R2, 신고 및 검토 대�
 
 Docker Compose가 시작되면 Tor 컨테이너가 전체 `http://...onion` 주소를 호스트의 `logs/onion-address.log`에 자동으로 기록하며, `docker compose logs tor`에서도 확인할 수 있습니다.
 
-iOS 앱은 Apple App Store 배포를 목표로 합니다. Android APK는 [GitHub Releases](https://github.com/619dev/PaperPhoneLite/releases)에서만 배포하고 Google Play에는 게시하지 않으며 Google 푸시 또는 서비스 프레임워크를 포함하지 않습니다.
+iOS 앱은 Apple App Store 배포를 목표로 합니다. Android APK는 Android 클라이언트 저장소의 [GitHub Releases](https://github.com/619dev/ppl-android/releases)에서만 배포하고 Google Play에는 게시하지 않으며 Google 푸시 또는 서비스 프레임워크를 포함하지 않습니다.
+
+## 클라이언트 저장소
+
+| 플랫폼 | 소스 코드 및 릴리스 |
+|--------|---------------------|
+| Android | [619dev/ppl-android](https://github.com/619dev/ppl-android) |
+| iOS | [619dev/ppl-ios](https://github.com/619dev/ppl-ios) |
+| macOS | [619dev/ppl-mac](https://github.com/619dev/ppl-mac) |
+| Windows | [619dev/ppl-win](https://github.com/619dev/ppl-win) |
 
 프로젝트가 유용하다면 콜라 한 캔을 사 주세요.
 

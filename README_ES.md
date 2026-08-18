@@ -35,7 +35,16 @@ Se eliminaron Moments, Timeline, todas las llamadas, LiveKit, Cloudflare R2, los
 
 Después de iniciar Docker Compose, el contenedor Tor guarda automáticamente la dirección completa `http://...onion` en el archivo del host `logs/onion-address.log`; también aparece en `docker compose logs tor`.
 
-La aplicación iOS se distribuirá mediante Apple App Store. Los APK de Android se publican únicamente en [GitHub Releases](https://github.com/619dev/PaperPhoneLite/releases), no en Google Play, y no incluyen marcos de servicios o push de Google.
+La aplicación iOS se distribuirá mediante Apple App Store. Los APK de Android se publican únicamente en las [GitHub Releases](https://github.com/619dev/ppl-android/releases) del repositorio del cliente Android, no en Google Play, y no incluyen marcos de servicios o push de Google.
+
+## Repositorios de los clientes
+
+| Plataforma | Código fuente y versiones |
+|------------|---------------------------|
+| Android | [619dev/ppl-android](https://github.com/619dev/ppl-android) |
+| iOS | [619dev/ppl-ios](https://github.com/619dev/ppl-ios) |
+| macOS | [619dev/ppl-mac](https://github.com/619dev/ppl-mac) |
+| Windows | [619dev/ppl-win](https://github.com/619dev/ppl-win) |
 
 Si este proyecto te resulta útil, invítame a una lata de cola.
 

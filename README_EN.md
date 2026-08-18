@@ -44,7 +44,16 @@ After Docker Compose starts, the Tor container automatically records the complet
 ## Application distribution
 
 - The iOS client is intended for Apple App Store distribution and uses APNs.
-- Android APKs are distributed only from this repository's [GitHub Releases](https://github.com/619dev/PaperPhoneLite/releases), use ntfy, and will not be published on Google Play or include Google push/service frameworks.
+- Android APKs are distributed only through the Android client repository's [GitHub Releases](https://github.com/619dev/ppl-android/releases), use ntfy, and will not be published on Google Play or include Google push/service frameworks.
+
+## Client repositories
+
+| Platform | Source code and releases |
+|----------|--------------------------|
+| Android | [619dev/ppl-android](https://github.com/619dev/ppl-android) |
+| iOS | [619dev/ppl-ios](https://github.com/619dev/ppl-ios) |
+| macOS | [619dev/ppl-mac](https://github.com/619dev/ppl-mac) |
+| Windows | [619dev/ppl-win](https://github.com/619dev/ppl-win) |
 
 See [DEPLOY_EN.md](DEPLOY_EN.md). License: AGPL-3.0.
 

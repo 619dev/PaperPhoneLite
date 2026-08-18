@@ -52,7 +52,16 @@ UI 源码位于 `client/`，供 Android、iOS、Windows、macOS 原生壳复用�
 ## 应用发布
 
 - iOS 客户端计划通过 Apple App Store 发布，并使用 APNs。
-- Android APK 仅通过本仓库的 [GitHub Releases](https://github.com/619dev/PaperPhoneLite/releases) 发布，使用 ntfy，不发布到 Google Play，也不集成 Google 推送或服务框架。
+- Android APK 仅通过 Android 客户端仓库的 [GitHub Releases](https://github.com/619dev/ppl-android/releases) 发布，使用 ntfy，不发布到 Google Play，也不集成 Google 推送或服务框架。
+
+## 客户端仓库
+
+| 平台 | 源码与版本发布 |
+|------|----------------|
+| Android | [619dev/ppl-android](https://github.com/619dev/ppl-android) |
+| iOS | [619dev/ppl-ios](https://github.com/619dev/ppl-ios) |
+| macOS | [619dev/ppl-mac](https://github.com/619dev/ppl-mac) |
+| Windows | [619dev/ppl-win](https://github.com/619dev/ppl-win) |
 
 中文部署指南见 [DEPLOY_CN.md](DEPLOY_CN.md)，英文部署指南见 [DEPLOY_EN.md](DEPLOY_EN.md)。
 

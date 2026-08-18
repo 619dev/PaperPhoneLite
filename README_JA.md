@@ -35,7 +35,16 @@ Moments、Timeline、すべての通話、LiveKit、Cloudflare R2、通報、モ
 
 Docker Compose の起動後、Tor コンテナは完全な `http://...onion` アドレスをホストの `logs/onion-address.log` に自動保存します。`docker compose logs tor` でも確認できます。
 
-iOS アプリは Apple App Store で配布予定です。Android APK は [GitHub Releases](https://github.com/619dev/PaperPhoneLite/releases) のみで公開し、Google Play には公開せず、Google のプッシュ／サービスフレームワークも組み込みません。
+iOS アプリは Apple App Store で配布予定です。Android APK は Android クライアントリポジトリの [GitHub Releases](https://github.com/619dev/ppl-android/releases) のみで公開し、Google Play には公開せず、Google のプッシュ／サービスフレームワークも組み込みません。
+
+## クライアントリポジトリ
+
+| プラットフォーム | ソースコードとリリース |
+|------------------|--------------------------|
+| Android | [619dev/ppl-android](https://github.com/619dev/ppl-android) |
+| iOS | [619dev/ppl-ios](https://github.com/619dev/ppl-ios) |
+| macOS | [619dev/ppl-mac](https://github.com/619dev/ppl-mac) |
+| Windows | [619dev/ppl-win](https://github.com/619dev/ppl-win) |
 
 このプロジェクトが役に立ったら、コーラを一缶おごってください。
 
