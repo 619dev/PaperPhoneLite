@@ -332,6 +332,17 @@ export default function Login() {
             </div>
           </div>
 
+          <div style={{
+            display: 'flex', alignItems: 'flex-start', gap: 8,
+            padding: '10px 12px', borderRadius: 10,
+            background: 'rgba(245,158,11,0.10)',
+            border: '1px solid rgba(245,158,11,0.28)',
+            color: 'var(--text-secondary)', fontSize: 12, lineHeight: 1.5,
+          }}>
+            <Shield size={16} style={{ color: '#f59e0b', flexShrink: 0, marginTop: 1 }} />
+            <span>{t('proxy.tor_required_notice')}</span>
+          </div>
+
           {/* Proxy Settings Toggle */}
           <div
             id="login-proxy-toggle"

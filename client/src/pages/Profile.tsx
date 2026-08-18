@@ -1084,6 +1084,17 @@ function ProxySettings({ onBack, t }: { onBack: () => void; t: (k: string) => st
       </div>
       <div className="page-body" style={{ padding: 16 }}>
 
+        <div style={{
+          display: 'flex', alignItems: 'flex-start', gap: 10,
+          padding: '12px 14px', marginBottom: 12, borderRadius: 12,
+          background: 'rgba(245,158,11,0.10)',
+          border: '1px solid rgba(245,158,11,0.28)',
+          color: 'var(--text-secondary)', fontSize: 13, lineHeight: 1.5,
+        }}>
+          <AlertTriangle size={18} style={{ color: '#f59e0b', flexShrink: 0, marginTop: 1 }} />
+          <span>{t('proxy.tor_required_notice')}</span>
+        </div>
+
         {/* "Direct" option */}
         <div
           onClick={() => setActiveProxy(null)}

@@ -123,6 +123,7 @@ export const ja: Record<string, string> = {
   'proxy.timeout': 'タイムアウト',
   'proxy.max_reached': 'プロキシは最大5つまで',
   'proxy.manage_hint': 'ログイン後、設定 → プロキシ設定 でプロキシを管理',
+  'proxy.tor_required_notice': 'クライアントは Tor 経由で .onion サービスに接続する必要があります。中国本土では、先に Tor へ接続可能なプロキシを有効にしてください。SOCKS5 の 127.0.0.1:7890 と 127.0.0.1:10808 がプリセットされています。',
 
   // Delete Account
   'profile.delete_account': 'アカウントを削除',

@@ -32,6 +32,8 @@ PaperPhoneLite 是轻量级端到端加密即时通讯项目，使用 React 19/T
 
 3.0.0 已彻底移除朋友圈、时间线、单聊语音/视频通话、群聊语音/视频通话、LiveKit 与 Cloudflare R2。文件只写入服务端持久卷并由服务端传输。自托管模板不使用 Nginx，Tor v3 onion service 直接转发至 Rust 服务端；数据库和 Redis 不公开端口。
 
+Docker Compose 启动后，Tor 容器会自动把完整的 `http://...onion` 服务地址写入宿主机的 `logs/onion-address.log`；也可通过 `docker compose logs tor` 查看。部署细节见 [DEPLOY_CN.md](DEPLOY_CN.md)。
+
 UI 源码位于 `client/`，供 Android、iOS、Windows、macOS 原生壳复用。生产客户端必须内嵌 Tor，必须等待 Tor bootstrap 完成后才能登录，并禁止 `.onion` 地址回退到明网。普通浏览器/PWA 不是受支持的生产客户端。
 
 ## 应用发布

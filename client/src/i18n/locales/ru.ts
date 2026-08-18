@@ -126,6 +126,7 @@ export const ru: Record<string, string> = {
   'proxy.timeout': 'Тайм-аут',
   'proxy.max_reached': 'Достигнут лимит в 5 прокси',
   'proxy.manage_hint': 'Управление прокси в Настройки → Прокси после входа',
+  'proxy.tor_required_notice': 'Клиент должен подключаться к службе .onion через Tor. В материковом Китае сначала включите прокси с доступом к Tor. Добавлены SOCKS5-варианты 127.0.0.1:7890 и 127.0.0.1:10808.',
 
   // Delete Account
   'profile.delete_account': 'Удалить аккаунт',

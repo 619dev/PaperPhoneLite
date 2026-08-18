@@ -399,6 +399,7 @@ export const en: Record<string, string> = {
   'proxy.timeout': 'Timeout',
   'proxy.max_reached': 'Maximum of 5 proxies reached',
   'proxy.manage_hint': 'Manage proxies in Settings → Proxy Settings after login',
+  'proxy.tor_required_notice': 'The client must reach the .onion service through Tor. In mainland China, enable a working Tor-capable proxy first. SOCKS5 presets are provided for 127.0.0.1:7890 and 127.0.0.1:10808; select the port matching your local proxy app.',
 
   // Delete Account
   'profile.delete_account': 'Delete Account',

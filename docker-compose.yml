@@ -33,6 +33,7 @@ services:
     image: ${TOR_IMAGE:-facilisvelox/paperphone-lite-tor:latest}
     volumes:
       - tor_hidden_service:/var/lib/tor/paperphone-lite
+      - ./logs:/var/log/paperphone-lite
     depends_on:
       server: { condition: service_healthy }
     restart: unless-stopped

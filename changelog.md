@@ -10,6 +10,7 @@ All notable changes and new features are recorded here. Historical entries below
 - Removed Moments, Timeline, all calls, LiveKit, Cloudflare R2, and Nginx deployment.
 - Removed user reporting, the moderation API and database table, and the server-side review dashboard.
 - Added server-local persistent uploads and Tor v3 onion-only Compose deployment.
+- Added automatic host-side logging of the generated onion URL to `logs/onion-address.log`.
 - Removed standalone public Web/PWA production deployment; production clients now require an embedded Tor transport and `.onion` server addresses.
 - Removed Web Push, FCM, and OneSignal; notifications are limited to ntfy on Android and APNs on iOS.
 - Defined distribution policy: Apple App Store for iOS and GitHub Releases for Android APKs, without Google Play or Google service frameworks.

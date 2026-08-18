@@ -9,10 +9,10 @@ cp server/.env.example .env
 # 编辑 .env，至少设置 JWT_SECRET、DB_PASS、REDIS_PASS、MYSQL_ROOT_PASSWORD
 docker compose pull
 docker compose up -d
-docker compose exec tor cat /var/lib/tor/paperphone-lite/hostname
+cat logs/onion-address.log
 ```
 
-最后一条命令输出服务端的 v3 `.onion` 地址。Tor 容器按 `HiddenServicePort 80 server:3000` 把 onion 虚拟端口直接转到 Rust 服务端；MySQL、Redis 和 3000 均不映射到宿主机。必须备份 `mysql_data`、`redis_data`、`uploads` 和 `tor_hidden_service` 四个卷，尤其是最后一个卷，丢失会导致 onion 地址变化。
+Tor 容器生成或读取 v3 onion hostname 后，会自动把完整的 `http://...onion` 地址写入宿主机的 `logs/onion-address.log`，并同步输出到 `docker compose logs tor`。无需进入容器即可读取该文件。Tor 按 `HiddenServicePort 80 server:3000` 把 onion 虚拟端口直接转到 Rust 服务端；MySQL、Redis 和 3000 均不映射到宿主机。必须备份 `mysql_data`、`redis_data`、`uploads` 和 `tor_hidden_service` 四个卷，尤其是最后一个卷，丢失会导致 onion 地址变化。
 
 Android/iOS/Windows/macOS 生产客户端必须内嵌 Tor，以隔离 SOCKS5 流访问 `http://<地址>.onion`，并在 Tor bootstrap 完成前禁止登录和网络请求。`client/` 仅是跨平台 UI 源码；普通浏览器/PWA 不属于受支持的生产客户端。开发时可临时使用本机后端，不得将该方式用于生产。
 

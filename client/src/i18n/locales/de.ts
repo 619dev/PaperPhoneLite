@@ -126,6 +126,7 @@ export const de: Record<string, string> = {
   'proxy.timeout': 'Zeitüberschreitung',
   'proxy.max_reached': 'Maximum von 5 Proxys erreicht',
   'proxy.manage_hint': 'Proxys verwalten unter Einstellungen → Proxy nach dem Login',
+  'proxy.tor_required_notice': 'Der Client muss den .onion-Dienst über Tor erreichen. In Festlandchina muss zuerst ein Tor-fähiger Proxy aktiviert werden. Voreingestellt sind die SOCKS5-Proxys 127.0.0.1:7890 und 127.0.0.1:10808.',
 
   // Delete Account
   'profile.delete_account': 'Konto löschen',

@@ -20,6 +20,8 @@ PaperPhoneLite — лёгкий мессенджер со сквозным ши�
 
 Moments, Timeline, все звонки, LiveKit, Cloudflare R2, жалобы и панель модерации удалены. В рабочей среде используются только Docker Compose и Tor v3 onion service. См. [DEPLOY_EN.md](DEPLOY_EN.md).
 
+После запуска Docker Compose контейнер Tor автоматически записывает полный адрес `http://...onion` в файл `logs/onion-address.log` на хосте; адрес также выводится командой `docker compose logs tor`.
+
 Приложение iOS предназначено для публикации в Apple App Store. APK для Android распространяются только через [GitHub Releases](https://github.com/619dev/PaperPhoneLite/releases), не публикуются в Google Play и не содержат push- или сервисных фреймворков Google.
 
 Если проект оказался полезен, угостите меня банкой колы.

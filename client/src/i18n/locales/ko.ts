@@ -124,6 +124,7 @@ export const ko: Record<string, string> = {
   'proxy.timeout': '시간 초과',
   'proxy.max_reached': '최대 5개 프록시 한도 도달',
   'proxy.manage_hint': '로그인 후 설정 → 프록시 설정에서 프록시를 관리하세요',
+  'proxy.tor_required_notice': '클라이언트는 Tor를 통해 .onion 서비스에 접속해야 합니다. 중국 본토에서는 먼저 Tor 연결이 가능한 프록시를 활성화하세요. SOCKS5 127.0.0.1:7890과 127.0.0.1:10808이 기본 제공됩니다.',
 
   // Delete Account
   'profile.delete_account': '계정 삭제',

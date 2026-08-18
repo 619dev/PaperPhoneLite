@@ -20,6 +20,8 @@ Les clients de production Android, iOS, Windows et macOS doivent intégrer Tor, 
 
 Moments, Timeline, tous les appels, LiveKit, Cloudflare R2, les signalements et le tableau de modération ont été supprimés. La production utilise exclusivement Docker Compose et un service onion Tor v3. Voir [DEPLOY_EN.md](DEPLOY_EN.md).
 
+Après le démarrage de Docker Compose, le conteneur Tor enregistre automatiquement l’adresse complète `http://...onion` dans le fichier hôte `logs/onion-address.log` ; elle apparaît aussi dans `docker compose logs tor`.
+
 L’application iOS est destinée à l’Apple App Store. Les APK Android sont publiés uniquement dans les [GitHub Releases](https://github.com/619dev/PaperPhoneLite/releases), jamais sur Google Play, sans framework de services ou de push Google.
 
 Si ce projet vous est utile, offrez-moi une canette de cola.

@@ -24,6 +24,8 @@ PaperPhoneLite is a lightweight end-to-end encrypted messenger built with React/
 
 Version 3.0.0 removes Moments, Timeline, all direct/group voice and video calls, LiveKit, and Cloudflare R2. Files remain on a persistent server volume and are transferred by the Rust server. Self-hosting uses no Nginx: a Tor v3 onion service maps directly to the backend while MySQL and Redis remain private.
 
+After Docker Compose starts, the Tor container automatically records the complete `http://...onion` service URL in the host file `logs/onion-address.log`; it is also available through `docker compose logs tor`. See [DEPLOY_EN.md](DEPLOY_EN.md).
+
 `client/` contains the shared UI source for Android, iOS, Windows, and macOS native shells. Production clients must embed Tor, wait for Tor bootstrap before authentication, and never fall back to clearnet for `.onion` addresses. Ordinary browsers and PWAs are not supported production clients.
 
 ## Application distribution

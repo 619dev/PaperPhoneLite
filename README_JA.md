@@ -20,6 +20,8 @@ Android、iOS、Windows、macOS の本番クライアントは Tor を内蔵し�
 
 Moments、Timeline、すべての通話、LiveKit、Cloudflare R2、通報、モデレーション画面は削除済みです。本番は Docker Compose と Tor v3 onion service のみを使用します。[DEPLOY_EN.md](DEPLOY_EN.md) を参照してください。
 
+Docker Compose の起動後、Tor コンテナは完全な `http://...onion` アドレスをホストの `logs/onion-address.log` に自動保存します。`docker compose logs tor` でも確認できます。
+
 iOS アプリは Apple App Store で配布予定です。Android APK は [GitHub Releases](https://github.com/619dev/PaperPhoneLite/releases) のみで公開し、Google Play には公開せず、Google のプッシュ／サービスフレームワークも組み込みません。
 
 このプロジェクトが役に立ったら、コーラを一缶おごってください。

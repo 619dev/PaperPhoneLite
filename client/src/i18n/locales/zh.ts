@@ -413,6 +413,7 @@ export const zh: Record<string, string> = {
   'proxy.timeout': '超时',
   'proxy.max_reached': '已达到最多 5 条代理上限',
   'proxy.manage_hint': '登录后在 设置 → 代理设置 中管理代理',
+  'proxy.tor_required_notice': '客户端必须通过 Tor 访问 .onion 服务。在中国大陆使用时，必须先启用可连接 Tor 网络的代理；已预置 127.0.0.1:7890 和 127.0.0.1:10808 两个 SOCKS5 选项，请选择与你本机代理软件一致的端口。',
 
   // Delete Account
   'profile.delete_account': '删除账号',

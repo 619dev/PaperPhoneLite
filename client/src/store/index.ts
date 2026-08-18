@@ -128,6 +128,27 @@ export interface ProxyConfig {
   password: string
 }
 
+const DEFAULT_PROXY_LIST: ProxyConfig[] = [
+  {
+    id: 'default-http-7890',
+    name: 'Local SOCKS5 7890',
+    type: 'socks5',
+    host: '127.0.0.1',
+    port: '7890',
+    username: '',
+    password: '',
+  },
+  {
+    id: 'default-socks5-10808',
+    name: 'Local SOCKS5 10808',
+    type: 'socks5',
+    host: '127.0.0.1',
+    port: '10808',
+    username: '',
+    password: '',
+  },
+]
+
 interface AppStore {
   // Server URL
   serverUrl: string
@@ -207,7 +228,10 @@ export const useStore = create<AppStore>((set, get) => ({
   proxyList: (() => {
     // Migration: convert old single-proxy format to list
     const oldProxy = JSON.parse(localStorage.getItem('proxyConfig') || 'null')
-    let list: ProxyConfig[] = JSON.parse(localStorage.getItem('proxyList') || '[]')
+    const savedProxyList = localStorage.getItem('proxyList')
+    let list: ProxyConfig[] = savedProxyList
+      ? JSON.parse(savedProxyList)
+      : DEFAULT_PROXY_LIST.map(proxy => ({ ...proxy }))
     if (oldProxy && oldProxy.host && list.length === 0) {
       const migrated: ProxyConfig = {
         id: Date.now().toString(),
@@ -219,6 +243,9 @@ export const useStore = create<AppStore>((set, get) => ({
       localStorage.setItem('proxyList', JSON.stringify(list))
       if (oldProxy.enabled) localStorage.setItem('activeProxyId', migrated.id)
       localStorage.removeItem('proxyConfig')
+    }
+    if (!savedProxyList && !oldProxy) {
+      localStorage.setItem('proxyList', JSON.stringify(list))
     }
     return list
   })(),
