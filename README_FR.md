@@ -2,6 +2,8 @@
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
+[Historique des modifications](changelog.md)
+
 PaperPhoneLite est une messagerie légère chiffrée de bout en bout, sans fonctions sociales publiques.
 
 ## Fonctionnalités
