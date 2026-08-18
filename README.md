@@ -8,6 +8,15 @@ PaperPhoneLite 是轻量级端到端加密即时通讯项目，使用 React 19/T
 
 保留功能：私聊、群聊、文字/图片/视频/语音/文档消息、联系人、群组、消息同步、离线缓存、阅后定时删除、推送、二维码、2FA 与拉黑。
 
+<details>
+<summary>应用截图</summary>
+
+![PaperPhoneLite 应用截图 1](screenshot/ui1.png)
+![PaperPhoneLite 应用截图 2](screenshot/ui2.png)
+![PaperPhoneLite 应用截图 3](screenshot/ui3.png)
+
+</details>
+
 ## 特性
 
 | 功能 | 说明 |

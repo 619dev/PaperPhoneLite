@@ -6,6 +6,15 @@
 
 PaperPhoneLite es un mensajero ligero con cifrado de extremo a extremo y sin funciones sociales públicas.
 
+<details>
+<summary>Capturas de la aplicación</summary>
+
+![Captura 1 de la aplicación PaperPhoneLite](screenshot/ui1.png)
+![Captura 2 de la aplicación PaperPhoneLite](screenshot/ui2.png)
+![Captura 3 de la aplicación PaperPhoneLite](screenshot/ui3.png)
+
+</details>
+
 ## Funciones
 
 - Acuerdo de claves híbrido X25519 + ML-KEM-768, XSalsa20-Poly1305 y números de seguridad.

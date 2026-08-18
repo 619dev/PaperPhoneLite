@@ -6,6 +6,15 @@
 
 PaperPhoneLite est une messagerie légère chiffrée de bout en bout, sans fonctions sociales publiques.
 
+<details>
+<summary>Captures d’écran de l’application</summary>
+
+![Capture d’écran 1 de l’application PaperPhoneLite](screenshot/ui1.png)
+![Capture d’écran 2 de l’application PaperPhoneLite](screenshot/ui2.png)
+![Capture d’écran 3 de l’application PaperPhoneLite](screenshot/ui3.png)
+
+</details>
+
 ## Fonctionnalités
 
 - Accord de clés hybride X25519 + ML-KEM-768, XSalsa20-Poly1305 et numéros de sécurité.

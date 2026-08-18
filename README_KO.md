@@ -6,6 +6,15 @@
 
 PaperPhoneLite는 공개 소셜 기능이 없는 경량 종단간 암호화 메신저입니다.
 
+<details>
+<summary>앱 스크린샷</summary>
+
+![PaperPhoneLite 앱 스크린샷 1](screenshot/ui1.png)
+![PaperPhoneLite 앱 스크린샷 2](screenshot/ui2.png)
+![PaperPhoneLite 앱 스크린샷 3](screenshot/ui3.png)
+
+</details>
+
 ## 기능
 
 - X25519 + ML-KEM-768 하이브리드 키 합의, XSalsa20-Poly1305 및 안전 번호 검증.

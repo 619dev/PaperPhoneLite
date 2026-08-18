@@ -6,6 +6,15 @@
 
 PaperPhoneLite は、公開ソーシャル機能を持たない軽量なエンドツーエンド暗号化メッセンジャーです。
 
+<details>
+<summary>アプリのスクリーンショット</summary>
+
+![PaperPhoneLite アプリのスクリーンショット 1](screenshot/ui1.png)
+![PaperPhoneLite アプリのスクリーンショット 2](screenshot/ui2.png)
+![PaperPhoneLite アプリのスクリーンショット 3](screenshot/ui3.png)
+
+</details>
+
 ## 機能
 
 - X25519 + ML-KEM-768 ハイブリッド鍵共有、XSalsa20-Poly1305、安全番号検証。

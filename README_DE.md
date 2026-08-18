@@ -6,6 +6,15 @@
 
 PaperPhoneLite ist ein leichtgewichtiger Ende-zu-Ende-verschlüsselter Messenger ohne öffentliche Social-Funktionen.
 
+<details>
+<summary>App-Screenshots</summary>
+
+![PaperPhoneLite App-Screenshot 1](screenshot/ui1.png)
+![PaperPhoneLite App-Screenshot 2](screenshot/ui2.png)
+![PaperPhoneLite App-Screenshot 3](screenshot/ui3.png)
+
+</details>
+
 ## Funktionen
 
 - Hybride X25519- und ML-KEM-768-Schlüsselvereinbarung, XSalsa20-Poly1305 und Sicherheitsnummern.
