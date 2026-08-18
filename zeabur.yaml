@@ -14,12 +14,15 @@ spec:
     - key: JWT_SECRET
       type: STRING
       name: JWT Secret
+      description: Secret used to sign and verify authentication tokens.
     - key: DB_PASSWORD
       type: STRING
       name: Database Password
+      description: Password shared by the PaperPhoneLite server and MySQL.
     - key: REDIS_PASSWORD
       type: STRING
       name: Redis Password
+      description: Password shared by the PaperPhoneLite server and Redis.
   services:
     - name: MySQL
       template: PREBUILT
