@@ -4,6 +4,16 @@ All notable changes and new features are recorded here. Historical entries below
 
 所有重要版本改动和新特性统一记录于此。下方历史条目由仓库原有文档迁移而来。
 
+## 3.0.15
+
+- Fixed received attachments remaining as styled ciphertext after private-chat or Sender Key decryption, restoring filenames and download access across Android and macOS.
+- Added a startup password prompt for signed-in accounts with text appearance encryption enabled, including localized incorrect-password feedback in all eight supported languages.
+- Updated the application version, profile-page version display, deployment guides, and all eight language READMEs to `3.0.15`.
+
+- 修复私聊或 Sender Key 解密后，收到的附件仍停留在文本外观密文状态的问题，恢复 Android 与 macOS 跨端文件名显示和下载访问。
+- 已登录账号启用文本外观加密时，App 启动后提示输入密码，并为全部八种语言补充密码错误提示。
+- 应用版本、个人信息页底部版本号、部署文档及全部八种语言 README 统一更新为 `3.0.15`。
+
 ## 3.0.13
 
 - Fixed duplicate file messages caused by overlapping Android file-picker/upload/send events by adding synchronous upload and message-send guards.

@@ -150,6 +150,8 @@ export const de: Record<string, string> = {
   "chat.presentation_enable": "Zusätzliche Verschlüsselung aktivieren",
   "chat.presentation_password_prompt": "Zusätzliches Passwort eingeben (mindestens 8 Zeichen)",
   "chat.presentation_unlock_password_prompt": "Entsperrpasswort eingeben",
+  "chat.presentation_startup_password_prompt": "Passwort für die Verschlüsselung der Textdarstellung eingeben",
+  "chat.presentation_startup_wrong_password": "Falsches Passwort. Die Textdarstellung kann nicht entschlüsselt werden.",
   "chat.presentation_password_confirm": "Passwort erneut eingeben",
   "chat.presentation_disable_password_prompt": "Zusatzpasswort eingeben, um die Verschlüsselung zu deaktivieren",
   "chat.presentation_wrong_password": "Falsches Passwort. Es kann nur der formatierte Geheimtext angezeigt werden.",

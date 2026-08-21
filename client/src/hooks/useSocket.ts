@@ -58,7 +58,8 @@ async function retryDecryptGroupMessages(groupId: string, senderId: string) {
       const nonce = (msg as any).nonce
       if (msg.ciphertext && nonce) {
         try {
-          const text = await decryptWithSenderKey(msg.ciphertext, nonce, sk.senderKey)
+          const decrypted = await decryptWithSenderKey(msg.ciphertext, nonce, sk.senderKey)
+          const text = await unprotectPresentationText(decrypted)
           useStore.getState().updateMessage(groupId, msg.id, { decrypted: text })
         } catch (err) {
           console.warn(`[useSocket] Retry decrypt failed for msg ${msg.id}:`, err)
@@ -124,10 +125,12 @@ export function useSocket() {
             if (keys) {
               const isMe = data.from === myId
               if (isMe && data.self_ciphertext && data.self_header) {
-                const text = await decryptHybrid(data.self_header, keys.ik_priv, null, data.self_ciphertext)
+                const decrypted = await decryptHybrid(data.self_header, keys.ik_priv, null, data.self_ciphertext)
+                const text = await unprotectPresentationText(decrypted)
                 msgToAdd = { ...data, decrypted: text }
               } else if (!isMe) {
-                const text = await decryptHybrid(data.header, keys.ik_priv, null, data.ciphertext)
+                const decrypted = await decryptHybrid(data.header, keys.ik_priv, null, data.ciphertext)
+                const text = await unprotectPresentationText(decrypted)
                 msgToAdd = { ...data, decrypted: text }
               }
             }
@@ -157,7 +160,8 @@ export function useSocket() {
                 sk = getSenderKey(data.group_id, data.from)
               }
               if (sk) {
-                const text = await decryptWithSenderKey(data.ciphertext, data.nonce, sk.senderKey)
+                const decrypted = await decryptWithSenderKey(data.ciphertext, data.nonce, sk.senderKey)
+                const text = await unprotectPresentationText(decrypted)
                 msgToAdd = { ...data, decrypted: text }
               } else {
                 // Still don't have sender key — store as 🔒 but keep nonce in data for retry

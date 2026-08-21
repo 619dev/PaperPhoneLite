@@ -617,10 +617,12 @@ export default function Chat() {
           try {
             const isMe = msg.from === user?.id
             if (isMe && msg.self_ciphertext && msg.self_header) {
-              const text = await decryptHybrid(msg.self_header, keys?.ik_priv || '', null, msg.self_ciphertext)
+              const decrypted = await decryptHybrid(msg.self_header, keys?.ik_priv || '', null, msg.self_ciphertext)
+              const text = await unprotectPresentationText(decrypted)
               return { ...msg, decrypted: text }
             } else if (!isMe && msg.ciphertext && msg.header) {
-              const text = await decryptHybrid(msg.header, keys?.ik_priv || '', null, msg.ciphertext)
+              const decrypted = await decryptHybrid(msg.header, keys?.ik_priv || '', null, msg.ciphertext)
+              const text = await unprotectPresentationText(decrypted)
               return { ...msg, decrypted: text }
             }
           } catch {}
@@ -633,7 +635,8 @@ export default function Chat() {
             try {
               const sk = getSenderKey(id!, msg.from)
               if (sk) {
-                const text = await decryptWithSenderKey(msg.ciphertext, msg.nonce, sk.senderKey)
+                const decrypted = await decryptWithSenderKey(msg.ciphertext, msg.nonce, sk.senderKey)
+                const text = await unprotectPresentationText(decrypted)
                 return { ...msg, decrypted: text }
               }
             } catch (err) {

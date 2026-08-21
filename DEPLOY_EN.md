@@ -1,4 +1,4 @@
-# PaperPhoneLite 3.0.13 deployment
+# PaperPhoneLite 3.0.15 deployment
 
 ## Onion-only server (recommended)
 
