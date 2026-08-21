@@ -1,4 +1,4 @@
-# PaperPhoneLite 3.0.0
+# PaperPhoneLite 3.0.12
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
@@ -24,7 +24,7 @@ PaperPhoneLite ist ein leichtgewichtiger Ende-zu-Ende-verschlüsselter Messenger
 - Automatische Nachrichtenlöschung nach 1, 3, 7 oder 30 Tagen.
 - Freundschaftsanfragen, Notizen, Tags, Sperren und QR-Gruppeneinladungen.
 - TOTP-Zwei-Faktor-Authentifizierung und optionale ntfy-Hintergrundbenachrichtigungen auf Android. Der iOS-Client verwendet kein APNs und bietet derzeit keine systemweiten Hintergrundbenachrichtigungen.
-- Dateien bis 500 MB ausschließlich auf dem persistenten Server-Volume.
+- Dateien bis 500 MB ausschließlich auf dem persistenten Server-Volume; Anhänge werden über den Rust-Server heruntergeladen, ohne Objekt-Speicher- oder Onion-URLs im externen Browser zu öffnen, und können über den Systemdialog des Mobilgeräts gespeichert werden.
 - Acht Oberflächensprachen.
 
 ## Tor ist erforderlich

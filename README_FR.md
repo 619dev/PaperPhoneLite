@@ -1,4 +1,4 @@
-# PaperPhoneLite 3.0.0
+# PaperPhoneLite 3.0.12
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
@@ -24,7 +24,7 @@ PaperPhoneLite est une messagerie légère chiffrée de bout en bout, sans fonct
 - Suppression automatique des messages après 1, 3, 7 ou 30 jours.
 - Demandes d’amis, remarques, étiquettes, blocage et invitations de groupe par QR.
 - 2FA TOTP et notifications d’arrière-plan facultatives via ntfy sur Android. Le client iOS n’utilise pas APNs et ne propose actuellement aucune notification distante système en arrière-plan.
-- Fichiers jusqu’à 500 Mo conservés uniquement sur le volume persistant du serveur.
+- Fichiers jusqu’à 500 Mo conservés uniquement sur le volume persistant du serveur ; les pièces jointes sont téléchargées via le serveur Rust sans ouvrir d’URL de stockage objet ou `.onion` dans un navigateur externe et peuvent être enregistrées avec le panneau système du téléphone.
 - Huit langues d’interface.
 
 ## Tor est obligatoire

@@ -1,4 +1,4 @@
-# PaperPhoneLite 3.0.0 deployment
+# PaperPhoneLite 3.0.12 deployment
 
 ## Onion-only server (recommended)
 
@@ -23,5 +23,7 @@ This follows the SimpleX `HiddenServiceDir`/`HiddenServicePort` pattern, adapted
 Among the current production clients, only Android supports background remote notifications. Configure ntfy with `NTFY_BASE_URL`/`NTFY_TOKEN`; no Google services are required. The iOS client does not use APNs and currently provides no system background remote notifications, although in-app message alerts remain available while the app is open and connected. Production deployments do not need APNs, Web Push, FCM, Firebase, or OneSignal configuration.
 
 The iOS client is intended for Apple App Store submission. Android APKs are uploaded only to the [Android client repository's GitHub Releases](https://github.com/619dev/ppl-android/releases) and are not published on Google Play.
+
+Attachments are written only to the persistent `uploads` volume and downloaded through the Rust server's `/api/files/` route. Clients request files in-app and invoke the mobile system save/share sheet instead of handing `.onion` file URLs to an external browser. After upgrading, specifically verify file-message download and save behavior.
 
 Back up all volumes before upgrades. Verify `/health`, WebSocket messaging, all attachment types, and file persistence after restart.

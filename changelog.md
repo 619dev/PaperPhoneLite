@@ -4,6 +4,18 @@ All notable changes and new features are recorded here. Historical entries below
 
 所有重要版本改动和新特性统一记录于此。下方历史条目由仓库原有文档迁移而来。
 
+## 3.0.12
+
+- Changed file-message clicks to download attachments in-app through the configured Rust server instead of opening `.onion` or object-storage URLs in an external browser.
+- Added the mobile system save/share flow with a portable local-download fallback while preserving the original filename and MIME type.
+- Added current-server and `/api/files/` URL validation on the client, plus server-side file-path validation, private immutable caching, and `nosniff` responses.
+- Updated the application version, profile-page version display, deployment guides, and all eight language READMEs to `3.0.12`.
+
+- 文件消息点击后改为在应用内通过当前配置的 Rust 服务端下载，不再把 `.onion` 或对象存储地址交给外部浏览器打开。
+- 新增手机系统保存/分享流程，并提供通用本地下载回退；下载时保留原始文件名与 MIME 类型。
+- 客户端新增当前服务器及 `/api/files/` 路径校验；服务端新增文件路径校验、私有不可变缓存与 `nosniff` 响应头。
+- 应用版本、个人信息页底部版本号、部署文档及全部八种语言 README 统一更新为 `3.0.12`。
+
 ## 3.0.0
 
 - Renamed the project to PaperPhoneLite.

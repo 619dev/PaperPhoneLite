@@ -1,4 +1,4 @@
-# PaperPhoneLite 3.0.0
+# PaperPhoneLite 3.0.12
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
@@ -24,7 +24,7 @@ PaperPhoneLite は、公開ソーシャル機能を持たない軽量なエン�
 - 1、3、7、30 日後のメッセージ自動削除。
 - 友達申請、メモ、タグ、ブロック、QR グループ招待。
 - TOTP 2FA と、Android で任意に利用できる ntfy バックグラウンド通知。iOS クライアントは APNs を使用せず、現在はシステムのバックグラウンドリモート通知を提供しません。
-- 最大 500 MB のファイルをサーバー永続ボリュームのみに保存。
+- 最大 500 MB のファイルをサーバー永続ボリュームのみに保存。添付ファイルは Rust サーバー経由でダウンロードされ、外部ブラウザでオブジェクトストレージや `.onion` URL を開かず、スマートフォンのシステム画面から保存できます。
 - 8 言語の UI。
 
 ## Tor は必須です

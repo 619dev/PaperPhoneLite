@@ -1,4 +1,4 @@
-# PaperPhoneLite 3.0.0
+# PaperPhoneLite 3.0.12
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
@@ -24,7 +24,7 @@ PaperPhoneLite는 공개 소셜 기능이 없는 경량 종단간 암호화 메�
 - 1일, 3일, 7일 또는 30일 후 메시지 자동 삭제.
 - 친구 요청, 메모, 태그, 차단 및 QR 그룹 초대.
 - TOTP 2FA와 Android에서 선택적으로 사용할 수 있는 ntfy 백그라운드 알림. iOS 클라이언트는 APNs를 사용하지 않으며 현재 시스템 백그라운드 원격 알림을 제공하지 않습니다.
-- 최대 500MB 파일을 서버 영구 볼륨에만 저장.
+- 최대 500MB 파일을 서버 영구 볼륨에만 저장하며, 첨부 파일은 외부 브라우저에서 객체 스토리지 또는 `.onion` URL을 열지 않고 Rust 서버를 통해 다운로드되어 휴대전화 시스템 패널에서 저장할 수 있습니다.
 - 8개 UI 언어.
 
 ## Tor 필수
