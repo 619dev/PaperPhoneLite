@@ -1,4 +1,4 @@
-# PaperPhoneLite 3.0.12
+# PaperPhoneLite 3.0.13
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
@@ -35,7 +35,7 @@ PaperPhoneLite 是轻量级端到端加密即时通讯项目，使用 React 19/T
 | 🔔 后台通知 | Android 可使用 ntfy；iOS 不使用 APNs，当前不提供系统后台远程通知；所有客户端均不集成 Apple 或 Google 推送框架 |
 | 🌐 多语言 | 中文、英文、日语、韩语、法语、德语、俄语、西班牙语 |
 | 💬 丰富消息 | 文字、图片、视频、文档、语音、Emoji、Telegram 贴纸、已读状态和输入状态 |
-| 📤 服务端文件存储 | 单文件最大 500MB，文件仅保存在服务端持久卷；附件由 Rust 服务端中转下载，不再跳转外部对象存储或系统浏览器，并可通过手机系统面板保存 |
+| 📤 服务端文件存储 | 单文件最大 500MB，文件仅保存在服务端持久卷；附件由 Rust 服务端中转下载，Android 通过原生分块写入和系统面板可靠保存，并防止重复发送与重复点击 |
 | 🏷️ 好友标签 | 可给好友设置多个标签，并按标签筛选通讯录 |
 | 🔑 两步验证 | 兼容 Google Authenticator 的 TOTP，提供 8 个一次性恢复码 |
 | 📷 扫码加好友/入群 | 扫描二维码添加好友或加入群聊，群邀请可设置有效期 |

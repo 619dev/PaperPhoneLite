@@ -1,4 +1,4 @@
-# PaperPhoneLite 3.0.12 部署
+# PaperPhoneLite 3.0.13 部署
 
 ## Onion-only 服务端（推荐）
 

@@ -1,4 +1,4 @@
-# PaperPhoneLite 3.0.12
+# PaperPhoneLite 3.0.13
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
@@ -31,7 +31,7 @@ PaperPhoneLite is a lightweight end-to-end encrypted messenger built with React/
 | 🔔 Background notifications | Android can use ntfy; iOS does not use APNs and currently provides no system background remote notifications; no client integrates Apple or Google push frameworks |
 | 🔑 Two-factor authentication | Google Authenticator-compatible TOTP with eight one-time recovery codes |
 | 📷 QR invitations | Add friends or join groups by QR code, with expiring group invitations |
-| 📤 Server-local files | Files up to 500MB remain on a persistent server volume; attachments are downloaded through the Rust server without opening object-storage or onion URLs in an external browser, and mobile clients can use the system save/share sheet |
+| 📤 Server-local files | Files up to 500MB remain on a persistent server volume; Android saves authenticated downloads through chunked native writes and the system sheet, with duplicate-send and duplicate-click protection |
 | 🦅 Tor onion service | Compose maps a Tor v3 onion service directly to the Rust backend while MySQL and Redis remain private |
 | 🌐 Eight languages | Chinese, English, Japanese, Korean, French, German, Russian, and Spanish |
 

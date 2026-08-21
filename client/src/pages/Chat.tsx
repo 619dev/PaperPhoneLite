@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback, ReactNode } from 'react'
+import { Capacitor, registerPlugin } from '@capacitor/core'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { useStore } from '../store'
 import { useI18n } from '../hooks/useI18n'
@@ -15,6 +16,16 @@ import { decodeMessagePayload, encodeMessagePayload, type ReplyReference } from 
 import { cacheSticker, cacheStickerPack } from '../utils/stickerCache'
 import { readOfflineData, writeOfflineData } from '../utils/offlineCache'
 import { useKeepAwake } from '../hooks/useKeepAwake'
+
+interface AttachmentSaverPlugin {
+  begin(options: { fileName: string; mimeType: string }): Promise<{ id: string }>
+  append(options: { id: string; data: string }): Promise<void>
+  finish(options: { id: string }): Promise<void>
+  abort(options: { id: string }): Promise<void>
+}
+
+const AttachmentSaver = registerPlugin<AttachmentSaverPlugin>('AttachmentSaver')
+const NATIVE_SAVE_CHUNK_SIZE = 512 * 1024
 
 // Auto-delete options (seconds)
 const AUTO_DELETE_OPTIONS = [
@@ -357,6 +368,7 @@ export default function Chat() {
   // Upload progress
   const [uploadProgress, setUploadProgress] = useState(-1) // -1 = hidden
   const [uploadLabel, setUploadLabel] = useState('')
+  const [savingAttachmentUrl, setSavingAttachmentUrl] = useState<string | null>(null)
   // Voice recording
   const [isRecording, setIsRecording] = useState(false)
   const [recordDuration, setRecordDuration] = useState(0)
@@ -371,6 +383,9 @@ export default function Chat() {
   const imageInputRef = useRef<HTMLInputElement>(null)
   const videoInputRef = useRef<HTMLInputElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const sendingRef = useRef(false)
+  const fileUploadRef = useRef(false)
+  const attachmentSaveRef = useRef(false)
   const mediaRecRef = useRef<MediaRecorder | null>(null)
   const recChunksRef = useRef<Blob[]>([])
   const recStartRef = useRef<number>(0)
@@ -698,7 +713,8 @@ export default function Chat() {
   const sendMessage = async (text?: string, msgType = 'text', _extra: any = {}) => {
     const content = text || input.trim()
     if (msgType === 'text' && !content) return
-    if (!id || !user || sending) return
+    if (!id || !user || sendingRef.current) return
+    sendingRef.current = true
     const reply = replyingTo
     const displayWireContent = encodeMessagePayload(content, reply)
     const clientMsgId = crypto.randomUUID()
@@ -859,6 +875,7 @@ export default function Chat() {
       if (msgType === 'text' && content) setInput(content)
       alert(t('chat.encryption_send_failed') || 'Encryption failed. The message was not sent.')
     } finally {
+      sendingRef.current = false
       setSending(false)
     }
   }
@@ -903,15 +920,19 @@ export default function Chat() {
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (!file) return
     e.target.value = ''
+    if (!file) return
+    if (fileUploadRef.current) return
+    fileUploadRef.current = true
     setShowAttachPanel(false)
     try {
       const { url } = await uploadWithProgress(file, t('chat.uploading_file'))
       const meta = JSON.stringify({ url, fileName: file.name, fileSize: file.size, fileType: file.type })
-      sendMessage(meta, 'file', { url, fileName: file.name, fileSize: file.size, fileType: file.type })
+      await sendMessage(meta, 'file', { url, fileName: file.name, fileSize: file.size, fileType: file.type })
     } catch {
       alert(t('chat.upload_failed'))
+    } finally {
+      fileUploadRef.current = false
     }
   }
 
@@ -1159,12 +1180,37 @@ export default function Chat() {
   }
 
   const saveAttachment = async (url: string, requestedName?: string, fileType?: string) => {
+    if (attachmentSaveRef.current) return
+    attachmentSaveRef.current = true
+    setSavingAttachmentUrl(url)
+    let nativeSaveId: string | undefined
     try {
       const blob = await downloadFileFromServer(url)
       const fileName = (requestedName || 'attachment').replace(/[\\/:*?"<>|]/g, '_')
 
-      // On phones this opens the native share/save sheet when the WebView
-      // supports file sharing. The blob download is the portable fallback.
+      // Android WebView does not reliably honor downloads whose source is a
+      // blob: URL. Stream the authenticated response into a native temporary
+      // file, then open Android's share/save chooser.
+      if (Capacitor.getPlatform() === 'android' && Capacitor.isNativePlatform()) {
+        const started = await AttachmentSaver.begin({
+          fileName,
+          mimeType: fileType || blob.type || 'application/octet-stream',
+        })
+        nativeSaveId = started.id
+        for (let offset = 0; offset < blob.size; offset += NATIVE_SAVE_CHUNK_SIZE) {
+          const bytes = new Uint8Array(await blob.slice(offset, offset + NATIVE_SAVE_CHUNK_SIZE).arrayBuffer())
+          let binary = ''
+          for (let i = 0; i < bytes.length; i += 0x8000) {
+            binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000))
+          }
+          await AttachmentSaver.append({ id: nativeSaveId, data: btoa(binary) })
+        }
+        await AttachmentSaver.finish({ id: nativeSaveId })
+        nativeSaveId = undefined
+        return
+      }
+
+      // Browser/PWA path.
       if (typeof File !== 'undefined' && navigator.share) {
         const file = new File([blob], fileName, { type: fileType || blob.type || 'application/octet-stream' })
         if (!navigator.canShare || navigator.canShare({ files: [file] })) {
@@ -1187,8 +1233,12 @@ export default function Chat() {
       anchor.remove()
       window.setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000)
     } catch (error) {
+      if (nativeSaveId) void AttachmentSaver.abort({ id: nativeSaveId }).catch(() => undefined)
       console.error('[Chat] attachment download failed:', error)
       alert(t('chat.download_failed'))
+    } finally {
+      attachmentSaveRef.current = false
+      setSavingAttachmentUrl(null)
     }
   }
 
@@ -1238,7 +1288,7 @@ export default function Chat() {
       if (meta) {
         const icon = getFileIcon(meta.fileType || '')
         return (
-          <button type="button" onClick={() => void saveAttachment(meta.url, meta.fileName, meta.fileType)}
+          <button type="button" disabled={savingAttachmentUrl === meta.url} onClick={() => void saveAttachment(meta.url, meta.fileName, meta.fileType)}
             style={{
               display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', color: 'inherit',
               padding: 8, borderRadius: 8, background: 'rgba(0,0,0,0.05)', minWidth: 180,
@@ -1251,7 +1301,7 @@ export default function Chat() {
               </div>
               {meta.fileSize && <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{formatFileSize(meta.fileSize)}</div>}
             </div>
-            <span style={{ fontSize: 18, color: 'var(--accent)' }}><Download size={18} /></span>
+            <span style={{ fontSize: 18, color: 'var(--accent)' }}>{savingAttachmentUrl === meta.url ? <Clock size={18} /> : <Download size={18} />}</span>
           </button>
         )
       }

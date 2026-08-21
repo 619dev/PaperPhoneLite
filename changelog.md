@@ -4,6 +4,18 @@ All notable changes and new features are recorded here. Historical entries below
 
 所有重要版本改动和新特性统一记录于此。下方历史条目由仓库原有文档迁移而来。
 
+## 3.0.13
+
+- Fixed duplicate file messages caused by overlapping Android file-picker/upload/send events by adding synchronous upload and message-send guards.
+- Fixed Android attachment rows that appeared clickable but did not save files: authenticated blobs are now streamed in bounded chunks to the native shell and opened in the Android save/share sheet.
+- Added immediate download-in-progress feedback and blocked repeated attachment clicks while a save is active.
+- Updated the application version, profile-page version display, deployment guides, and all eight language READMEs to `3.0.13`.
+
+- 修复 Android 文件选择、上传与发送事件重叠时可能产生两条文件消息的问题，新增同步上传锁与消息发送锁。
+- 修复 Android 文件消息条目可以点击但无法保存的问题：鉴权下载结果现在按固定大小分块写入原生端，再打开 Android 系统保存/分享面板。
+- 文件下载开始后立即显示处理中状态，并在保存完成前阻止重复点击。
+- 应用版本、个人信息页底部版本号、部署文档及全部八种语言 README 统一更新为 `3.0.13`。
+
 ## 3.0.12
 
 - Changed file-message clicks to download attachments in-app through the configured Rust server instead of opening `.onion` or object-storage URLs in an external browser.
