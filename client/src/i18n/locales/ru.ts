@@ -19,7 +19,7 @@ export const ru: Record<string, string> = {
   'chat.typing': 'печатает...', 'chat.placeholder': 'Введите сообщение...', 'chat.send': 'Отправить', 'chat.reply': 'Ответить', 'chat.replying_to': 'Ответ для',
   'chat.encrypted': 'Сообщения защищены сквозным шифрованием',
   'chat.no_recent_emoji': 'Нет недавних эмодзи', 'chat.loading_stickers': 'Загрузка...', 'chat.no_stickers': 'Нет стикеров в этом наборе',
-  'chat.uploading_image': 'Загрузка изображения...', 'chat.uploading_video': 'Загрузка видео...', 'chat.uploading_file': 'Загрузка файла...', 'chat.uploading_voice': 'Загрузка голосового сообщения...', 'chat.upload_failed': 'Ошибка загрузки',
+  'chat.uploading_image': 'Загрузка изображения...', 'chat.uploading_video': 'Загрузка видео...', 'chat.uploading_file': 'Загрузка файла...', 'chat.uploading_voice': 'Загрузка голосового сообщения...', 'chat.upload_failed': 'Ошибка загрузки', 'chat.download_failed': 'Ошибка скачивания',
   'chat.attach_image': 'Отправить изображение', 'chat.attach_video': 'Видео', 'chat.attach_file': 'Файл', 'chat.attach_voice': 'Голос', 'chat.attach_more': 'Ещё', 'chat.file': 'Файл',
   'chat.recording': 'Запись...', 'chat.stop_recording': 'Остановить', 'chat.voice_speed': 'Скорость', 'chat.mic_failed': 'Нет доступа к микрофону',
   'chat.group_unencrypted_warning': 'Групповой чат не зашифрован. Можно добавлять ботов. Не делитесь личной конфиденциальной информацией.',

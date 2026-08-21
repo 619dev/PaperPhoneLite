@@ -19,7 +19,7 @@ export const fr: Record<string, string> = {
   'chat.typing': 'en train d\'écrire...', 'chat.placeholder': 'Tapez un message...', 'chat.send': 'Envoyer', 'chat.reply': 'Répondre', 'chat.replying_to': 'Réponse à',
   'chat.encrypted': 'Messages chiffrés de bout en bout',
   'chat.no_recent_emoji': 'Aucun emoji récent', 'chat.loading_stickers': 'Chargement...', 'chat.no_stickers': 'Aucun sticker dans ce pack',
-  'chat.uploading_image': 'Envoi de l\'image...', 'chat.uploading_video': 'Envoi de la vidéo...', 'chat.uploading_file': 'Envoi du fichier...', 'chat.uploading_voice': 'Envoi du message vocal...', 'chat.upload_failed': 'Échec de l\'envoi',
+  'chat.uploading_image': 'Envoi de l\'image...', 'chat.uploading_video': 'Envoi de la vidéo...', 'chat.uploading_file': 'Envoi du fichier...', 'chat.uploading_voice': 'Envoi du message vocal...', 'chat.upload_failed': 'Échec de l\'envoi', 'chat.download_failed': 'Échec du téléchargement',
   'chat.attach_image': 'Envoyer une image', 'chat.attach_video': 'Vidéo', 'chat.attach_file': 'Fichier', 'chat.attach_voice': 'Vocal', 'chat.attach_more': 'Plus', 'chat.file': 'Fichier',
   'chat.recording': 'Enregistrement...', 'chat.stop_recording': 'Arrêter', 'chat.voice_speed': 'Vitesse', 'chat.mic_failed': 'Impossible d\'accéder au micro',
   'chat.group_unencrypted_warning': 'Le chat de groupe n\'est pas chiffré. Les bots peuvent être ajoutés. Ne partagez pas d\'informations personnelles privées.',

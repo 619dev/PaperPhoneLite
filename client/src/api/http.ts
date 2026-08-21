@@ -190,3 +190,27 @@ export function normalizeFileUrl(url: string | null | undefined): string {
   }
   return url
 }
+
+/**
+ * Fetch an attachment through the configured PaperPhone server.  Keeping this
+ * as an authenticated in-app request prevents native shells from handing an
+ * onion URL to the system browser.
+ */
+export async function downloadFileFromServer(url: string): Promise<Blob> {
+  const base = new URL(getBase())
+  const target = new URL(url, base)
+  if (target.origin !== base.origin || !target.pathname.startsWith('/api/files/')) {
+    throw new Error('Refusing to download a file outside the configured server')
+  }
+
+  const request = async (token: string | null) => fetch(target.toString(), {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  })
+  let res = await request(localStorage.getItem('token'))
+  if (res.status === 401) {
+    const refreshed = await refreshAccessToken()
+    if (refreshed) res = await request(refreshed)
+  }
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  return res.blob()
+}

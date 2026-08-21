@@ -55,6 +55,7 @@ export const en: Record<string, string> = {
   'chat.uploading_file': 'Uploading file...',
   'chat.uploading_voice': 'Uploading voice...',
   'chat.upload_failed': 'Upload failed',
+  'chat.download_failed': 'Download failed',
   'chat.ws_disconnected': 'Connection lost, reconnecting...',
   'chat.attach_image': 'Send image',
   'chat.attach_video': 'Video',

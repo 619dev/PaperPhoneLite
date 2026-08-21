@@ -59,6 +59,7 @@ export const zh: Record<string, string> = {
   'chat.uploading_file': '正在上传文件...',
   'chat.uploading_voice': '正在上传语音...',
   'chat.upload_failed': '上传失败',
+  'chat.download_failed': '下载失败，请稍后重试',
   'chat.ws_disconnected': '连接已断开，正在重连...',
   'chat.attach_image': '发送图片',
   'chat.attach_video': '视频',

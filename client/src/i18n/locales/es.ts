@@ -19,7 +19,7 @@ export const es: Record<string, string> = {
   'chat.typing': 'escribiendo...', 'chat.placeholder': 'Escribe un mensaje...', 'chat.send': 'Enviar', 'chat.reply': 'Responder', 'chat.replying_to': 'Respondiendo a',
   'chat.encrypted': 'Los mensajes están cifrados de extremo a extremo',
   'chat.no_recent_emoji': 'Sin emojis recientes', 'chat.loading_stickers': 'Cargando...', 'chat.no_stickers': 'No hay stickers en este paquete',
-  'chat.uploading_image': 'Subiendo imagen...', 'chat.uploading_video': 'Subiendo vídeo...', 'chat.uploading_file': 'Subiendo archivo...', 'chat.uploading_voice': 'Subiendo nota de voz...', 'chat.upload_failed': 'Error al subir',
+  'chat.uploading_image': 'Subiendo imagen...', 'chat.uploading_video': 'Subiendo vídeo...', 'chat.uploading_file': 'Subiendo archivo...', 'chat.uploading_voice': 'Subiendo nota de voz...', 'chat.upload_failed': 'Error al subir', 'chat.download_failed': 'Error al descargar',
   'chat.attach_image': 'Enviar imagen', 'chat.attach_video': 'Vídeo', 'chat.attach_file': 'Archivo', 'chat.attach_voice': 'Voz', 'chat.attach_more': 'Más', 'chat.file': 'Archivo',
   'chat.recording': 'Grabando...', 'chat.stop_recording': 'Detener', 'chat.voice_speed': 'Velocidad', 'chat.mic_failed': 'No se puede acceder al micrófono',
   'chat.group_unencrypted_warning': 'El chat grupal no está cifrado. Se pueden agregar bots. No comparta información personal privada.',
