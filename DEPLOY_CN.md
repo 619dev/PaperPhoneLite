@@ -1,4 +1,4 @@
-# PaperPhoneLite 3.0.15 部署
+# PaperPhoneLite 3.0.16 部署
 
 ## Onion-only 服务端（推荐）
 
@@ -20,10 +20,14 @@ Android/iOS/Windows/macOS 生产客户端必须内嵌 Tor，以隔离 SOCKS5 流
 
 ## 通知与客户端发布
 
-当前生产客户端只有 Android 可使用后台远程通知，通过 `NTFY_BASE_URL`/`NTFY_TOKEN` 配置 ntfy，不需要 Google 服务。iOS 客户端不使用 APNs，当前不提供系统后台远程通知；应用打开并保持连接时仍可显示应用内消息提醒。生产部署无需配置 APNs、Web Push、FCM、Firebase 或 OneSignal。
+Android 可通过 `NTFY_BASE_URL`/`NTFY_TOKEN` 配置 ntfy，不需要 Google 服务。iOS 用户可在客户端粘贴 Bark 推送地址，通过 Bark App 接收后台提醒；默认只允许 Bark 官方主机 `api.day.app`。自建 Bark 时由服务器运营者使用逗号分隔的 `BARK_ALLOWED_HOSTS` 显式加入主机名。PaperPhoneLite 自身无需注册 APNs token，但 Bark iOS App 最终仍使用 Apple APNs。通知只发送发件人名称和通用的新消息提示，不发送消息正文。
 
 iOS 客户端计划提交 Apple App Store；Android APK 仅上传至 [Android 客户端仓库的 GitHub Releases](https://github.com/619dev/ppl-android/releases)，不发布到 Google Play。
 
 附件只写入 `uploads` 持久卷，并通过 Rust 服务端的 `/api/files/` 路由下载。客户端会在应用内请求文件并调用手机系统的保存/分享面板，不应把 `.onion` 文件地址交给外部浏览器。升级后请重点验证文件消息点击下载与保存。
 
 升级前备份数据库和全部持久卷。部署后验证 `/health`、WebSocket、文字/图片/语音/文件消息和重启后的文件可读性。
+
+## 数据库自动维护
+
+服务端每次启动都会幂等执行数据库结构维护。3.0.16 会自动删除 3.0.0 以前遗留、现已停用的 Web Push `push_subscriptions` 与 OneSignal `onesignal_players` 表及其内容。升级前如需审计这些旧推送标识，请先备份；删除后当前版本不会重建这两张表。

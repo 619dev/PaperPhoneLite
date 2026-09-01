@@ -1,8 +1,10 @@
-# PaperPhoneLite 3.0.15
+# PaperPhoneLite 3.0.16
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
 [更新履歴](changelog.md)
+
+[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.0.16-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 
 PaperPhoneLite は、公開ソーシャル機能を持たない軽量なエンドツーエンド暗号化メッセンジャーです。
 
@@ -23,7 +25,7 @@ PaperPhoneLite は、公開ソーシャル機能を持たない軽量なエン�
 - 信頼性の高い WebSocket 同期、オフライン送信キュー、アカウント別キャッシュ。
 - 1、3、7、30 日後のメッセージ自動削除。
 - 友達申請、メモ、タグ、ブロック、QR グループ招待。
-- TOTP 2FA と、Android で任意に利用できる ntfy バックグラウンド通知。iOS クライアントは APNs を使用せず、現在はシステムのバックグラウンドリモート通知を提供しません。
+- TOTP 2FA、Android の任意の ntfy 通知、iOS のユーザー指定 Bark エンドポイント。サーバーは既定で `api.day.app` のみ許可し、セルフホスト Bark は `BARK_ALLOWED_HOSTS` で追加します。
 - 最大 500 MB のファイルをサーバー永続ボリュームのみに保存。添付ファイルは Rust サーバー経由でダウンロードされ、外部ブラウザでオブジェクトストレージや `.onion` URL を開かず、スマートフォンのシステム画面から保存できます。
 - 8 言語の UI。
 
@@ -32,6 +34,8 @@ PaperPhoneLite は、公開ソーシャル機能を持たない軽量なエン�
 Android、iOS、Windows、macOS の本番クライアントは Tor を内蔵し、ログイン前に Tor の bootstrap 完了を待ち、`.onion` 通信を分離 SOCKS5 回線に限定して clearnet へフォールバックしてはいけません。`client/` は共有 UI ソースコードのみです。ブラウザと PWA は本番クライアントとしてサポートされません。
 
 Moments、Timeline、すべての通話、LiveKit、Cloudflare R2、通報、モデレーション画面は削除済みです。本番は Docker Compose と Tor v3 onion service のみを使用します。[DEPLOY_EN.md](DEPLOY_EN.md) を参照してください。
+
+サーバー起動時に、旧インストールに残る廃止済み Web Push／OneSignal テーブルと古い識別子を自動削除します。
 
 Docker Compose の起動後、Tor コンテナは完全な `http://...onion` アドレスをホストの `logs/onion-address.log` に自動保存します。`docker compose logs tor` でも確認できます。
 

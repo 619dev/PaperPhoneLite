@@ -466,4 +466,6 @@ async fn push_offline_message(state: &Arc<AppState>, sender_id: &str, recipient_
     crate::services::ntfy::push_to_user(&state.db, &state.config, recipient_id, &name, "sent you a message").await;
     // APNS (iOS native)
     crate::services::apns::push_to_user(&state.db, &state.config, recipient_id, &name, "sent you a message").await;
+    // Bark (iOS companion app; device key stays on this server)
+    crate::services::bark::push_to_user(&state.db, recipient_id, &name, "sent you a message").await;
 }

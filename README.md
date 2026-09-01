@@ -1,12 +1,14 @@
-# PaperPhoneLite 3.0.15
+# PaperPhoneLite 3.0.16
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
 [更新历史](changelog.md)
 
+[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.0.16-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
+
 PaperPhoneLite 是轻量级端到端加密即时通讯项目，使用 React 19/TypeScript Web 客户端与 Rust/Axum 服务端。
 
-保留功能：私聊、群聊、文字/图片/视频/语音/文档消息、联系人、群组、消息同步、离线缓存、阅后定时删除、Android ntfy 后台通知、二维码、2FA 与拉黑。
+保留功能：私聊、群聊、文字/图片/视频/语音/文档消息、联系人、群组、消息同步、离线缓存、阅后定时删除、Android ntfy 与 iOS Bark 后台提醒、二维码、2FA 与拉黑。
 
 <details>
 <summary>应用截图</summary>
@@ -32,7 +34,7 @@ PaperPhoneLite 是轻量级端到端加密即时通讯项目，使用 React 19/T
 | 👥 群聊 | 最多 2000 人；加密群使用 Sender Key 协议，并支持免打扰、公告和成员管理 |
 | 👫 好友系统 | 好友申请需对方确认，支持验证消息、备注和多标签分组 |
 | ⏱️ 消息自动删除 | 支持永不、1 天、3 天、7 天、30 天五档；私聊双方可设置，群聊仅群主可设置 |
-| 🔔 后台通知 | Android 可使用 ntfy；iOS 不使用 APNs，当前不提供系统后台远程通知；所有客户端均不集成 Apple 或 Google 推送框架 |
+| 🔔 后台通知 | Android 可使用 ntfy；iOS 可通过用户配置的 Bark 地址接收提醒；服务端默认仅允许 `api.day.app`，可通过 `BARK_ALLOWED_HOSTS` 增加自建主机 |
 | 🌐 多语言 | 中文、英文、日语、韩语、法语、德语、俄语、西班牙语 |
 | 💬 丰富消息 | 文字、图片、视频、文档、语音、Emoji、Telegram 贴纸、已读状态和输入状态 |
 | 📤 服务端文件存储 | 单文件最大 500MB，文件仅保存在服务端持久卷；附件由 Rust 服务端中转下载，Android 通过原生分块写入和系统面板可靠保存，并防止重复发送与重复点击 |
@@ -45,13 +47,15 @@ PaperPhoneLite 是轻量级端到端加密即时通讯项目，使用 React 19/T
 
 3.0.0 已彻底移除朋友圈、时间线、单聊语音/视频通话、群聊语音/视频通话、LiveKit 与 Cloudflare R2。文件只写入服务端持久卷并由服务端传输。自托管模板不使用 Nginx，Tor v3 onion service 直接转发至 Rust 服务端；数据库和 Redis 不公开端口。
 
+服务端启动时会自动删除旧版本遗留的 Web Push `push_subscriptions` 和 OneSignal `onesignal_players` 表及其中已废弃的推送标识；当前版本不会重新创建或使用这些表。
+
 Docker Compose 启动后，Tor 容器会自动把完整的 `http://...onion` 服务地址写入宿主机的 `logs/onion-address.log`；也可通过 `docker compose logs tor` 查看。部署细节见 [DEPLOY_CN.md](DEPLOY_CN.md)。
 
 UI 源码位于 `client/`，供 Android、iOS、Windows、macOS 原生壳复用。生产客户端必须内嵌 Tor，必须等待 Tor bootstrap 完成后才能登录，并禁止 `.onion` 地址回退到明网。普通浏览器/PWA 不是受支持的生产客户端。
 
 ## 应用发布
 
-- iOS 客户端计划通过 Apple App Store 发布；不使用 APNs，当前不提供系统后台远程通知。
+- iOS 客户端计划通过 Apple App Store 发布；可将用户提供的 Bark 地址用于后台提醒，PaperPhoneLite 客户端本身不注册 APNs token。
 - Android APK 仅通过 Android 客户端仓库的 [GitHub Releases](https://github.com/619dev/ppl-android/releases) 发布，使用 ntfy，不发布到 Google Play，也不集成 Google 推送或服务框架。
 
 ## 客户端仓库

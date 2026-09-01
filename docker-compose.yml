@@ -14,6 +14,7 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_PASS: ${REDIS_PASS:?Set REDIS_PASS in .env}
+      BARK_ALLOWED_HOSTS: ${BARK_ALLOWED_HOSTS:-api.day.app}
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
       UPLOAD_DIR: /var/lib/paperphone-lite/uploads
     volumes:

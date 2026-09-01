@@ -1,8 +1,10 @@
-# PaperPhoneLite 3.0.15
+# PaperPhoneLite 3.0.16
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
 [История изменений](changelog.md)
+
+[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.0.16-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 
 PaperPhoneLite — лёгкий мессенджер со сквозным шифрованием без публичных социальных функций.
 
@@ -23,7 +25,7 @@ PaperPhoneLite — лёгкий мессенджер со сквозным ши�
 - Надёжная WebSocket-синхронизация, офлайн-очередь и раздельный кэш аккаунтов.
 - Автоудаление сообщений через 1, 3, 7 или 30 дней.
 - Заявки в друзья, заметки, теги, блокировка и QR-приглашения в группы.
-- TOTP 2FA и дополнительные фоновые уведомления через ntfy на Android. Клиент iOS не использует APNs и сейчас не поддерживает системные фоновые push-уведомления.
+- TOTP 2FA, дополнительные уведомления ntfy на Android и пользовательские адреса Bark на iOS. По умолчанию сервер разрешает только `api.day.app`; собственные хосты Bark добавляются через `BARK_ALLOWED_HOSTS`.
 - Файлы до 500 МБ хранятся только в постоянном томе сервера; вложения загружаются через Rust-сервер без открытия адресов объектного хранилища или `.onion` во внешнем браузере и могут быть сохранены через системное меню телефона.
 - Восемь языков интерфейса.
 
@@ -32,6 +34,8 @@ PaperPhoneLite — лёгкий мессенджер со сквозным ши�
 Рабочие клиенты Android, iOS, Windows и macOS должны встраивать Tor, ждать завершения bootstrap до входа и направлять `.onion` через изолированные SOCKS5-цепочки без перехода в clearnet. `client/` содержит только общий исходный код интерфейса. Браузеры и PWA не поддерживаются как рабочие клиенты.
 
 Moments, Timeline, все звонки, LiveKit, Cloudflare R2, жалобы и панель модерации удалены. В рабочей среде используются только Docker Compose и Tor v3 onion service. См. [DEPLOY_EN.md](DEPLOY_EN.md).
+
+При запуске сервер автоматически удаляет устаревшие таблицы Web Push и OneSignal вместе со старыми идентификаторами из прежних установок.
 
 После запуска Docker Compose контейнер Tor автоматически записывает полный адрес `http://...onion` в файл `logs/onion-address.log` на хосте; адрес также выводится командой `docker compose logs tor`.
 

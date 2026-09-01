@@ -1,6 +1,6 @@
 [package]
 name = "paperphone-lite-server"
-version = "3.0.0"
+version = "3.0.16"
 edition = "2021"
 description = "PaperPhoneLite IM Backend — Secure messaging server in Rust"
 

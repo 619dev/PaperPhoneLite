@@ -4,6 +4,13 @@
 -- Auto-executed on server startup via sqlx.
 -- CREATE TABLE IF NOT EXISTS ensures idempotency.
 
+-- ── Automatic maintenance for retired notification providers ────────────
+-- Web Push and OneSignal were removed in 3.0.0. Older installations can
+-- still contain their endpoint/player identifiers, so purge the obsolete
+-- tables (including their contents) on startup.
+DROP TABLE IF EXISTS push_subscriptions;
+DROP TABLE IF EXISTS onesignal_players;
+
 -- ── Users ─────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS users (
   id          VARCHAR(36)   PRIMARY KEY,
@@ -178,6 +185,19 @@ CREATE TABLE IF NOT EXISTS ntfy_subscriptions (
   UNIQUE KEY uk_ntfy (user_id, ntfy_topic),
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   INDEX idx_ntfy_user (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ── Bark Subscriptions (iOS notification through a user-selected Bark app) ──
+CREATE TABLE IF NOT EXISTS bark_subscriptions (
+  id          BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id     VARCHAR(36)     NOT NULL,
+  endpoint    VARCHAR(1024)   NOT NULL,
+  platform    VARCHAR(16)     DEFAULT 'ios',
+  created_at  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_bark_user (user_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_bark_user (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ── User Blocks ─────────────────────────────────────────────────────────

@@ -4,6 +4,18 @@ All notable changes and new features are recorded here. Historical entries below
 
 所有重要版本改动和新特性统一记录于此。下方历史条目由仓库原有文档迁移而来。
 
+## 3.0.16
+
+- Added iOS background alerts through user-supplied Bark endpoints, restricted to `api.day.app` by default with an explicit `BARK_ALLOWED_HOSTS` allowlist for self-hosted Bark servers.
+- Added automatic startup maintenance that drops the retired Web Push `push_subscriptions` and OneSignal `onesignal_players` tables and purges their obsolete identifiers from upgraded databases.
+- Added a code-architecture tag to the documentation and synchronized all README and deployment documentation with the current React/TypeScript, Rust/Axum, MySQL, Redis, and Tor architecture.
+- Updated the client, server, profile display, documentation, and package metadata to `3.0.16`.
+
+- 新增通过用户自定义 Bark 地址为 iOS 提供后台提醒；默认仅允许 `api.day.app`，自建 Bark 服务器须由运营者通过 `BARK_ALLOWED_HOSTS` 白名单显式放行。
+- 新增数据库启动自动维护：删除已停用的 Web Push `push_subscriptions` 与 OneSignal `onesignal_players` 表，并清理升级数据库中遗留的废弃推送标识。
+- 为说明文档增加代码架构 Tag，并将全部 README 与部署文档同步到当前 React/TypeScript、Rust/Axum、MySQL、Redis 和 Tor 架构。
+- 客户端、服务端、个人信息页版本显示、说明文档及包元数据统一更新为 `3.0.16`。
+
 ## 3.0.15
 
 - Fixed received attachments remaining as styled ciphertext after private-chat or Sender Key decryption, restoring filenames and download access across Android and macOS.
