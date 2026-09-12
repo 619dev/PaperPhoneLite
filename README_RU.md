@@ -1,10 +1,10 @@
-# PaperPhoneLite 3.0.16
+# PaperPhoneLite 3.0.21
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
 [История изменений](changelog.md)
 
-[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.0.16-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.0.21-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 
 PaperPhoneLite — лёгкий мессенджер со сквозным шифрованием без публичных социальных функций.
 
@@ -26,7 +26,7 @@ PaperPhoneLite — лёгкий мессенджер со сквозным ши�
 - Автоудаление сообщений через 1, 3, 7 или 30 дней.
 - Заявки в друзья, заметки, теги, блокировка и QR-приглашения в группы.
 - TOTP 2FA, дополнительные уведомления ntfy на Android и пользовательские адреса Bark на iOS. По умолчанию сервер разрешает только `api.day.app`; собственные хосты Bark добавляются через `BARK_ALLOWED_HOSTS`.
-- Файлы до 500 МБ хранятся только в постоянном томе сервера; вложения загружаются через Rust-сервер без открытия адресов объектного хранилища или `.onion` во внешнем браузере и могут быть сохранены через системное меню телефона.
+- Файлы до 500 МБ хранятся в постоянном томе сервера; аватары пользователей/друзей и групп сохраняются постоянно, вложения чатов удаляются по настроенному на сервере сроку, а старые загрузки переносятся автоматически.
 - Восемь языков интерфейса.
 
 ## Tor обязателен

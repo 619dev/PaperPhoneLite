@@ -40,6 +40,7 @@ pub struct Config {
 
     // Upload
     pub upload_dir: String,
+    pub chat_file_retention_days: u64,
 
 }
 
@@ -77,6 +78,9 @@ impl Config {
             sticker_packs: env_opt("STICKER_PACKS"),
 
             upload_dir: env_or("UPLOAD_DIR", "./uploads"),
+            chat_file_retention_days: env_or("CHAT_FILE_RETENTION_DAYS", "14")
+                .parse()
+                .unwrap_or(14),
 
         }
     }

@@ -1,4 +1,4 @@
-# PaperPhoneLite 3.0.16 deployment
+# PaperPhoneLite 3.0.21 deployment
 
 ## Onion-only server (recommended)
 
@@ -24,10 +24,14 @@ Android can use ntfy through `NTFY_BASE_URL`/`NTFY_TOKEN` without Google service
 
 The iOS client is intended for Apple App Store submission. Android APKs are uploaded only to the [Android client repository's GitHub Releases](https://github.com/619dev/ppl-android/releases) and are not published on Google Play.
 
-Attachments are written only to the persistent `uploads` volume and downloaded through the Rust server's `/api/files/` route. Clients request files in-app and invoke the mobile system save/share sheet instead of handing `.onion` file URLs to an external browser. After upgrading, specifically verify file-message download and save behavior.
+Files are written only to the persistent `uploads` volume and downloaded through the Rust server's `/api/files/` route. User/friend and group avatars are stored under `permanent/`; private and group-chat attachments are stored under `temporary/`. Set `CHAT_FILE_RETENTION_DAYS` in `.env` to control temporary attachment retention. It defaults to `14`; `0` disables cleanup. The server checks once at startup and then removes expired files hourly.
+
+When upgrading, server startup automatically scans files previously stored directly in the `UPLOAD_DIR` root. User and group avatars still referenced by the database move to permanent storage, while other legacy uploads move to temporary storage. Legacy `/api/files/uploads/...` URLs remain readable. This migration moves files, so back up the `uploads` volume and ensure it is writable before upgrading. The new image entrypoint creates the directories, repairs volume ownership, and starts the service as a non-root user.
+
+Clients request attachments in-app and invoke the mobile system save/share sheet instead of handing `.onion` file URLs to an external browser. After upgrading, verify friend and group avatars, attachment downloads, and persistence across a restart.
 
 Back up all volumes before upgrades. Verify `/health`, WebSocket messaging, all attachment types, and file persistence after restart.
 
 ## Automatic database maintenance
 
-The server performs idempotent schema maintenance on every startup. Version 3.0.16 automatically drops the retired Web Push `push_subscriptions` and OneSignal `onesignal_players` tables and their contents when they remain from pre-3.0.0 installations. Back up those obsolete identifiers first if they are needed for an audit; this release does not recreate either table.
+The server performs idempotent schema maintenance on every startup. Version 3.0.21 automatically drops the retired Web Push `push_subscriptions` and OneSignal `onesignal_players` tables and their contents when they remain from pre-3.0.0 installations. Back up those obsolete identifiers first if they are needed for an audit; this release does not recreate either table.

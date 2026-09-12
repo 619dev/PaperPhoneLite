@@ -54,10 +54,14 @@ async fn main() {
         ws_clients: ws::server::WsClients::default(),
     });
 
-    // Ensure upload directory exists
+    // Keep permanent avatars separate from expiring chat attachments.
     let upload_path = &state.config.upload_dir;
-    tokio::fs::create_dir_all(upload_path).await.ok();
+    tokio::fs::create_dir_all(format!("{}/permanent", upload_path)).await
+        .expect("Failed to create permanent upload directory");
+    tokio::fs::create_dir_all(format!("{}/temporary", upload_path)).await
+        .expect("Failed to create temporary upload directory");
     tracing::info!("✅ Upload directory ready: {}", upload_path);
+    services::storage::migrate_legacy_uploads(&state).await;
 
     // CORS: mirror the request Origin so that credentialed/preflight requests
     // work for development clients and native shells using the Tor transport.
@@ -94,7 +98,7 @@ async fn main() {
         .nest("/api", routes::api_router())
         .layer(DefaultBodyLimit::max(500 * 1024 * 1024)) // 500 MB upload limit
         .layer(cors)
-        .with_state(state);
+        .with_state(state.clone());
 
     tokio::spawn(async move {
         let mut interval = tokio::time::interval(std::time::Duration::from_secs(60));
@@ -119,6 +123,15 @@ async fn main() {
             if c1 > 0 || c2 > 0 {
                 tracing::info!("🧹 Auto-delete cleanup: {} private, {} group messages purged", c1, c2);
             }
+        }
+    });
+
+    let file_cleanup_config = state.config.clone();
+    tokio::spawn(async move {
+        let mut interval = tokio::time::interval(std::time::Duration::from_secs(60 * 60));
+        loop {
+            interval.tick().await;
+            services::storage::cleanup_temporary_files(&file_cleanup_config).await;
         }
     });
 

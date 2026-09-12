@@ -13,13 +13,23 @@ async fn proxy_file(
     State(state): State<Arc<AppState>>,
     Path(key): Path<String>,
 ) -> impl IntoResponse {
-    // Serve only from the server-local upload directory.
-    // key may be "uploads/{uuid}.ext" — strip the "uploads/" prefix since upload_dir IS the uploads folder
+    // Legacy keys were uploads/{uuid}; new keys include permanent/ or temporary/.
     let local_name = key.strip_prefix("uploads/").unwrap_or(&key);
     if FsPath::new(local_name).components().any(|part| !matches!(part, Component::Normal(_))) {
         return (StatusCode::BAD_REQUEST, "Invalid file path").into_response();
     }
-    let file_path = format!("{}/{}", state.config.upload_dir, local_name);
+    let candidates = if local_name.contains('/') {
+        vec![format!("{}/{}", state.config.upload_dir, local_name)]
+    } else {
+        vec![
+            format!("{}/permanent/{}", state.config.upload_dir, local_name),
+            format!("{}/temporary/{}", state.config.upload_dir, local_name),
+            format!("{}/{}", state.config.upload_dir, local_name),
+        ]
+    };
+    let Some(file_path) = candidates.into_iter().find(|path| FsPath::new(path).is_file()) else {
+        return (StatusCode::NOT_FOUND, "File not found").into_response();
+    };
     match tokio::fs::read(&file_path).await {
         Ok(data) => {
             let content_type = mime_guess::from_path(&file_path)

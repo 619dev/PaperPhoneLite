@@ -1513,7 +1513,7 @@ export default function Chat() {
             >
               {!isMe && isGroup && (
                 <div className="avatar avatar-sm">
-                  {msg.from_avatar ? <img src={msg.from_avatar} alt="" /> : (msg.from_nickname?.[0] || '?')}
+                  {msg.from_avatar ? <img src={normalizeFileUrl(msg.from_avatar)} alt="" /> : (msg.from_nickname?.[0] || '?')}
                 </div>
               )}
               <div>

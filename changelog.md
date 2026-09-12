@@ -4,6 +4,20 @@ All notable changes and new features are recorded here. Historical entries below
 
 所有重要版本改动和新特性统一记录于此。下方历史条目由仓库原有文档迁移而来。
 
+## 3.0.21
+
+- Split server-local uploads into permanent avatar storage and temporary private/group chat attachment storage.
+- Added configurable temporary-file retention through `CHAT_FILE_RETENTION_DAYS` (14 days by default, `0` disables cleanup), with hourly cleanup by the server.
+- Added automatic startup migration for legacy files stored directly in `UPLOAD_DIR`; referenced user and group avatars are preserved permanently and other legacy uploads become temporary attachments.
+- Added backward-compatible file lookup for legacy `/api/files/uploads/...` URLs and corrected relative friend, group, and message-sender avatar URLs so they resolve against the configured server.
+- Updated Docker volume permissions, Compose configuration, the client/server packages, profile-page version display, deployment guides, and all eight language READMEs to `3.0.21`.
+
+- 服务端本地上传文件拆分为永久头像存储，以及私聊/群聊附件使用的临时存储。
+- 新增 `CHAT_FILE_RETENTION_DAYS` 临时文件保留期配置，默认 14 天、设为 `0` 可关闭清理；服务端每小时执行一次清理。
+- 新增启动时自动迁移旧版 `UPLOAD_DIR` 根目录文件：数据库仍引用的用户头像和群头像迁入永久目录，其他旧上传文件迁入临时目录。
+- 兼容旧版 `/api/files/uploads/...` 文件地址，并修复好友、群组及群聊消息发送者的相对头像地址错误解析问题。
+- Docker 持久卷权限、Compose 配置、客户端/服务端包、个人信息页底部版本号、部署文档及全部八种语言 README 统一更新为 `3.0.21`。
+
 ## 3.0.16
 
 - Added iOS background alerts through user-supplied Bark endpoints, restricted to `api.day.app` by default with an explicit `BARK_ALLOWED_HOSTS` allowlist for self-hosted Bark servers.

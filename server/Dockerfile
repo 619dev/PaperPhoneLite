@@ -49,20 +49,28 @@ FROM debian:bookworm-slim AS runtime
 #   - ca-certificates : TLS root certs
 #   - libssl3         : OpenSSL shared library
 #   - curl            : CLI for healthcheck
+#   - gosu            : drop root after repairing persistent-volume ownership
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
          ca-certificates \
          libssl3 \
          curl \
+         gosu \
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 WORKDIR /app
 COPY --from=builder /app/target/output/paperphone-lite-server .
+COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/paperphone-entrypoint
+
+RUN mkdir -p /var/lib/paperphone-lite/uploads \
+    && chown -R 10001:10001 /var/lib/paperphone-lite
 
 ENV PORT=3000
+ENV UPLOAD_DIR=/var/lib/paperphone-lite/uploads
 EXPOSE 3000
 
 HEALTHCHECK --interval=30s --timeout=5s --retries=5 --start-period=15s \
   CMD curl -sf http://localhost:3000/health || exit 1
 
+ENTRYPOINT ["paperphone-entrypoint"]
 CMD ["./paperphone-lite-server"]

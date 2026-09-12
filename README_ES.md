@@ -1,10 +1,10 @@
-# PaperPhoneLite 3.0.16
+# PaperPhoneLite 3.0.21
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
 [Historial de cambios](changelog.md)
 
-[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.0.16-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.0.21-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 
 PaperPhoneLite es un mensajero ligero con cifrado de extremo a extremo y sin funciones sociales públicas.
 
@@ -26,7 +26,7 @@ PaperPhoneLite es un mensajero ligero con cifrado de extremo a extremo y sin fun
 - Eliminación automática de mensajes tras 1, 3, 7 o 30 días.
 - Solicitudes de amistad, alias, etiquetas, bloqueo e invitaciones QR a grupos.
 - 2FA TOTP, notificaciones ntfy opcionales en Android y endpoints Bark configurados por el usuario en iOS. El servidor solo permite `api.day.app` por defecto; los hosts Bark propios se autorizan mediante `BARK_ALLOWED_HOSTS`.
-- Archivos de hasta 500 MB almacenados únicamente en el volumen persistente del servidor; los adjuntos se descargan a través del servidor Rust sin abrir direcciones de almacenamiento de objetos ni `.onion` en un navegador externo y pueden guardarse mediante el panel del sistema del móvil.
+- Archivos de hasta 500 MB en el volumen persistente del servidor; los avatares de usuarios/amigos y grupos son permanentes, los adjuntos de chat caducan según la configuración del servidor y las cargas antiguas se migran automáticamente.
 - Ocho idiomas de interfaz.
 
 ## Tor es obligatorio

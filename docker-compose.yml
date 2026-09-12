@@ -17,6 +17,7 @@ services:
       BARK_ALLOWED_HOSTS: ${BARK_ALLOWED_HOSTS:-api.day.app}
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
       UPLOAD_DIR: /var/lib/paperphone-lite/uploads
+      CHAT_FILE_RETENTION_DAYS: ${CHAT_FILE_RETENTION_DAYS:-14}
     volumes:
       - uploads:/var/lib/paperphone-lite/uploads
     expose: ["3000"]

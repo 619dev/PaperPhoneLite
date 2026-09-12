@@ -1,10 +1,10 @@
-# PaperPhoneLite 3.0.16
+# PaperPhoneLite 3.0.21
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
 [변경 기록](changelog.md)
 
-[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.0.16-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.0.21-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 
 PaperPhoneLite는 공개 소셜 기능이 없는 경량 종단간 암호화 메신저입니다.
 
@@ -26,7 +26,7 @@ PaperPhoneLite는 공개 소셜 기능이 없는 경량 종단간 암호화 메�
 - 1일, 3일, 7일 또는 30일 후 메시지 자동 삭제.
 - 친구 요청, 메모, 태그, 차단 및 QR 그룹 초대.
 - TOTP 2FA, Android의 선택적 ntfy 알림, iOS의 사용자 지정 Bark 엔드포인트를 지원합니다. 서버는 기본적으로 `api.day.app`만 허용하며 자체 호스팅 Bark는 `BARK_ALLOWED_HOSTS`로 추가합니다.
-- 최대 500MB 파일을 서버 영구 볼륨에만 저장하며, 첨부 파일은 외부 브라우저에서 객체 스토리지 또는 `.onion` URL을 열지 않고 Rust 서버를 통해 다운로드되어 휴대전화 시스템 패널에서 저장할 수 있습니다.
+- 최대 500MB 파일을 서버 영구 볼륨에 저장합니다. 사용자/친구 및 그룹 아바타는 영구 보관되고 채팅 첨부 파일은 서버 설정 기간 후 정리되며 이전 업로드는 자동으로 마이그레이션됩니다.
 - 8개 UI 언어.
 
 ## Tor 필수

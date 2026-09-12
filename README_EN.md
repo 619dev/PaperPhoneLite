@@ -1,10 +1,10 @@
-# PaperPhoneLite 3.0.16
+# PaperPhoneLite 3.0.21
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
 [Changelog](changelog.md)
 
-[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.0.16-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.0.21-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 
 PaperPhoneLite is a lightweight end-to-end encrypted messenger built with React/TypeScript and Rust/Axum. It keeps private/group chat, attachments, voice messages, reliable synchronization, offline cache, expiring messages, Android ntfy and iOS Bark background alerts, QR codes, 2FA, and blocking.
 
@@ -33,7 +33,7 @@ PaperPhoneLite is a lightweight end-to-end encrypted messenger built with React/
 | 🔔 Background notifications | Android can use ntfy; iOS can use a user-supplied Bark endpoint; the server allows only `api.day.app` by default and accepts self-hosted hosts through `BARK_ALLOWED_HOSTS` |
 | 🔑 Two-factor authentication | Google Authenticator-compatible TOTP with eight one-time recovery codes |
 | 📷 QR invitations | Add friends or join groups by QR code, with expiring group invitations |
-| 📤 Server-local files | Files up to 500MB remain on a persistent server volume; Android saves authenticated downloads through chunked native writes and the system sheet, with duplicate-send and duplicate-click protection |
+| 📤 Server-local files | Files up to 500MB remain on a persistent volume; user/friend and group avatars are permanent, private/group chat attachments expire according to server configuration, and legacy uploads migrate automatically |
 | 🦅 Tor onion service | Compose maps a Tor v3 onion service directly to the Rust backend while MySQL and Redis remain private |
 | 🌐 Eight languages | Chinese, English, Japanese, Korean, French, German, Russian, and Spanish |
 

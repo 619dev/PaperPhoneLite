@@ -8,6 +8,22 @@ function getBase(): string {
   return requireTorServer(localStorage.getItem('serverUrl') || import.meta.env.VITE_API_URL || '')
 }
 
+function normalizeAvatarFields(value: unknown): void {
+  if (!value || typeof value !== 'object') return
+  if (Array.isArray(value)) {
+    value.forEach(normalizeAvatarFields)
+    return
+  }
+  const record = value as Record<string, unknown>
+  for (const [key, child] of Object.entries(record)) {
+    if ((key === 'avatar' || key === 'from_avatar') && typeof child === 'string') {
+      record[key] = normalizeFileUrl(child)
+    } else {
+      normalizeAvatarFields(child)
+    }
+  }
+}
+
 export async function api<T = any>(
   path: string,
   opts: RequestInit = {}
@@ -42,6 +58,10 @@ export async function api<T = any>(
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     return {} as T
   }
+
+  // Older servers stored relative avatar paths. Those paths otherwise resolve
+  // against the web frontend host instead of the configured messaging server.
+  normalizeAvatarFields(data)
 
   // Keep local login state through ordinary authorization or transport
   // failures. Only an explicit server instruction may end the session.
@@ -127,10 +147,12 @@ export const del = <T = any>(path: string, body?: any) =>
     body: body ? JSON.stringify(body) : undefined,
   })
 
-export async function uploadFile(file: File): Promise<{ url: string; key: string }> {
+export type UploadStorageClass = 'temporary' | 'permanent'
+
+export async function uploadFile(file: File, storageClass: UploadStorageClass = 'temporary'): Promise<{ url: string; key: string }> {
   const form = new FormData()
   form.append('file', file)
-  const res = await post<{ url: string; key: string }>('/api/upload', form)
+  const res = await post<{ url: string; key: string }>(`/api/upload?storage_class=${storageClass}`, form)
   return { ...res, url: normalizeFileUrl(res.url) }
 }
 
@@ -140,7 +162,8 @@ export async function uploadFile(file: File): Promise<{ url: string; key: string
  */
 export function uploadFileWithProgress(
   file: File,
-  onProgress?: (pct: number) => void
+  onProgress?: (pct: number) => void,
+  storageClass: UploadStorageClass = 'temporary'
 ): Promise<{ url: string; key: string }> {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest()
@@ -170,7 +193,7 @@ export function uploadFileWithProgress(
     xhr.addEventListener('abort', () => reject(new Error('Upload cancelled')))
 
     const token = localStorage.getItem('token')
-    xhr.open('POST', `${getBase()}/api/upload`)
+    xhr.open('POST', `${getBase()}/api/upload?storage_class=${storageClass}`)
     if (token) xhr.setRequestHeader('Authorization', `Bearer ${token}`)
     xhr.send(form)
   })

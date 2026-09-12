@@ -1,10 +1,10 @@
-# PaperPhoneLite 3.0.16
+# PaperPhoneLite 3.0.21
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
 [更新历史](changelog.md)
 
-[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.0.16-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.0.21-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 
 PaperPhoneLite 是轻量级端到端加密即时通讯项目，使用 React 19/TypeScript Web 客户端与 Rust/Axum 服务端。
 
@@ -37,7 +37,7 @@ PaperPhoneLite 是轻量级端到端加密即时通讯项目，使用 React 19/T
 | 🔔 后台通知 | Android 可使用 ntfy；iOS 可通过用户配置的 Bark 地址接收提醒；服务端默认仅允许 `api.day.app`，可通过 `BARK_ALLOWED_HOSTS` 增加自建主机 |
 | 🌐 多语言 | 中文、英文、日语、韩语、法语、德语、俄语、西班牙语 |
 | 💬 丰富消息 | 文字、图片、视频、文档、语音、Emoji、Telegram 贴纸、已读状态和输入状态 |
-| 📤 服务端文件存储 | 单文件最大 500MB，文件仅保存在服务端持久卷；附件由 Rust 服务端中转下载，Android 通过原生分块写入和系统面板可靠保存，并防止重复发送与重复点击 |
+| 📤 服务端文件存储 | 单文件最大 500MB；好友/用户头像和群头像永久保存，私聊及群聊附件进入临时目录并按服务端配置定期清理；升级时自动迁移旧版文件；附件由 Rust 服务端中转下载 |
 | 🏷️ 好友标签 | 可给好友设置多个标签，并按标签筛选通讯录 |
 | 🔑 两步验证 | 兼容 Google Authenticator 的 TOTP，提供 8 个一次性恢复码 |
 | 📷 扫码加好友/入群 | 扫描二维码添加好友或加入群聊，群邀请可设置有效期 |
