@@ -1,3 +1,6 @@
+import { getGroupHistory } from '../api/groupHistory'
+import { encryptSignedPair, decryptSignedMessage } from '../crypto/authenticatedMessaging'
+import IdentityBadge, { IdentityPrompt } from '../components/IdentityBadge'
 import { useEffect, useRef, useState, useCallback, ReactNode } from 'react'
 import { Capacitor, registerPlugin } from '@capacitor/core'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
@@ -6,9 +9,9 @@ import { useI18n } from '../hooks/useI18n'
 import { get, post, put, uploadFileWithProgress, normalizeFileUrl, downloadFileFromServer } from '../api/http'
 import { sendWs, onWs } from '../api/socket'
 import { getKeys } from '../crypto/keystore'
-import { encryptHybrid, decryptHybrid, inspectHybridProtocol } from '../crypto/ratchet'
+import { inspectHybridProtocol } from '../crypto/ratchet'
 import { getPresentationSettings, protectPresentationText, unprotectPresentationText } from '../crypto/presentationCrypto'
-import { getMySenderKey, getSenderKey, generateSenderKey, encryptWithSenderKey, decryptWithSenderKey, distributeSenderKey, storeSenderKey, receiveSenderKey, isSenderKeyDistributed, markSenderKeyDistributed, removeSenderKey } from '../crypto/groupCrypto'
+import { encryptGroupMessage, decryptGroupMessage, fetchGroupKeys, MissingGroupKey } from '../crypto/signedGroups'
 import { Shield } from 'lucide-react'
 import { ChevronLeft, ChevronDown, Lock, Settings, Timer, ImageIcon, Film, Plus, Mic, Download, Paperclip, AlertTriangle, Clock, Package as PackageIcon, FileText, File as FileIcon, Image as LucideImage, Music, Video, Check, CheckCheck, SendHorizonal, Smile, WifiOff, X, ZoomIn, ZoomOut } from 'lucide-react'
 import StickerMedia from '../components/StickerMedia'
@@ -567,39 +570,9 @@ export default function Chat() {
     const path = isGroup ? `/api/messages/group/${id}?limit=50000` : `/api/messages/private/${id}?limit=50000`
 
     const loadMessages = async () => {
-      // For encrypted groups, fetch sender keys from server BEFORE loading messages
-      // This ensures keys distributed while we were offline are available for decryption
-      if (isGroup && group?.encrypted) {
-        try {
-          const keys = getKeys()
-          if (keys) {
-            const skData = await get(`/api/groups/${id}/sender-keys`)
-            if (skData?.keys && Array.isArray(skData.keys)) {
-              for (const k of skData.keys) {
-                // Always try to import the latest distribution from server.
-                // Don't skip if we already have a cached key — the cached key may be
-                // stale (encrypted with a previous ik_pub after a logout/login cycle).
-                // If decryption succeeds, it overwrites the old cache entry.
-                try {
-                  const senderKey = await receiveSenderKey(
-                    k.encrypted_key,
-                    k.header,
-                    keys.ik_priv,
-                    null
-                  )
-                  storeSenderKey(id!, k.from_id, senderKey, k.key_version || 1)
-                } catch (err) {
-                  console.warn(`[Chat] Failed to import sender key from ${k.from_id}:`, err)
-                }
-              }
-            }
-          }
-        } catch (err) {
-          console.warn('[Chat] Failed to fetch sender keys:', err)
-        }
-      }
+      if (isGroup) await fetchGroupKeys(id).catch(() => {})
 
-      const msgs = await get(path)
+      const msgs = isGroup ? await getGroupHistory(id) : await get(path)
       if (!Array.isArray(msgs)) return
 
       // Client-side defense: filter out expired messages based on auto_delete
@@ -612,45 +585,29 @@ export default function Chat() {
 
       let serverMessages: any[]
       if (!isGroup) {
-        const keys = getKeys()
         serverMessages = await Promise.all(filtered.map(async (msg) => {
           try {
             const isMe = msg.from === user?.id
             if (isMe && msg.self_ciphertext && msg.self_header) {
-              const decrypted = await decryptHybrid(msg.self_header, keys?.ik_priv || '', null, msg.self_ciphertext)
+              const decrypted = await decryptSignedMessage(msg)
               const text = await unprotectPresentationText(decrypted)
               return { ...msg, decrypted: text }
             } else if (!isMe && msg.ciphertext && msg.header) {
-              const decrypted = await decryptHybrid(msg.header, keys?.ik_priv || '', null, msg.ciphertext)
+              const decrypted = await decryptSignedMessage(msg)
               const text = await unprotectPresentationText(decrypted)
               return { ...msg, decrypted: text }
             }
-          } catch {}
-          return { ...msg, decrypted: msg.decrypted || undefined }
-        }))
-      } else if (group?.encrypted) {
-        // Encrypted group: decrypt with sender keys
-        serverMessages = await Promise.all(filtered.map(async (msg) => {
-          if (msg.nonce && msg.sender_key_version) {
-            try {
-              const sk = getSenderKey(id!, msg.from)
-              if (sk) {
-                const decrypted = await decryptWithSenderKey(msg.ciphertext, msg.nonce, sk.senderKey)
-                const text = await unprotectPresentationText(decrypted)
-                return { ...msg, decrypted: text }
-              }
-            } catch (err) {
-              console.warn(`[Chat] Failed to decrypt group msg ${msg.id} from ${msg.from}:`, err)
-            }
-            // Keep nonce in the message data so retry is possible later
-            return { ...msg, decrypted: '\ud83d\udd12' }
-          }
-          return { ...msg, decrypted: msg.ciphertext }
+          } catch { return { ...msg, decrypted: '⚠️ 消息身份或签名验证失败' } }
+          return { ...msg, decrypted: undefined }
         }))
       } else {
-        serverMessages = await Promise.all(filtered.map(async m => ({ ...m, decrypted: await unprotectPresentationText(m.ciphertext) })))
+        serverMessages = await Promise.all(filtered.map(async msg => {
+          try { return { ...msg, group_id: id, ...await decryptGroupMessage({ ...msg, group_id: id }, true) } }
+          catch (error) { return { ...msg, group_id: id, signature_valid: false, decrypted: error instanceof MissingGroupKey ? '🔒' : `⚠️ ${(error as Error).message}` } }
+        }))
       }
 
+      if (useStore.getState().user?.id !== user?.id) return
       // Merge: use server messages as base, append any local-only messages
       // (messages received via WebSocket that aren't in the server response yet)
       const serverIds = new Set(serverMessages.filter(m => m.id).map(m => m.id))
@@ -739,7 +696,7 @@ export default function Chat() {
         // Never retain the original body in the optimistic cache when the
         // global appearance/encryption layer is enabled.
         decrypted: getPresentationSettings().enabled ? wireContent : displayWireContent,
-        ciphertext: (isGroup && !group?.encrypted) ? wireContent : '',
+        ciphertext: '',
       }
       if (isGroup) {
         pendingMsg.group_id = id
@@ -750,92 +707,9 @@ export default function Chat() {
 
       let sent = false
       if (isGroup) {
-        if (group?.encrypted) {
-          // Encrypted group: use sender key
-          try {
-            let sk = getMySenderKey(id!, user.id)
-            // If we have a key but it was never successfully distributed, discard it and regenerate
-            if (sk && !isSenderKeyDistributed(id!, user.id)) {
-              removeSenderKey(id!, user.id)
-              sk = null
-            }
-            if (!sk) {
-              // Generate and distribute sender key
-              const newKey = await generateSenderKey()
-              // Distribute to group members — fetch from server to ensure we have full member list
-              let distributed = false
-              try {
-                const groupDetail = await get(`/api/groups/${id}`)
-                if (groupDetail?.members && Array.isArray(groupDetail.members)) {
-                  const keys = getKeys()
-                  const distributions: any[] = []
-                  const recipients = groupDetail.members.filter((m: any) => m.id !== user.id)
-                  for (const m of groupDetail.members) {
-                    if (m.id === user.id) continue
-                    // Try friends list first for public key, then fetch from server
-                    let ikPub: string | undefined
-                    let kemPub: string | undefined
-                    const friendEntry = friends.find(f => f.id === m.id)
-                    if (friendEntry?.ik_pub) {
-                      ikPub = friendEntry.ik_pub
-                      kemPub = friendEntry.kem_pub
-                    } else {
-                      // Not in friends list — fetch public keys from server
-                      try {
-                        const memberKeys = await get(`/api/users/${m.id}`)
-                        ikPub = memberKeys?.ik_pub
-                        kemPub = memberKeys?.kem_pub
-                      } catch (fetchKeyErr) {
-                        console.warn(`[Chat] Failed to fetch public keys for member ${m.id}:`, fetchKeyErr)
-                      }
-                    }
-                    if (ikPub && keys) {
-                      try {
-                        // Pass null for kemPub — kem_pub on server is an Ed25519 signing key,
-                        // NOT a valid Kyber KEM key. Passing it causes unnecessary Kyber encap
-                        // failures. Using null goes directly to pure ECDH (version 1).
-                        const dist = await distributeSenderKey(newKey, ikPub, null)
-                        distributions.push({ to_id: m.id, encrypted_key: dist.encrypted_key, header: dist.header })
-                      } catch (distMemberErr) {
-                        console.warn(`[Chat] distributeSenderKey failed for member ${m.id}:`, distMemberErr)
-                      }
-                    }
-                  }
-                  if (distributions.length === recipients.length) {
-                    if (distributions.length > 0) {
-                    await post(`/api/groups/${id}/sender-keys`, { distributions, key_version: 1 })
-                    }
-                    distributed = true
-                  }
-                }
-              } catch (distErr) {
-                console.warn('[Chat] Sender key distribution failed:', distErr)
-              }
-              // Only store and use the key if distribution succeeded
-              if (distributed) {
-                storeSenderKey(id!, user.id, newKey, 1, true)
-                sk = { groupId: id!, userId: user.id, senderKey: newKey, keyVersion: 1, distributed: true }
-              } else {
-                throw new Error('Sender key distribution failed')
-              }
-            }
-            if (sk && !sent) {
-              const encrypted = await encryptWithSenderKey(wireContent, sk.senderKey)
-              // Update pendingMsg with actual encryption metadata so the ack handler
-              // stores the message with correct encrypted fields (matching server data).
-              // This ensures consistency when messages are later loaded from server.
-              pendingMsg.ciphertext = encrypted.ciphertext
-              pendingMsg.nonce = encrypted.nonce
-              pendingMsg.sender_key_version = sk.keyVersion
-              sent = sendWs({ type: 'message', client_msg_id: clientMsgId, msg_type: msgType, group_id: id, ciphertext: encrypted.ciphertext, nonce: encrypted.nonce, sender_key_version: sk.keyVersion })
-            }
-          } catch (encErr) {
-            console.error('[Chat] Group encryption failed; message blocked:', encErr)
-            throw encErr
-          }
-        } else {
-          sent = sendWs({ type: 'message', client_msg_id: clientMsgId, msg_type: msgType, group_id: id, ciphertext: wireContent })
-        }
+        const encrypted = await encryptGroupMessage(id, wireContent, msgType, clientMsgId)
+        Object.assign(pendingMsg, encrypted, { signature_valid: true })
+        sent = sendWs({ type: 'message', client_msg_id: clientMsgId, msg_type: msgType, group_id: id, ...encrypted })
       } else {
         const keys = getKeys()
         const recipientPub = friend?.ik_pub
@@ -844,19 +718,9 @@ export default function Chat() {
           throw new Error('Recipient or local encryption keys are unavailable')
         } else {
           try {
-            const forRecipient = await encryptHybrid(recipientPub, recipientKem, wireContent)
-            const forSelf = await encryptHybrid(keys.ik_pub, null, wireContent)
-            // Keep the optimistic cache ciphertext-only while waiting for the
-            // server acknowledgement, matching the Android 2.3.8 hardening.
-            pendingMsg.ciphertext = forRecipient.ciphertext
-            pendingMsg.header = forRecipient.header
-            pendingMsg.self_ciphertext = forSelf.ciphertext
-            pendingMsg.self_header = forSelf.header
-            sent = sendWs({
-              type: 'message', client_msg_id: clientMsgId, msg_type: msgType, to: id,
-              ciphertext: forRecipient.ciphertext, header: forRecipient.header,
-              self_ciphertext: forSelf.ciphertext, self_header: forSelf.header,
-            })
+            const pair = await encryptSignedPair(id!, recipientPub, recipientKem || '', wireContent, msgType)
+            Object.assign(pendingMsg, pair)
+            sent = sendWs({ type: 'message', client_msg_id: clientMsgId, msg_type: msgType, to: id, ...pair })
           } catch (encErr) {
             console.error('[Chat] Private-message encryption failed; message blocked:', encErr)
             throw encErr
@@ -876,7 +740,7 @@ export default function Chat() {
       console.error('[Chat] sendMessage error:', err)
       ;(window as any).__pendingMsg = null
       if (msgType === 'text' && content) setInput(content)
-      alert(t('chat.encryption_send_failed') || 'Encryption failed. The message was not sent.')
+      alert((err as Error).message || t('chat.encryption_send_failed'))
     } finally {
       sendingRef.current = false
       setSending(false)
@@ -1247,6 +1111,9 @@ export default function Chat() {
 
   // ── Render message bubble content ──
   const renderBubble = (msg: any, displayText: string, isEncFailed: boolean) => {
+    if (isGroup && (!msg.signature_valid || msg.decryption_pending)) {
+      return <span style={{ color: 'var(--text-muted)' }}>{msg.decrypted || '🔒 群消息待验证'}</span>
+    }
     if (isEncFailed) {
       return <span style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}><Lock size={16} /> {t('chat.decrypt_failed')}</span>
     }
@@ -1430,14 +1297,16 @@ export default function Chat() {
         <button className="back-btn" onClick={() => navigate(-1)}><ChevronLeft size={20} /></button>
         <h1 style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}
           onClick={() => isGroup ? navigate(`/group/${id}`) : navigate(`/user/${id}`)}>
-          {chatName}
+          {chatName}{!isGroup && id && <IdentityBadge id={id} ik={friend?.ik_pub} sign={friend?.kem_pub} />}
           {!isGroup && <span style={{ fontSize: 14, opacity: 0.7 }} title={t('chat.e2e_enabled')}><Lock size={16} /></span>}
-          {isGroup && group?.encrypted && <span style={{ fontSize: 14, opacity: 0.7, color: 'var(--accent)' }} title={t('group.encryption_on')}><Shield size={16} /></span>}
+          {isGroup && <span style={{ fontSize: 14, opacity: 0.7, color: 'var(--accent)' }} title={t('group.encryption_on')}><Shield size={16} /></span>}
         </h1>
         <div style={{ marginLeft: 'auto', display: 'flex', gap: 4, alignItems: 'center' }}>
           <button className="icon-btn" onClick={() => setShowSettings(true)} style={{ fontSize: 18 }} title={t('chat.settings')}><Settings size={18} /></button>
         </div>
       </div>
+
+      {!isGroup && id && <IdentityPrompt id={id} ik={friend?.ik_pub} sign={friend?.kem_pub} onVerify={() => navigate(`/user/${id}`)} />}
 
       {!wsConnected && (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '6px 12px', fontSize: 12, color: '#fff', background: '#ef4444', animation: 'fade-in .3s ease' }}>
@@ -1451,7 +1320,7 @@ export default function Chat() {
         </div>
       )}
 
-      {isGroup && group?.encrypted && (
+      {isGroup && (
         <div style={{
           display: 'flex', alignItems: 'center', gap: 6,
           padding: '6px 14px', fontSize: 12,
@@ -1459,18 +1328,7 @@ export default function Chat() {
           borderBottom: '1px solid rgba(76, 175, 80, 0.15)',
         }}>
           <span style={{ fontSize: 14, flexShrink: 0 }}><Shield size={14} /></span>
-          <span>{t('group.encrypted_banner')}</span>
-        </div>
-      )}
-      {isGroup && !group?.encrypted && (
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 6,
-          padding: '6px 14px', fontSize: 12,
-          color: '#b8860b', background: 'rgba(255, 193, 7, 0.1)',
-          borderBottom: '1px solid rgba(255, 193, 7, 0.15)',
-        }}>
-          <span style={{ fontSize: 14, flexShrink: 0 }}><AlertTriangle size={14} /></span>
-          <span>{t('chat.group_unencrypted_warning')}</span>
+          <span>群消息签名与端到端加密已启用；签名验证通过后显示 ✅。请先在群成员资料中验证身份。</span>
         </div>
       )}
 
@@ -1517,8 +1375,8 @@ export default function Chat() {
                 </div>
               )}
               <div>
-                {!isMe && isGroup && (
-                  <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 2 }}>{msg.from_nickname || msg.from}</div>
+                {isGroup && (
+                  <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 2 }}>{msg.from_nickname || (isMe ? user?.nickname : msg.from)}{msg.signature_valid && <span style={{ color: '#22c55e', marginLeft: 4 }} title={`消息签名验证通过：${msg.from}`}>✅</span>}</div>
                 )}
                 <div className="msg-bubble" style={isSticker && !payload.reply ? { background: 'transparent', boxShadow: 'none', padding: 0 } : undefined}>
                   {payload.reply && (

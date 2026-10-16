@@ -1,3 +1,4 @@
+import { IDENTITY_NOTICE } from '../crypto/authenticatedMessaging'
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useStore, ProxyConfig } from '../store'
@@ -396,7 +397,7 @@ function MessagePrivacySettings({ onBack, t }: { onBack: () => void; t: (k: stri
   return <div className="page">
     <div className="page-header"><button className="back-btn" onClick={onBack}><ChevronLeft size={20} /></button><h1>{t('profile.message_privacy')}</h1></div>
     <div className="page-body">
-      <div style={{ padding: '12px 16px', fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.6 }}>{t('profile.message_privacy_desc')}</div>
+      <div style={{ padding: '12px 16px', fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.6 }}>{t('profile.message_privacy_desc')}<p>{IDENTITY_NOTICE}</p></div>
       <div className="settings-item">
         <span className="label">{t('chat.presentation_codec')}</span>
         <select value={settings.codec} disabled={settings.enabled} onChange={e => { updatePresentationSettings({ codec: e.target.value as PresentationCodecId }); refresh() }}

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:security": "node tests/authenticatedMessaging.test.cjs && node tests/signedGroups.test.cjs && node tests/sync.test.cjs"
   },
   "dependencies": {
     "crystals-kyber-js": "^2.7.0",
