@@ -8,6 +8,13 @@
 
 PaperPhoneLite は、公開ソーシャル機能を持たない軽量なエンドツーエンド暗号化メッセンジャーです。
 
+<details>
+<summary>📸 スクリーンショット（クリックして展開）</summary>
+<img width="30%" height="30%" src="screenshot/ui1.png" alt="スクリーンショット 1">
+<img width="30%" height="30%" src="screenshot/ui2.png" alt="スクリーンショット 2">
+<img width="30%" height="30%" src="screenshot/ui3.png" alt="スクリーンショット 3">
+</details>
+
 ## 機能
 
 - X25519 · XSalsa20-Poly1305 · Ed25519.

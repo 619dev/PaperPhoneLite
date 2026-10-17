@@ -8,6 +8,13 @@
 
 PaperPhoneLite ist ein leichtgewichtiger Ende-zu-Ende-verschlüsselter Messenger ohne öffentliche Social-Funktionen.
 
+<details>
+<summary>📸 Screenshots (zum Aufklappen klicken)</summary>
+<img width="30%" height="30%" src="screenshot/ui1.png" alt="Screenshot 1">
+<img width="30%" height="30%" src="screenshot/ui2.png" alt="Screenshot 2">
+<img width="30%" height="30%" src="screenshot/ui3.png" alt="Screenshot 3">
+</details>
+
 ## Funktionen
 
 - X25519 · XSalsa20-Poly1305 · Ed25519.

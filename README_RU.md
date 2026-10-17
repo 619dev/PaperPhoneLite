@@ -8,6 +8,13 @@
 
 PaperPhoneLite — лёгкий мессенджер со сквозным шифрованием без публичных социальных функций.
 
+<details>
+<summary>📸 Скриншоты (нажмите, чтобы развернуть)</summary>
+<img width="30%" height="30%" src="screenshot/ui1.png" alt="Скриншот 1">
+<img width="30%" height="30%" src="screenshot/ui2.png" alt="Скриншот 2">
+<img width="30%" height="30%" src="screenshot/ui3.png" alt="Скриншот 3">
+</details>
+
 ## Возможности
 
 - X25519 · XSalsa20-Poly1305 · Ed25519.

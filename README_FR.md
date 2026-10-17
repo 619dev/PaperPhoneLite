@@ -8,6 +8,13 @@
 
 PaperPhoneLite est une messagerie légère chiffrée de bout en bout, sans fonctions sociales publiques.
 
+<details>
+<summary>📸 Captures d’écran (cliquer pour afficher)</summary>
+<img width="30%" height="30%" src="screenshot/ui1.png" alt="Capture d’écran 1">
+<img width="30%" height="30%" src="screenshot/ui2.png" alt="Capture d’écran 2">
+<img width="30%" height="30%" src="screenshot/ui3.png" alt="Capture d’écran 3">
+</details>
+
 ## Fonctionnalités
 
 - X25519 · XSalsa20-Poly1305 · Ed25519.

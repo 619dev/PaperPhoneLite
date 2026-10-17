@@ -8,6 +8,13 @@
 
 PaperPhoneLite es un mensajero ligero con cifrado de extremo a extremo y sin funciones sociales públicas.
 
+<details>
+<summary>📸 Capturas de pantalla (haz clic para desplegar)</summary>
+<img width="30%" height="30%" src="screenshot/ui1.png" alt="Captura de pantalla 1">
+<img width="30%" height="30%" src="screenshot/ui2.png" alt="Captura de pantalla 2">
+<img width="30%" height="30%" src="screenshot/ui3.png" alt="Captura de pantalla 3">
+</details>
+
 ## Funciones
 
 - X25519 · XSalsa20-Poly1305 · Ed25519.

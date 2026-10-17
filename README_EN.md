@@ -8,6 +8,13 @@
 
 PaperPhoneLite is a lightweight end-to-end encrypted messenger built with React/TypeScript and Rust/Axum. It keeps private/group chat, attachments, voice messages, reliable synchronization, offline cache, expiring messages, Android ntfy and iOS Bark background alerts, QR codes, 2FA, and blocking.
 
+<details>
+<summary>📸 Screenshots (click to expand)</summary>
+<img width="30%" height="30%" src="screenshot/ui1.png" alt="Screenshot 1">
+<img width="30%" height="30%" src="screenshot/ui2.png" alt="Screenshot 2">
+<img width="30%" height="30%" src="screenshot/ui3.png" alt="Screenshot 3">
+</details>
+
 ## Features
 
 | Feature | Description |

@@ -8,6 +8,13 @@
 
 PaperPhoneLite는 공개 소셜 기능이 없는 경량 종단간 암호화 메신저입니다.
 
+<details>
+<summary>📸 스크린샷 미리보기 (클릭하여 펼치기)</summary>
+<img width="30%" height="30%" src="screenshot/ui1.png" alt="스크린샷 1">
+<img width="30%" height="30%" src="screenshot/ui2.png" alt="스크린샷 2">
+<img width="30%" height="30%" src="screenshot/ui3.png" alt="스크린샷 3">
+</details>
+
 ## 기능
 
 - X25519 · XSalsa20-Poly1305 · Ed25519.
