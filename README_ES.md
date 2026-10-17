@@ -1,25 +1,16 @@
-# PaperPhoneLite 3.0.21
+# PaperPhoneLite 3.1.0
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
 [Historial de cambios](changelog.md)
 
-[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.0.21-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.1.0-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 
 PaperPhoneLite es un mensajero ligero con cifrado de extremo a extremo y sin funciones sociales públicas.
 
-<details>
-<summary>Capturas de la aplicación</summary>
-
-![Captura 1 de la aplicación PaperPhoneLite](screenshot/ui1.png)
-![Captura 2 de la aplicación PaperPhoneLite](screenshot/ui2.png)
-![Captura 3 de la aplicación PaperPhoneLite](screenshot/ui3.png)
-
-</details>
-
 ## Funciones
 
-- Acuerdo de claves híbrido X25519 + ML-KEM-768, XSalsa20-Poly1305 y números de seguridad.
+- X25519 · XSalsa20-Poly1305 · Ed25519.
 - Chats privados y grupos cifrados con Sender Key de hasta 2.000 miembros.
 - Texto, imágenes, vídeo, documentos, voz, emoji y stickers de Telegram.
 - Sincronización WebSocket fiable, cola sin conexión y caché aislada por cuenta.
@@ -28,6 +19,24 @@ PaperPhoneLite es un mensajero ligero con cifrado de extremo a extremo y sin fun
 - 2FA TOTP, notificaciones ntfy opcionales en Android y endpoints Bark configurados por el usuario en iOS. El servidor solo permite `api.day.app` por defecto; los hosts Bark propios se autorizan mediante `BARK_ALLOWED_HOSTS`.
 - Archivos de hasta 500 MB en el volumen persistente del servidor; los avatares de usuarios/amigos y grupos son permanentes, los adjuntos de chat caducan según la configuración del servidor y las cargas antiguas se migran automáticamente.
 - Ocho idiomas de interfaz.
+
+## Verificación de identidad, firmas y recuperación sin conexión
+
+Estos cambios del protocolo **aún no están publicados**; la versión sigue siendo 3.1.0. Consulte el [registro](changelog.md).
+
+Acuerde la contraseña de apariencia del texto fuera de Internet, configúrela localmente y desbloquéela. **Esta contraseña permite comprobar si la otra persona es de confianza. Compártala solo fuera de Internet; nunca la envíe en línea de ninguna forma.** La verificación cifra exactamente `paperphone.app` con AES-GCM, vincula ambas identidades, el número de seguridad existente de 12 grupos y desafíos aleatorios, y firma el sobre cifrado con Ed25519. El perfil muestra un ✅ verde solo cuando ambas partes validan las pruebas y confirman la recepción de los desafíos. Compare los números por un canal fiable fuera de Internet.
+
+Abrir un perfil privado actualiza las claves, comprueba la confianza local y recupera confirmaciones del historial. La contraseña desbloqueada inicia o reanuda automáticamente la verificación. Las aperturas repetidas conservan el desafío y limitan los reintentos. Un cambio de clave revoca la confianza y exige verificar manualmente tras comprobarla fuera de Internet. Recuperar el foco o la visibilidad también actualiza el estado.
+
+Todos los mensajes nuevos de grupo requieren firma y cifrado Sender Key. Los grupos existentes se migran y el cifrado no se puede desactivar. Verifique a cada participante en privado antes de distribuir claves. La lista de miembros actualiza claves y confianza sin iniciar verificaciones privadas masivas. La firma protege grupo, remitente, generación de clave, ID, tipo, claves de identidad, nombre, nonce y texto cifrado. Una firma válida de una clave fiable produce un ✅ verde; el contenido permanece bloqueado mientras falte la clave de descifrado.
+
+Entrar, salir o expulsar a un miembro incrementa la generación de claves. Los miembros conectados renuevan inmediatamente sus propias claves de envío tras el aviso; los demás, al reconectarse y antes de enviar. El servidor rechaza generaciones anteriores. Quien sale no puede enviar ni obtener nuevos mensajes o claves; volver a entrar no permite consultar el período de ausencia. Los destinatarios restantes conservan las claves históricas. No se pueden borrar a distancia claves o textos que un antiguo miembro ya posea.
+
+La recuperación guarda `server_seq` por cuenta, recorre todas las páginas y reintenta con versiones históricas de las claves. El historial de grupo usa secuencias inmutables sin un límite total fijo. La caché local sigue limitada a 2.000 mensajes por conversación y se mantienen los plazos de borrado automático. Las claves ya perdidas no se pueden recrear.
+
+Se utilizan X25519, XSalsa20-Poly1305 y Ed25519. El campo antiguo `kem_pub` contiene una clave de firma, no un registro poscuántico ML-KEM funcional. El servidor controla miembros y orden, sin consenso MLS. Los metadatos y los propios archivos adjuntos subidos no pasan a tener cifrado de extremo a extremo gracias a las firmas.
+
+Actualice conjuntamente el servidor y los clientes de todas las plataformas: los antiguos no entienden los sobres nuevos. Los cambios del código no implican aplicaciones o imágenes Docker publicadas. Consulte [migración](DEPLOY_EN.md) y [pruebas](client/tests/README.md).
 
 ## Tor es obligatorio
 

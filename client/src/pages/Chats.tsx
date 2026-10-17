@@ -66,7 +66,7 @@ export default function Chats() {
   const getPreview = (msg?: any) => {
     if (!msg) return ''
     switch (msg.msg_type) {
-      case 'identity_verification': return '身份验证消息'
+      case 'identity_verification': return t('verify.message')
       case 'image': return t('chats.image')
       case 'file': return t('chats.file')
       case 'voice': return t('chats.voice')

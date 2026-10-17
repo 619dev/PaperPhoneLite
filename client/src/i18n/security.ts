@@ -31,5 +31,24 @@ const API_ERRORS: Record<string, string> = {
 }
 
 export function localizeSecurityApiError(message: string): string {
-  return API_ERRORS[message] ? securityText(API_ERRORS[message]) : message
+  return Object.prototype.hasOwnProperty.call(API_ERRORS, message) ? securityText(API_ERRORS[message]) : message
+}
+
+/** Keep an error's translation key so an asynchronous operation can finish
+ * after a language switch without displaying its original language. */
+export class SecurityError extends Error {
+  constructor(readonly key: string, readonly params?: TranslationParams) {
+    super(securityText(key, params))
+    this.name = 'SecurityError'
+  }
+}
+
+export function securityErrorText(error: unknown, fallback = 'verify.signature_failed'): string {
+  if (error instanceof SecurityError) return securityText(error.key, error.params)
+  if (error instanceof Error && Object.prototype.hasOwnProperty.call(API_ERRORS, error.message)) return localizeSecurityApiError(error.message)
+  return securityText(fallback)
+}
+
+export function securityApiException(message: string): Error {
+  return Object.prototype.hasOwnProperty.call(API_ERRORS, message) ? new SecurityError(API_ERRORS[message]) : new Error(message)
 }

@@ -1,5 +1,5 @@
+import { securityText } from '../i18n/security'
 import IdentityBadge from '../components/IdentityBadge'
-import { IDENTITY_NOTICE } from '../crypto/authenticatedMessaging'
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { get, post, del, put } from '../api/http'
@@ -74,7 +74,7 @@ export default function Contacts() {
   // Listen for real-time friend events via WebSocket
   useEffect(() => {
     const unsub1 = onWs('friend_accepted', () => {
-      alert('新增联系人，请先设定文本外观密码并验证对方身份。' + IDENTITY_NOTICE)
+      alert(securityText('verify.new_contact') + '\n' + securityText('verify.notice'))
       // Someone accepted our request — refresh friends list
       get<Friend[]>('/api/friends').then(setFriends).catch(() => {})
     })
@@ -161,7 +161,7 @@ export default function Contacts() {
       // Refresh friends list to show the newly added friend
       const updated = await get<Friend[]>('/api/friends')
       setFriends(updated)
-      alert('请先设定文本外观密码，并验证对方身份。' + IDENTITY_NOTICE)
+      alert(t('verify.setup_notice') + '\n' + t('verify.notice'))
       navigate(`/user/${friendId}`)
     } catch (err: any) {
       alert(err.message || t('common.error'))

@@ -1,4 +1,4 @@
-import { securityText } from '../i18n/security'
+import { SecurityError } from '../i18n/security'
 import { deleteBrowserSecret, getBrowserSecret } from './browserSecretStore'
 import { decodePresentationBytes, encodePresentationBytes, type PresentationCodecId } from './presentationCodec'
 
@@ -84,7 +84,7 @@ export function presentationCiphertextForPlaintext(plaintext?: string): string |
 }
 
 export async function enablePresentationCrypto(codec: PresentationCodecId, newPassword: string): Promise<void> {
-  if (newPassword.length < 8) throw new Error(securityText('crypto.password_short'))
+  if (newPassword.length < 8) throw new SecurityError('crypto.password_short')
   const salt = crypto.getRandomValues(new Uint8Array(16))
   keyCache.clear()
   const verifier = await makeVerifier(newPassword, salt)
@@ -146,7 +146,7 @@ export function handlePresentationAppState(active: boolean): void {
 export async function protectPresentationText(text: string): Promise<string> {
   const settings = getPresentationSettings()
   if (!settings.enabled) return text
-  if (!password || !settings.salt) throw new Error(securityText('crypto.unlock_password'))
+  if (!password || !settings.salt) throw new SecurityError('crypto.unlock_password')
   const salt = unb64(settings.salt)
   const iv = crypto.getRandomValues(new Uint8Array(12))
   const key = await deriveKey(password, salt)
@@ -198,7 +198,7 @@ export async function unprotectPresentationText(text: string): Promise<string> {
  * The encrypted plaintext is exactly paperphone.app; metadata is authenticated AAD.
  */
 export async function encryptIdentityText(binding: string): Promise<{ salt: string; iv: string; ciphertext: string }> {
-  if (!getPresentationSettings().enabled || !password) throw new Error(securityText('crypto.setup_password'))
+  if (!getPresentationSettings().enabled || !password) throw new SecurityError('crypto.setup_password')
   const salt = crypto.getRandomValues(new Uint8Array(16))
   const iv = crypto.getRandomValues(new Uint8Array(12))
   const key = await deriveKey(password, salt)
@@ -207,10 +207,10 @@ export async function encryptIdentityText(binding: string): Promise<{ salt: stri
 }
 
 export async function decryptIdentityText(binding: string, proof: { salt: string; iv: string; ciphertext: string }): Promise<string> {
-  if (!password) throw new Error(securityText('crypto.unlock_password'))
+  if (!password) throw new SecurityError('crypto.unlock_password')
   const salt = unb64(proof.salt)
   const iv = unb64(proof.iv)
-  if (salt.length !== 16 || iv.length !== 12) throw new Error(securityText('crypto.invalid_proof'))
+  if (salt.length !== 16 || iv.length !== 12) throw new SecurityError('crypto.invalid_proof')
   const key = await deriveKey(password, salt)
   const plaintext = await crypto.subtle.decrypt({ name: 'AES-GCM', iv, additionalData: new TextEncoder().encode('PaperPhone-identity-v1:' + binding) }, key, unb64(proof.ciphertext))
   return new TextDecoder().decode(plaintext)

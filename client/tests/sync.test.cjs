@@ -54,7 +54,7 @@ async function run() {
   await assert.rejects(api.syncMessages(),/network/)
   assert.equal(cursorWrites,before)
   global.__syncGet=async()=>({messages:[],next_cursor:106,has_more:true})
-  await assert.rejects(api.syncMessages(),/did not advance/)
+  await assert.rejects(api.syncMessages(),/未能继续/)
   let release
   global.__syncGet=()=>new Promise(resolve=>{release=resolve})
   const old=api.syncMessages()

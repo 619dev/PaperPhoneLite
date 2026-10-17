@@ -4,6 +4,30 @@ All notable changes and new features are recorded here. Historical entries below
 
 所有重要版本改动和新特性统一记录于此。下方历史条目由仓库原有文档迁移而来。
 
+## 3.1.0 (Unreleased / 未发布)
+
+The following describes current source changes, not a new release or published native/Docker build. Package versions remain 3.1.0.
+
+- Updated client/server package versions, lockfiles, documentation and the profile-page footer to 3.1.0.
+- Added Ed25519-signed private envelopes and a mutual offline-password identity handshake. AES-GCM encrypts exactly `paperphone.app`; identity keys, the existing 12-group safety number, challenges and receipts are authenticated. Profile badges require both directions to complete.
+- Private profiles automatically refresh keys and verification receipts, resume pending handshakes when unlocked, preserve challenges and throttle retries. Changed identities revoke trust and require explicit offline re-verification. Group member lists refresh trust; focus/visibility changes refresh both views.
+- Required signatures and Sender Key encryption for all new group messages, with trusted private identities before key distribution and authenticated nicknames. Valid signatures can display green while missing decryption keys keep content locked.
+- Added membership epochs, serialized revocation, exact-recipient sender-key distribution and rotation after membership changes. Departed members lose future access; historical distributions remain for continuing recipients. Already-held keys/plaintexts cannot be erased.
+- Added durable sequence catch-up, committed ordering barriers, historical key retries and immutable-sequence group-history pagination without a fixed total cap. Existing local cache and retention limits remain.
+- Completed 92 security text keys in all eight languages, current-language errors and localization checks. Expanded client security/sync tests and isolated MySQL/HTTP/WebSocket integration coverage.
+- Updated all eight READMEs, deployment, Tor and test documentation. Corrected the previous ML-KEM claim: the legacy `kem_pub` field carries an Ed25519 signing public key; the signed path uses X25519 rather than functioning post-quantum registration. Coordinate server/client upgrades and database migration.
+
+以下为当前源码改动，不代表新版本、原生应用或 Docker 镜像已发布；包版本保持 3.1.0。
+
+- 客户端、服务端、锁文件、文档与个人信息页底部版本号统一更新为 3.1.0。
+- 私聊引入 Ed25519 签名信封及基于线下文本外观密码的双向身份验证。AES-GCM 加密固定文本 `paperphone.app`，认证双方身份、原有 12 组安全号码、挑战和回执；个人资料对勾要求双向完成。
+- 打开私聊资料自动刷新密钥和验证回执，密码解锁后自动发起或继续验证，保留挑战并限制重试。身份变化撤销信任，须线下核对后手动重验。群成员列表刷新可信状态，两类页面在焦点和可见性恢复时刷新。
+- 所有新群消息强制签名与 Sender Key 加密，分发密钥前先私聊验证成员，昵称受签名保护。签名正确可显示绿色对勾，缺少解密密钥时正文仍保持锁定。
+- 引入成员代次、串行撤销、准确接收者密钥分发及成员变化后的发送密钥轮换。离群者失去后续访问，留群者保留历史密钥；无法擦除已持有的旧密钥或明文。
+- 持久化序号追赶、已提交顺序屏障、历史密钥重试及按不可变序号分页的群历史，无固定历史总条数上限；原有本地缓存及保留期限制继续生效。
+- 补全八语言全部 92 个安全文本键、当前语言错误显示及本地化检查，扩展客户端安全/同步测试和独立 MySQL、HTTP、WebSocket 集成测试。
+- 更新八语言 README、部署、Tor 与测试文档。修正旧 ML-KEM 声明：`kem_pub` 实际承载 Ed25519 签名公钥，当前签名路径使用 X25519，未实现后量子注册。升级须协调服务端、客户端及数据库迁移。
+
 ## 3.0.21
 
 - Split server-local uploads into permanent avatar storage and temporary private/group chat attachment storage.

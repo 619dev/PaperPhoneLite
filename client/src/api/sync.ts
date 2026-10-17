@@ -1,4 +1,4 @@
-import { securityText } from '../i18n/security'
+import { SecurityError } from '../i18n/security'
 import { get } from './http'
 import { dispatchIncoming } from './socket'
 import { useStore, flushMessageCache } from '../store'
@@ -35,7 +35,7 @@ export function syncMessages(): Promise<void> {
         localStorage.setItem(key, String(cursor))
       }
       if (!result.has_more) break
-      if (next <= previous) throw new Error(securityText('crypto.cursor_stalled'))
+      if (next <= previous) throw new SecurityError('crypto.cursor_stalled')
     }
   })().finally(() => { syncJobs.delete(owner) })
   syncJobs.set(owner, job)

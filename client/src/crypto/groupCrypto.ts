@@ -1,4 +1,4 @@
-import { securityText } from '../i18n/security'
+import { SecurityError } from '../i18n/security'
 /**
  * Group E2E Encryption — Sender Key Protocol
  *
@@ -78,7 +78,7 @@ export function storeSenderKey(groupId: string, userId: string, senderKey: strin
   if (senderKeysAccount !== currentAccount()) { senderKeyCache = []; senderKeysAccount = currentAccount() }
   loadSenderKeys()
   const existing = getSenderKey(groupId, userId, keyVersion)
-  if (existing?.authenticated && existing.senderKey !== senderKey) throw new Error(securityText('crypto.key_conflict'))
+  if (existing?.authenticated && existing.senderKey !== senderKey) throw new SecurityError('crypto.key_conflict')
   // Retain historical epochs so offline members can decrypt across rotations.
   senderKeyCache = senderKeyCache.filter(
     sk => !(sk.groupId === groupId && sk.userId === userId && sk.keyVersion === keyVersion)

@@ -1,4 +1,19 @@
-Run `npm run test:security` in client/. Tests use the real sodium signatures,
+# Security and localization tests
+
+Run these commands from the repository root after installing the client dependencies with `npm ci --prefix client`:
+
+```bash
+npm --prefix client run test:security
+npm --prefix client run test:i18n
+npm --prefix client run build
+cargo test --manifest-path server/Cargo.toml
+```
+
+The normal Rust run does not execute the ignored MySQL integration test. Use the explicit command below with a disposable local MySQL instance; the test account needs permission to create and drop its randomly named database. Do not use a production database. The fixture uses a local Unix socket and an ephemeral loopback WebSocket port; it does not require Redis. A failed run may leave its temporary database for investigation.
+
+## Cryptographic and synchronization coverage
+
+The client security tests use the real sodium signatures,
 X25519/secretbox encryption, PBKDF2 and AES-GCM. HTTP, WebSocket, identity-key
 loading and encrypted-secret persistence are replaced with in-memory adapters.
 They cover both copies of signed messages, message/context/signature tampering,
@@ -13,7 +28,9 @@ new ciphertext, multi-epoch catch-up, unsigned history labelling and account
 isolation. The sync suite covers more than 100 pages, ciphertext persistence
 before cursor advancement, storage/network failures and account changes.
 
-The Rust test in server/src/routes/groups_security_tests.rs exercises the real
+## Server integration test
+
+The Rust test in [groups_security_tests.rs](../../server/src/routes/groups_security_tests.rs) exercises the real
 MySQL schema, HTTP routes and WebSocket handler. It verifies permissions,
 revocation on a still-open socket, stale-epoch rejection, exact distribution
 recipients, offline key history, paginated sync, commit-order serialization,
@@ -26,7 +43,9 @@ real signatures and encryption. To run against an isolated local instance:
 The test creates and drops its own random database. These checks are not a
 two-browser UI test or an independent cryptographic audit.
 
-Both contacts need this client version. Older clients cannot parse the signed
+## Protocol and trust model
+
+Both contacts need a client build incorporating these changes. Older clients cannot parse the signed
 header. Legacy unsigned messages are explicitly labelled before identity
 verification; once a peer is pinned, unsigned messages are refused, including
 old unsigned history. Pins are local, account-scoped encrypted browser secrets.
@@ -50,8 +69,7 @@ This change does not introduce working post-quantum key registration. A future
 migration must add a separate signing-key field and publish real ML-KEM keys.
 
 
-Group protocol and upgrade behavior
-----------------------------------
+## Group protocol and upgrade behavior
 Both the server and every client must be upgraded together. New group messages
 require signatures and sender-key encryption. Existing unencrypted groups are
 migrated once, and encryption cannot be disabled through the API. Available
@@ -93,6 +111,8 @@ advancing the account-scoped cursor. Group history also paginates by immutable s
 with no fixed total-history cap. The existing auto-delete retention remains
 in effect; already-expired messages are intentionally unavailable.
 
+## Automatic trust refresh
+
 Opening a private profile refreshes published identity keys, rechecks the pin,
 and replays relevant signed verification receipts from history. An unlocked
 presentation password resumes or initiates a pending handshake automatically.
@@ -102,3 +122,20 @@ pin. Opening the group member list refreshes the member-key snapshot and checks
 each member against the same trust records, without starting group-wide private
 handshakes. Fresh keys propagate to existing contact caches. Both views refresh
 on focus/visibility and update labels and badges on trust changes.
+
+## Eight-language validation
+
+Run `npm --prefix client run test:i18n` from the repository root to validate all 92 security-related text keys
+in Chinese, English, Japanese, Korean, French, German, Russian and Spanish.
+The suite checks explicit coverage (without fallback), duplicate keys,
+placeholder consistency, current-language error rendering and verbatim handling
+of protocol constants and user-supplied text.
+
+
+## Manual acceptance and boundaries
+
+Use two compatible native clients to verify password setup/unlock, both directions of the handshake, profile refresh, focus/visibility refresh and changed-key rejection. Reopen profiles while verification is pending to confirm that challenges survive and retries are throttled. Open the group member list to check refreshed trust, then exercise leave/kick, offline reconnect and pending-key recovery. Check all eight languages, especially interpolated errors, verification prompts and the green badge's meaning.
+
+These source changes are unreleased; the package version remains 3.1.0. Tests of this shared source do not validate published native clients or Docker images. Local caches retain at most 2,000 messages per conversation; server-side auto-delete and attachment retention remain applicable. Message signing does not end-to-end encrypt uploaded file bytes, and no upgrade can recreate previously lost keys.
+
+See the [main README](../../README_EN.md), [中文说明](../../README.md), [deployment/migration guide](../../DEPLOY_EN.md) and [Tor architecture](../../TOR_DEPLOYMENT.md) for operating requirements. The client suites use cryptographic implementations with mocked transport/persistence; the server fixture uses real database/routes with transport signature fixtures. Together they provide regression coverage, not an independent audit or a native-device UI test.

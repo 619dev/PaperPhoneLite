@@ -1,4 +1,4 @@
-import { securityText } from '../i18n/security'
+import { SecurityError } from '../i18n/security'
 import { get } from './http'
 import type { ChatMessage } from '../store'
 
@@ -8,10 +8,10 @@ export async function getGroupHistory(group: string): Promise<ChatMessage[]> {
   let before: number | undefined
   while (true) {
     const page = await get<ChatMessage[]>(`/api/messages/group/${group}?limit=1000${before === undefined ? '' : `&before_seq=${before}`}`)
-    if (!Array.isArray(page)) throw new Error(securityText('crypto.invalid_history'))
+    if (!Array.isArray(page)) throw new SecurityError('crypto.invalid_history')
     if (!page.length) break
     const next = page[0].server_seq
-    if (!Number.isSafeInteger(next) || next! < 1 || (before !== undefined && next! >= before)) throw new Error(securityText('crypto.cursor_stalled'))
+    if (!Number.isSafeInteger(next) || next! < 1 || (before !== undefined && next! >= before)) throw new SecurityError('crypto.cursor_stalled')
     pages.push(page)
     before = next
     if (page.length < 1000) break

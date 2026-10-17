@@ -1,4 +1,4 @@
-import { refreshIdentityTrust, IDENTITY_STATUS_LABELS, type IdentityStatus } from '../crypto/authenticatedMessaging'
+import { refreshIdentityTrust, IDENTITY_STATUS_KEYS, type IdentityStatus } from '../crypto/authenticatedMessaging'
 import IdentityBadge from '../components/IdentityBadge'
 import { clearGroupSenderKeys } from '../crypto/groupCrypto'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -175,7 +175,7 @@ export default function GroupInfo() {
     } catch {}
   }
 
-  if (!group) return <div className="page">{trustError ? <><p role="status">群成员资料刷新失败，请重试。</p><button className="btn btn-secondary" onClick={() => void reload()}>重新刷新</button><button className="btn btn-secondary" onClick={() => navigate(-1)}>返回</button></> : <div className="loading-spinner" />}</div>
+  if (!group) return <div className="page">{trustError ? <><p role="status">{t('grouptrust.profile_error')}</p><button className="btn btn-secondary" onClick={() => void reload()}>{t('verify.retry')}</button><button className="btn btn-secondary" onClick={() => navigate(-1)}>{t('verify.back')}</button></> : <div className="loading-spinner" />}</div>
 
   return (
     <div className="page" id="group-info-page">
@@ -451,8 +451,8 @@ export default function GroupInfo() {
           <div className="list-item" style={{ borderRadius: 12, marginBottom: 6 }}>
             <Shield size={18} />
             <div style={{ marginLeft: 10 }}>
-              <div>群消息签名与端到端加密已启用</div>
-              <div style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6 }}>成员退出后，全员更新发送密钥。请先逐一验证成员身份；签名通过的消息显示 ✅。</div>
+              <div>{t('grouptrust.title')}</div>
+              <div style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6 }}>{t('grouptrust.description')}</div>
             </div>
           </div>
           {/* Bot warning when encryption is on */}
@@ -562,9 +562,9 @@ export default function GroupInfo() {
           </div>
 
           <p role="status" aria-live="polite" style={{ fontSize: 12, color: 'var(--text-muted)' }}>
-            {trustRefreshing ? '正在刷新群成员可信状态…' : trustError ? '可信状态刷新失败，请重试' : Object.values(memberTrust).includes('error') ? '部分成员可信状态刷新失败，请重试' : '群成员可信状态已刷新'}
+            {trustRefreshing ? t('grouptrust.refreshing') : trustError ? t('verify.error') : Object.values(memberTrust).includes('error') ? t('grouptrust.partial_error') : t('grouptrust.refreshed')}
           </p>
-          {trustError && <button className="btn btn-sm btn-secondary" onClick={() => void reload()}>重新刷新</button>}
+          {trustError && <button className="btn btn-sm btn-secondary" onClick={() => void reload()}>{t('verify.retry')}</button>}
           {group.members?.map((m: any) => (
             <div key={m.id} className="list-item" onClick={() => navigate(`/user/${m.id}`)}
               style={{ cursor: 'pointer', borderRadius: 12, marginBottom: 4 }}>
@@ -582,7 +582,7 @@ export default function GroupInfo() {
                   )}
                 </div>
                 <div className="preview" style={{ fontSize: 12 }}>@{m.username}</div>
-                {!trustRefreshing && !trustError && m.id !== user?.id && memberTrust[m.id] && <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{IDENTITY_STATUS_LABELS[memberTrust[m.id]]}</div>}
+                {!trustRefreshing && !trustError && m.id !== user?.id && memberTrust[m.id] && <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{t(IDENTITY_STATUS_KEYS[memberTrust[m.id]])}</div>}
               </div>
               <span style={{ opacity: 0.4, fontSize: 14 }}><ChevronRight size={14} /></span>
             </div>

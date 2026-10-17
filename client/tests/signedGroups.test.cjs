@@ -116,7 +116,7 @@ async function run() {
   assert.equal((await api.decryptGroupMessage(departedMessage,true)).decrypted,'sent while a member','departed sender history remains readable to continuing members')
   const third=message('c',await api.encryptGroupMessage('g','other sender rotated too','text',crypto.randomUUID()))
   assert.equal(third.sender_key_version,2)
-  assert.throws(()=>api.storeSenderKey('g','a',awaitableBadKey(),2,true,true),/same epoch/)
+  assert.throws(()=>api.storeSenderKey('g','a',awaitableBadKey(),2,true,true),/同一代次/)
   function awaitableBadKey(){return btoa('z'.repeat(32))}
   await use('a')
   assert.equal((await api.decryptGroupMessage(third)).signature_valid,true)
@@ -128,7 +128,7 @@ async function run() {
   const pendingJob=api.ensureGroupSenderKey('g')
   await use('d')
   release({id:'g',key_epoch:2,members:__members.map(id=>({id,...__people[id]}))})
-  await assert.rejects(pendingJob,/Account changed/)
+  await assert.rejects(pendingJob,/账户已切换/)
   __get=regularGet
   await assert.rejects(api.decryptGroupMessage(first,true),/验证群成员身份/)
   console.log('PASS: group signatures/context tampering, pinned identities, signed distribution, concurrent publication, full rotation, departed member exclusion, multi-epoch offline history and account isolation')

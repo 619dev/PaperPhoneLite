@@ -1,5 +1,6 @@
+import { useI18n } from '../hooks/useI18n'
 import { useEffect, useState } from 'react'
-import { identityVerified, IDENTITY_NOTICE } from '../crypto/authenticatedMessaging'
+import { identityVerified } from '../crypto/authenticatedMessaging'
 
 type IdentityProps = { id: string; ik?: string; sign?: string; refreshing?: boolean }
 
@@ -23,16 +24,18 @@ function useVerified({ id, ik, sign, refreshing = false }: IdentityProps) {
 }
 
 export default function IdentityBadge(props: IdentityProps) {
+  const { t } = useI18n()
   const verified = useVerified(props)
-  return verified ? <span style={{ color: '#22c55e', marginLeft: 4 }} title="双方身份和消息签名已验证" aria-label="双方身份已验证">✅</span> : null
+  return verified ? <span style={{ color: '#22c55e', marginLeft: 4 }} title={t('verify.badge_title')} aria-label={t('verify.badge_label')}>✅</span> : null
 }
 
 export function IdentityPrompt(props: IdentityProps & { onVerify: () => void }) {
+  const { t } = useI18n()
   const verified = useVerified(props)
   if (verified) return null
   return <div style={{ padding: '8px 14px', fontSize: 12, lineHeight: 1.6, background: 'var(--bg-card)', borderBottom: '1px solid var(--border)' }}>
-    <strong>请先设定文本外观密码，并验证对方身份。</strong>
-    <div>{IDENTITY_NOTICE}</div>
-    <button className="btn btn-sm btn-secondary" onClick={props.onVerify}>验证对方身份</button>
+    <strong>{t('verify.setup_notice')}</strong>
+    <div>{t('verify.notice')}</div>
+    <button className="btn btn-sm btn-secondary" onClick={props.onVerify}>{t('verify.title')}</button>
   </div>
 }

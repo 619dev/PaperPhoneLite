@@ -1,4 +1,4 @@
-import { securityText } from '../i18n/security'
+import { securityText, SecurityError } from '../i18n/security'
 import { get, post } from '../api/http'
 import { useStore, type ChatMessage } from '../store'
 import { getKeys } from './keystore'
@@ -10,7 +10,7 @@ import { unprotectPresentationText } from './presentationCrypto'
 const DOMAIN = 'PaperPhone-group-message-v1'
 const PREFIX = 'ppg1.'
 const me = () => useStore.getState().user?.id
-const requireAccount = (owner: string | undefined) => { if (!owner || me() !== owner) throw new Error(securityText('crypto.account_changed')) }
+const requireAccount = (owner: string | undefined) => { if (!owner || me() !== owner) throw new SecurityError('crypto.account_changed') }
 const jobs = new Map<string, Promise<ReturnType<typeof getSenderKey>>>()
 export class MissingGroupKey extends Error {}
 export interface GroupSignature { group: string; from: string; epoch: number; id: string; type: string; ik: string; sign: string; nonce: string; nickname: string }
@@ -24,7 +24,7 @@ export async function importGroupDistribution(group: string, distribution: any) 
     self_header: distribution.header, self_ciphertext: distribution.encrypted_key })
   const payload = JSON.parse(text)
   const sodium = await initSodium()
-  if (payload.domain !== 'PaperPhone-group-key-v1' || payload.group !== group || payload.from !== distribution.from_id || payload.to !== own || payload.epoch !== distribution.key_version || payload.ik !== identity.ik_pub || payload.sign !== identity.kem_pub || sodium.from_base64(payload.key).length !== 32) throw new Error(securityText('grouptrust.key_context'))
+  if (payload.domain !== 'PaperPhone-group-key-v1' || payload.group !== group || payload.from !== distribution.from_id || payload.to !== own || payload.epoch !== distribution.key_version || payload.ik !== identity.ik_pub || payload.sign !== identity.kem_pub || sodium.from_base64(payload.key).length !== 32) throw new SecurityError('grouptrust.key_context')
   requireAccount(own)
   storeSenderKey(group, payload.from, payload.key, payload.epoch, payload.from === own, true)
 }
@@ -57,11 +57,11 @@ export function ensureGroupSenderKey(group: string): Promise<ReturnType<typeof g
     const detail = await get(`/api/groups/${group}`)
     requireAccount(owner)
     const epoch = detail.key_epoch
-    if (!Number.isSafeInteger(epoch) || epoch < 1 || !detail.members?.some((m: any) => m.id === me())) throw new Error(securityText('grouptrust.invalid_membership'))
+    if (!Number.isSafeInteger(epoch) || epoch < 1 || !detail.members?.some((m: any) => m.id === me())) throw new SecurityError('grouptrust.invalid_membership')
     const identities = new Map<string, { ik_pub: string; kem_pub: string }>()
     for (const member of detail.members) {
       const pinned = await verifiedIdentity(member.id)
-      if (pinned.ik_pub !== member.ik_pub || pinned.kem_pub !== member.kem_pub) throw new Error(securityText('grouptrust.member_changed', { id: member.nickname || member.id }))
+      if (pinned.ik_pub !== member.ik_pub || pinned.kem_pub !== member.kem_pub) throw new SecurityError('grouptrust.member_changed', { id: member.nickname || member.id })
       identities.set(member.id, pinned)
     }
     requireAccount(owner)
@@ -101,7 +101,7 @@ export async function encryptGroupMessage(group: string, plaintext: string, type
   const owner = me()
   const senderKey = await ensureGroupSenderKey(group)
   requireAccount(owner)
-  if (!senderKey) throw new Error(securityText('grouptrust.no_key'))
+  if (!senderKey) throw new SecurityError('grouptrust.no_key')
   const keys = getKeys()!
   const encrypted = await encryptWithSenderKey(plaintext, senderKey.senderKey)
   const meta: GroupSignature = { group, from: owner!, epoch: senderKey.keyVersion, id, type, ik: keys.ik_pub, sign: keys.sign_pub, nonce: encrypted.nonce, nickname: useStore.getState().user?.nickname || me()! }
@@ -125,15 +125,15 @@ export async function decryptGroupMessage(message: ChatMessage, historical = fal
   }
   const envelope = JSON.parse(message.header.slice(PREFIX.length))
   const meta: GroupSignature = envelope.meta
-  if (!meta || meta.group !== message.group_id || meta.from !== message.from || meta.type !== message.msg_type || meta.epoch !== message.sender_key_version || meta.nonce !== message.nonce || !Number.isSafeInteger(meta.epoch) || meta.epoch < 1 || typeof meta.id !== 'string' || typeof meta.nickname !== 'string' || Array.from(meta.nickname).length > 128 || (message.client_msg_id && meta.id !== message.client_msg_id)) throw new Error(securityText('grouptrust.context'))
+  if (!meta || meta.group !== message.group_id || meta.from !== message.from || meta.type !== message.msg_type || meta.epoch !== message.sender_key_version || meta.nonce !== message.nonce || !Number.isSafeInteger(meta.epoch) || meta.epoch < 1 || typeof meta.id !== 'string' || typeof meta.nickname !== 'string' || Array.from(meta.nickname).length > 128 || (message.client_msg_id && meta.id !== message.client_msg_id)) throw new SecurityError('grouptrust.context')
   const pinned = await verifiedIdentity(meta.from)
-  if (meta.ik !== pinned.ik_pub || meta.sign !== pinned.kem_pub) throw new Error(securityText('grouptrust.untrusted_key'))
+  if (meta.ik !== pinned.ik_pub || meta.sign !== pinned.kem_pub) throw new SecurityError('grouptrust.untrusted_key')
   const sodium = await initSodium()
-  if (!sodium.crypto_sign_verify_detached(sodium.from_base64(envelope.signature), signedBytes(meta, message.ciphertext), sodium.from_base64(pinned.kem_pub))) throw new Error(securityText('grouptrust.signature_invalid'))
+  if (!sodium.crypto_sign_verify_detached(sodium.from_base64(envelope.signature), signedBytes(meta, message.ciphertext), sodium.from_base64(pinned.kem_pub))) throw new SecurityError('grouptrust.signature_invalid')
   if (!historical && !message.offline) {
     const detail = await get(`/api/groups/${meta.group}`)
     const member = detail.members.find((member: any) => member.id === meta.from)
-    if (detail.key_epoch !== meta.epoch || !member || member.ik_pub !== pinned.ik_pub || member.kem_pub !== pinned.kem_pub) throw new Error(securityText('grouptrust.retired'))
+    if (detail.key_epoch !== meta.epoch || !member || member.ik_pub !== pinned.ik_pub || member.kem_pub !== pinned.kem_pub) throw new SecurityError('grouptrust.retired')
   }
   requireAccount(owner)
   const authenticated = { signature_valid: true, from_nickname: meta.nickname }

@@ -1,3 +1,5 @@
+import { securityText, securityErrorText } from '../i18n/security'
+import { t as translate, type LangCode } from '../i18n'
 import { useEffect } from 'react'
 import { useStore } from '../store'
 import { connectWs, disconnectWs, forceReconnect, onWs } from '../api/socket'
@@ -123,11 +125,11 @@ export function useSocket() {
               }
             }
           } catch {
-            msgToAdd = { ...data, decrypted: '⚠️ 消息身份或签名验证失败' }
+            msgToAdd = { ...data, decrypted: securityText('verify.signature_failed') }
           }
         } else if (data.group_id) {
           try { msgToAdd = { ...data, ...await decryptGroupMessage(data, !!data.offline) } }
-          catch (error) { msgToAdd = { ...data, signature_valid: false, decrypted: error instanceof MissingGroupKey ? '🔒' : `⚠️ ${(error as Error).message}` } }
+          catch (error) { msgToAdd = { ...data, signature_valid: false, decrypted: error instanceof MissingGroupKey ? '🔒' : `⚠️ ${securityErrorText(error)}` } }
         }
 
         if (useStore.getState().user?.id !== myId) return
@@ -290,7 +292,7 @@ export function useSocket() {
     const unsubFailed = onWs('message_failed', data => {
       const messages = useStore.getState().messages[data.group_id] || []
       for (const message of messages) if (message.client_msg_id === data.client_msg_id) {
-        useStore.getState().updateMessage(data.group_id, message.id, { delivery_status: 'failed', signature_valid: false, decrypted: '⚠️ 群成员或密钥代次已改变，消息未发送，请重新发送。' })
+        useStore.getState().updateMessage(data.group_id, message.id, { delivery_status: 'failed', signature_valid: false, decrypted: securityText(data.code === 'not_group_member' ? 'grouptrust.not_member' : data.code === 'group_signature_required' ? 'grouptrust.signature_required' : data.code === 'client_message_conflict' ? 'grouptrust.message_conflict' : 'grouptrust.send_failed') })
       }
       const myId = useStore.getState().user?.id
       if (myId && data.group_id) retireOwnSenderKeys(data.group_id, myId)
@@ -327,19 +329,5 @@ export function useSocket() {
  * Falls back to English defaults.
  */
 function getI18nT(): (key: string) => string {
-  // Access i18n translations from the store
-  try {
-    const lang = useStore.getState().lang || 'en'
-    // Dynamic import not possible here, use a simple fallback map
-    const fallbacks: Record<string, string> = {
-      'notification.image': lang === 'zh' ? '[图片]' : '[Image]',
-      'notification.voice': lang === 'zh' ? '[语音]' : '[Voice]',
-      'notification.file': lang === 'zh' ? '[文件]' : '[File]',
-      'notification.video': lang === 'zh' ? '[视频]' : '[Video]',
-      'notification.sticker': lang === 'zh' ? '[表情]' : '[Sticker]',
-    }
-    return (key: string) => fallbacks[key] || key
-  } catch {
-    return (key: string) => key
-  }
+  return (key: string) => translate(key, useStore.getState().lang as LangCode)
 }

@@ -1,3 +1,4 @@
+import { securityErrorText } from '../i18n/security'
 import { getGroupHistory } from '../api/groupHistory'
 import { encryptSignedPair, decryptSignedMessage } from '../crypto/authenticatedMessaging'
 import IdentityBadge, { IdentityPrompt } from '../components/IdentityBadge'
@@ -326,7 +327,7 @@ export default function Chat() {
   const { id } = useParams<{ id: string }>()
   const [searchParams] = useSearchParams()
   const isGroup = searchParams.get('group') === '1'
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const navigate = useNavigate()
   const user = useStore(s => s.user)
   const messages = useStore(s => s.messages[id!] ?? EMPTY_MSGS)
@@ -597,13 +598,13 @@ export default function Chat() {
               const text = await unprotectPresentationText(decrypted)
               return { ...msg, decrypted: text }
             }
-          } catch { return { ...msg, decrypted: '⚠️ 消息身份或签名验证失败' } }
+          } catch { return { ...msg, decrypted: t('verify.signature_failed') } }
           return { ...msg, decrypted: undefined }
         }))
       } else {
         serverMessages = await Promise.all(filtered.map(async msg => {
           try { return { ...msg, group_id: id, ...await decryptGroupMessage({ ...msg, group_id: id }, true) } }
-          catch (error) { return { ...msg, group_id: id, signature_valid: false, decrypted: error instanceof MissingGroupKey ? '🔒' : `⚠️ ${(error as Error).message}` } }
+          catch (error) { return { ...msg, group_id: id, signature_valid: false, decrypted: error instanceof MissingGroupKey ? '🔒' : `⚠️ ${securityErrorText(error)}` } }
         }))
       }
 
@@ -618,7 +619,7 @@ export default function Chat() {
     }
 
     loadMessages().catch(() => {}).finally(() => setHistoryLoaded(true))
-  }, [id, presentationStateVersion])
+  }, [id, presentationStateVersion, lang])
 
   useEffect(() => {
     if (!historyLoaded || scrollRestoredRef.current) return
@@ -715,7 +716,7 @@ export default function Chat() {
         const recipientPub = friend?.ik_pub
         const recipientKem = friend?.kem_pub
         if (!recipientPub || !keys) {
-          throw new Error('Recipient or local encryption keys are unavailable')
+          throw new Error(t('crypto.peer_keys'))
         } else {
           try {
             const pair = await encryptSignedPair(id!, recipientPub, recipientKem || '', wireContent, msgType)
@@ -740,7 +741,7 @@ export default function Chat() {
       console.error('[Chat] sendMessage error:', err)
       ;(window as any).__pendingMsg = null
       if (msgType === 'text' && content) setInput(content)
-      alert((err as Error).message || t('chat.encryption_send_failed'))
+      alert(securityErrorText(err, 'chat.encryption_send_failed'))
     } finally {
       sendingRef.current = false
       setSending(false)
@@ -1112,7 +1113,7 @@ export default function Chat() {
   // ── Render message bubble content ──
   const renderBubble = (msg: any, displayText: string, isEncFailed: boolean) => {
     if (isGroup && (!msg.signature_valid || msg.decryption_pending)) {
-      return <span style={{ color: 'var(--text-muted)' }}>{msg.decrypted || '🔒 群消息待验证'}</span>
+      return <span style={{ color: 'var(--text-muted)' }}>{msg.decrypted || t('grouptrust.verifying')}</span>
     }
     if (isEncFailed) {
       return <span style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}><Lock size={16} /> {t('chat.decrypt_failed')}</span>
@@ -1328,7 +1329,7 @@ export default function Chat() {
           borderBottom: '1px solid rgba(76, 175, 80, 0.15)',
         }}>
           <span style={{ fontSize: 14, flexShrink: 0 }}><Shield size={14} /></span>
-          <span>群消息签名与端到端加密已启用；签名验证通过后显示 ✅。请先在群成员资料中验证身份。</span>
+          <span>{t('grouptrust.banner')}</span>
         </div>
       )}
 
@@ -1376,7 +1377,7 @@ export default function Chat() {
               )}
               <div>
                 {isGroup && (
-                  <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 2 }}>{msg.from_nickname || (isMe ? user?.nickname : msg.from)}{msg.signature_valid && <span style={{ color: '#22c55e', marginLeft: 4 }} title={`消息签名验证通过：${msg.from}`}>✅</span>}</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 2 }}>{msg.from_nickname || (isMe ? user?.nickname : msg.from)}{msg.signature_valid && <span style={{ color: '#22c55e', marginLeft: 4 }} title={t('grouptrust.signature_title', { id: msg.from })}>✅</span>}</div>
                 )}
                 <div className="msg-bubble" style={isSticker && !payload.reply ? { background: 'transparent', boxShadow: 'none', padding: 0 } : undefined}>
                   {payload.reply && (

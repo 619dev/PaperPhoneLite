@@ -1,5 +1,5 @@
 import { getKeys } from '../crypto/keystore'
-import { startIdentityVerification, refreshContactVerification, refreshIdentityTrust, IDENTITY_STATUS_LABELS, type IdentityStatus, IDENTITY_NOTICE } from '../crypto/authenticatedMessaging'
+import { startIdentityVerification, refreshContactVerification, refreshIdentityTrust, IDENTITY_STATUS_KEYS, type IdentityStatus } from '../crypto/authenticatedMessaging'
 import IdentityBadge from '../components/IdentityBadge'
 import { useEffect, useRef, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
@@ -139,7 +139,7 @@ export default function UserProfile() {
   }
 
   if (loading) return <div className="page"><div className="loading-spinner" /></div>
-  if (!user) return <div className="page"><div className="page-header"><button className="back-btn" onClick={() => navigate(-1)}><ChevronLeft size={20} /></button><h1>个人资料</h1></div><div className="page-body"><p role="status">资料刷新失败，请重试。</p><button className="btn btn-secondary" onClick={() => refreshProfile.current()}>重新刷新</button></div></div>
+  if (!user) return <div className="page"><div className="page-header"><button className="back-btn" onClick={() => navigate(-1)}><ChevronLeft size={20} /></button><h1>{t('verify.profile_title')}</h1></div><div className="page-body"><p role="status">{t('verify.profile_error')}</p><button className="btn btn-secondary" onClick={() => refreshProfile.current()}>{t('verify.retry')}</button></div></div>
 
   const displayName = remark || user.nickname
 
@@ -235,14 +235,14 @@ export default function UserProfile() {
         )}
 
         <div style={{ margin: 16, padding: 16, background: 'var(--bg-card)', borderRadius: 12 }}>
-          <strong>验证对方身份</strong>
-          <p role="status" aria-live="polite" style={{ fontSize: 13, color: verificationStatus === 'verified' ? '#22c55e' : 'var(--text-muted)' }}>{IDENTITY_STATUS_LABELS[verificationStatus]}</p>
-          <p style={{ fontSize: 13, lineHeight: 1.6 }}>{IDENTITY_NOTICE}</p>
-          <p style={{ fontSize: 13 }}>双方使用线下约定的同一密码。验证文本为 paperphone.app，双方验证及签名回执通过后显示绿色对勾。密钥变化后需要重新验证。</p>
+          <strong>{t('verify.title')}</strong>
+          <p role="status" aria-live="polite" style={{ fontSize: 13, color: verificationStatus === 'verified' ? '#22c55e' : 'var(--text-muted)' }}>{t(IDENTITY_STATUS_KEYS[verificationStatus])}</p>
+          <p style={{ fontSize: 13, lineHeight: 1.6 }}>{t('verify.notice')}</p>
+          <p style={{ fontSize: 13 }}>{t('verify.instructions')}</p>
           <button className="btn btn-primary" disabled={verificationRefreshing} onClick={async () => {
             try { await startIdentityVerification(id!); navigate(`/chat/${id}`) }
             catch (error) { alert((error as Error).message) }
-          }}>发送身份验证</button>
+          }}>{t('verify.send')}</button>
         </div>
         {/* Safety Number — E2E verification */}
         <div className="section-title" style={{ padding: '16px 16px 6px' }}>

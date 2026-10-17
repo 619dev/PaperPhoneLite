@@ -1,4 +1,4 @@
-import { securityText } from '../i18n/security'
+import { securityText, SecurityError } from '../i18n/security'
 import { get } from '../api/http'
 import { sendWs } from '../api/socket'
 import { getKeys } from './keystore'
@@ -29,13 +29,13 @@ async function checkPeer(id: string, ik: string, sign: string) {
   const trust = await readTrust(id)
   if (trust && (trust.ik !== ik || trust.sign !== sign || trust.own !== getKeys()?.ik_pub || trust.ownSign !== getKeys()?.sign_pub)) {
     await saveTrust(id, { ...trust, acknowledged: false, received: undefined })
-    throw new Error(securityText('crypto.key_changed'))
+    throw new SecurityError('crypto.key_changed')
   }
 }
 
 export async function encryptSignedPair(to: string, ik: string, sign: string, body: string, type: string) {
   const keys = getKeys()
-  if (!keys) throw new Error(securityText('crypto.local_keys'))
+  if (!keys) throw new SecurityError('crypto.local_keys')
   await checkPeer(to, ik, sign)
   const from = account()
   async function seal(target: string, copy: 'recipient' | 'self') {
@@ -53,21 +53,21 @@ export async function encryptSignedPair(to: string, ik: string, sign: string, bo
 let proofQueue: Promise<unknown> = Promise.resolve()
 export async function decryptSignedMessage(msg: any, options?: { processIdentity?: boolean }): Promise<string> {
   const keys = getKeys()
-  if (!keys) throw new Error(securityText('crypto.local_keys'))
+  if (!keys) throw new SecurityError('crypto.local_keys')
   const own = msg.from === account()
   const header = own ? msg.self_header : msg.header
   const ciphertext = own ? msg.self_ciphertext : msg.ciphertext
   const peerId = own ? msg.to : msg.from
   if (!header?.startsWith(PREFIX)) {
     // Legacy history is readable but explicitly never proves identity.
-    if (await readTrust(peerId)) throw new Error(securityText('crypto.unsigned'))
+    if (await readTrust(peerId)) throw new SecurityError('crypto.unsigned')
     return securityText('verify.unsigned_history', { text: await decryptHybrid(header, keys.ik_priv, null, ciphertext) })
   }
   const envelope = JSON.parse(header.slice(PREFIX.length))
   const f = envelope.fields
-  if (!Array.isArray(f) || f.length !== 9 || f[0] !== DOMAIN || f[1] !== msg.from || f[2] !== msg.to || f[3] !== msg.msg_type || f[4] !== (own ? 'self' : 'recipient') || (own ? f[5] : f[6]) !== keys.ik_pub) throw new Error(securityText('crypto.context'))
+  if (!Array.isArray(f) || f.length !== 9 || f[0] !== DOMAIN || f[1] !== msg.from || f[2] !== msg.to || f[3] !== msg.msg_type || f[4] !== (own ? 'self' : 'recipient') || (own ? f[5] : f[6]) !== keys.ik_pub) throw new SecurityError('crypto.context')
   const sodium = await initSodium()
-  if (!sodium.crypto_sign_verify_detached(sodium.from_base64(envelope.signature), new TextEncoder().encode(JSON.stringify([...f, ciphertext])), sodium.from_base64(f[7]))) throw new Error(securityText('crypto.signature'))
+  if (!sodium.crypto_sign_verify_detached(sodium.from_base64(envelope.signature), new TextEncoder().encode(JSON.stringify([...f, ciphertext])), sodium.from_base64(f[7]))) throw new SecurityError('crypto.signature')
   const peer = await get(`/api/users/${peerId}`).catch(async error => {
     const pinned = await readTrust(peerId)
     if (!pinned) throw error
@@ -75,7 +75,7 @@ export async function decryptSignedMessage(msg: any, options?: { processIdentity
   })
   await checkPeer(peerId, peer.ik_pub, peer.kem_pub)
   const sender = own ? keys : { ik_pub: peer.ik_pub, sign_pub: peer.kem_pub }
-  if (f[5] !== sender.ik_pub || f[7] !== sender.sign_pub || f[6] !== (own ? peer.ik_pub : keys.ik_pub)) throw new Error(securityText('crypto.identity_mismatch'))
+  if (f[5] !== sender.ik_pub || f[7] !== sender.sign_pub || f[6] !== (own ? peer.ik_pub : keys.ik_pub)) throw new SecurityError('crypto.identity_mismatch')
   const text = await decryptHybrid(f[8], keys.ik_priv, null, ciphertext)
   if (msg.msg_type === 'identity_verification') {
     if (options?.processIdentity === false) return text
@@ -95,7 +95,7 @@ async function sendProof(id: string, peer: any, state: Trust, ack?: string, ackO
   const binding = JSON.stringify({ from: account(), to: id, ik: keys.ik_pub, recipient: peer.ik_pub, sign: keys.sign_pub, safety, nonce: ackOnly ? null : state.nonce, ack: ack || null })
   const protectedText = JSON.stringify({ binding, encrypted: await encryptIdentityText(binding) })
   const pair = await encryptSignedPair(id, peer.ik_pub, peer.kem_pub, protectedText, 'identity_verification')
-  if (!sendWs({ type: 'message', to: id, msg_type: 'identity_verification', client_msg_id: crypto.randomUUID(), ...pair })) throw new Error(securityText('crypto.disconnected'))
+  if (!sendWs({ type: 'message', to: id, msg_type: 'identity_verification', client_msg_id: crypto.randomUUID(), ...pair })) throw new SecurityError('crypto.disconnected')
 }
 export async function startIdentityVerification(id: string) {
   if (!getPresentationSettings().enabled || !isPresentationUnlocked()) throw new Error(securityText('crypto.setup_password') + '\n' + securityText('verify.notice'))
@@ -109,11 +109,11 @@ async function receiveProof(id: string, peer: any, text: string) {
   let proof: any
   try {
     const envelope = JSON.parse(text)
-    if (await decryptIdentityText(envelope.binding, envelope.encrypted) !== 'paperphone.app') throw new Error(securityText('crypto.invalid_proof'))
+    if (await decryptIdentityText(envelope.binding, envelope.encrypted) !== 'paperphone.app') throw new SecurityError('crypto.invalid_proof')
     proof = JSON.parse(envelope.binding)
-  } catch { throw new Error(securityText('crypto.password_mismatch')) }
+  } catch { throw new SecurityError('crypto.password_mismatch') }
   const keys = getKeys()!
-  if (proof.from !== id || proof.to !== account() || proof.ik !== peer.ik_pub || proof.recipient !== keys.ik_pub || proof.sign !== peer.kem_pub || proof.safety !== await deriveSafetyNumber(keys.ik_pub, peer.ik_pub) || (proof.nonce !== null && (typeof proof.nonce !== 'string' || proof.nonce.length !== 36))) throw new Error(securityText('crypto.proof_mismatch'))
+  if (proof.from !== id || proof.to !== account() || proof.ik !== peer.ik_pub || proof.recipient !== keys.ik_pub || proof.sign !== peer.kem_pub || proof.safety !== await deriveSafetyNumber(keys.ik_pub, peer.ik_pub) || (proof.nonce !== null && (typeof proof.nonce !== 'string' || proof.nonce.length !== 36))) throw new SecurityError('crypto.proof_mismatch')
   let state = await readTrust(id)
   const previous = JSON.stringify(state)
   if (!state) state = { ik: peer.ik_pub, sign: peer.kem_pub, own: keys.ik_pub, ownSign: keys.sign_pub, nonce: crypto.randomUUID() }
@@ -130,7 +130,7 @@ export async function verifiedIdentity(id: string): Promise<{ ik_pub: string; ke
   const keys = getKeys()
   if (id === account() && keys) return { ik_pub: keys.ik_pub, kem_pub: keys.sign_pub }
   const pin = await readTrust(id)
-  if (!pin || !await identityVerified(id, pin.ik, pin.sign)) throw new Error(securityText('crypto.verify_member', { id }))
+  if (!pin || !await identityVerified(id, pin.ik, pin.sign)) throw new SecurityError('crypto.verify_member', { id })
   return { ik_pub: pin.ik, kem_pub: pin.sign }
 }
 
@@ -144,7 +144,7 @@ export async function refreshIdentityTrust(peer: PublishedIdentity): Promise<Ide
   if (!keys || !peer.ik_pub || !peer.kem_pub) return 'unverified'
   if (peer.id === owner) return peer.ik_pub === keys.ik_pub && peer.kem_pub === keys.sign_pub ? 'verified' : 'changed'
   const pin = await readTrust(peer.id)
-  if (account() !== owner) throw new Error(securityText('crypto.account_changed'))
+  if (account() !== owner) throw new SecurityError('crypto.account_changed')
   if (pin && (pin.ik !== peer.ik_pub || pin.sign !== peer.kem_pub || pin.own !== keys.ik_pub || pin.ownSign !== keys.sign_pub)) {
     if (pin.acknowledged || pin.received) await saveTrust(peer.id, { ...pin, acknowledged: false, received: undefined })
     return 'changed'
@@ -167,15 +167,15 @@ export function refreshContactVerification(peer: PublishedIdentity): Promise<Ide
     let status = await refreshIdentityTrust(peer)
     if (status === 'changed' || status === 'locked' || (status === 'verified' && !isPresentationUnlocked())) return status
     const messages = await get(`/api/messages/private/${peer.id}?limit=500`)
-    if (account() !== owner) throw new Error(securityText('crypto.account_changed'))
-    if (!Array.isArray(messages)) throw new Error(securityText('crypto.invalid_history'))
+    if (account() !== owner) throw new SecurityError('crypto.account_changed')
+    if (!Array.isArray(messages)) throw new SecurityError('crypto.invalid_history')
     for (const message of [...messages].reverse()) {
       if (message.from !== peer.id || message.to !== owner || message.msg_type !== 'identity_verification') continue
       try {
         const text = await decryptSignedMessage(message, { processIdentity: false })
         const binding = JSON.parse(JSON.parse(text).binding)
         const pin = await readTrust(peer.id)
-        if (account() !== owner) throw new Error(securityText('crypto.account_changed'))
+        if (account() !== owner) throw new SecurityError('crypto.account_changed')
         // Replay only a receipt for this challenge, or the newest peer proof
         // still needed locally. Old challenges must not trigger a reply storm.
         if (pin && binding.ack !== pin.nonce && (!binding.nonce || binding.nonce === pin.received)) continue
@@ -187,7 +187,7 @@ export function refreshContactVerification(peer: PublishedIdentity): Promise<Ide
         if (status === 'changed' || status === 'verified' || status === 'locked') return status
         if (binding.nonce) break
       } catch { /* Invalid proofs never establish trust. */ }
-      if (account() !== owner) throw new Error(securityText('crypto.account_changed'))
+      if (account() !== owner) throw new SecurityError('crypto.account_changed')
     }
     status = await refreshIdentityTrust(peer)
     if (status === 'changed' || status === 'verified' || status === 'locked') return status
@@ -195,7 +195,7 @@ export function refreshContactVerification(peer: PublishedIdentity): Promise<Ide
     // resend the same challenge at most once per 30 seconds.
     if (Date.now() - (lastAutomaticProof.get(jobId) || 0) < 30_000) return status
     let state = await readTrust(peer.id)
-    if (account() !== owner) throw new Error(securityText('crypto.account_changed'))
+    if (account() !== owner) throw new SecurityError('crypto.account_changed')
     if (!state) {
       const keys = getKeys()!
       state = { ik: peer.ik_pub!, sign: peer.kem_pub!, own: keys.ik_pub, ownSign: keys.sign_pub, nonce: crypto.randomUUID() }
