@@ -55,7 +55,7 @@ Moments, Timeline, все звонки, LiveKit, Cloudflare R2, жалобы и 
 
 После запуска Docker Compose контейнер Tor автоматически записывает полный адрес `http://...onion` в файл `logs/onion-address.log` на хосте; адрес также выводится командой `docker compose logs tor`.
 
-Приложение iOS предназначено для публикации в Apple App Store. APK для Android распространяются только через [GitHub Releases](https://github.com/619dev/ppl-android/releases) репозитория Android-клиента, не публикуются в Google Play и не содержат push- или сервисных фреймворков Google.
+Приложение iOS предназначено для публикации в Apple App Store. Android-клиент доступен в [F-Droid](https://f-droid.org/zh_Hans/packages/com.fm619.paperphonelite/), а APK также можно скачать из раздела [GitHub Releases](https://github.com/619dev/ppl-android/releases) репозитория Android-клиента. Приложение не публикуется в Google Play и не содержит push- или сервисных фреймворков Google.
 
 ## Репозитории клиентов
 

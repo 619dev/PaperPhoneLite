@@ -22,7 +22,7 @@ This follows the SimpleX `HiddenServiceDir`/`HiddenServicePort` pattern, adapted
 
 Android can use ntfy through `NTFY_BASE_URL`/`NTFY_TOKEN` without Google services. On iOS, users can paste a Bark endpoint in the client and receive background alerts in the Bark app. The official `api.day.app` host is allowed by default; self-hosted operators must explicitly add comma-separated hostnames with `BARK_ALLOWED_HOSTS`. PaperPhoneLite itself does not register an APNs token, although the Bark iOS app ultimately uses Apple APNs. Notifications contain only the sender name and a generic new-message alert, not message content.
 
-The iOS client is intended for Apple App Store submission. Android APKs are uploaded only to the [Android client repository's GitHub Releases](https://github.com/619dev/ppl-android/releases) and are not published on Google Play.
+The iOS client is intended for Apple App Store submission. The Android client is available on [F-Droid](https://f-droid.org/zh_Hans/packages/com.fm619.paperphonelite/), and APKs are also uploaded to the [Android client repository's GitHub Releases](https://github.com/619dev/ppl-android/releases). It is not published on Google Play.
 
 Files are written only to the persistent `uploads` volume and downloaded through the Rust server's `/api/files/` route. User/friend and group avatars are stored under `permanent/`; private and group-chat attachments are stored under `temporary/`. Set `CHAT_FILE_RETENTION_DAYS` in `.env` to control temporary attachment retention. It defaults to `14`; `0` disables cleanup. The server checks once at startup and then removes expired files hourly.
 

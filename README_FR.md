@@ -55,7 +55,7 @@ Au démarrage, le serveur supprime automatiquement les anciennes tables Web Push
 
 Après le démarrage de Docker Compose, le conteneur Tor enregistre automatiquement l’adresse complète `http://...onion` dans le fichier hôte `logs/onion-address.log` ; elle apparaît aussi dans `docker compose logs tor`.
 
-L’application iOS est destinée à l’Apple App Store. Les APK Android sont publiés uniquement dans les [GitHub Releases](https://github.com/619dev/ppl-android/releases) du dépôt du client Android, jamais sur Google Play, sans framework de services ou de push Google.
+L’application iOS est destinée à l’Apple App Store. Le client Android est disponible sur [F-Droid](https://f-droid.org/zh_Hans/packages/com.fm619.paperphonelite/) ; les APK sont également proposés dans les [GitHub Releases](https://github.com/619dev/ppl-android/releases) du dépôt du client Android. Il n’est pas publié sur Google Play et n’intègre aucun framework de services ou de push Google.
 
 ## Dépôts des clients
 

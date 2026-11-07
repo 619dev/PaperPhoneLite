@@ -55,7 +55,7 @@ Beim Start entfernt der Server automatisch die stillgelegten Web-Push- und OneSi
 
 Nach dem Start von Docker Compose schreibt der Tor-Container die vollständige `http://...onion`-Adresse automatisch in `logs/onion-address.log` auf dem Host; sie erscheint auch in `docker compose logs tor`.
 
-Die iOS-App ist für den Apple App Store vorgesehen. Android-APKs werden ausschließlich über die [GitHub Releases](https://github.com/619dev/ppl-android/releases) des Android-Client-Repositorys verteilt, nicht über Google Play; Google-Push- und Service-Frameworks werden nicht integriert.
+Die iOS-App ist für den Apple App Store vorgesehen. Der Android-Client ist über [F-Droid](https://f-droid.org/zh_Hans/packages/com.fm619.paperphonelite/) erhältlich; APKs stehen außerdem in den [GitHub Releases](https://github.com/619dev/ppl-android/releases) des Android-Client-Repositorys bereit. Er wird nicht über Google Play veröffentlicht und integriert keine Google-Push- oder Service-Frameworks.
 
 ## Client-Repositorys
 

@@ -16,6 +16,7 @@ The following describes current source changes, not a new release or published n
 - Added durable sequence catch-up, committed ordering barriers, historical key retries and immutable-sequence group-history pagination without a fixed total cap. Existing local cache and retention limits remain.
 - Completed 92 security text keys in all eight languages, current-language errors and localization checks. Expanded client security/sync tests and isolated MySQL/HTTP/WebSocket integration coverage.
 - Updated all eight READMEs, deployment, Tor and test documentation. Corrected the previous ML-KEM claim: the legacy `kem_pub` field carries an Ed25519 signing public key; the signed path uses X25519 rather than functioning post-quantum registration. Coordinate server/client upgrades and database migration.
+- Updated distribution documentation to note that the Android client is now available on [F-Droid](https://f-droid.org/zh_Hans/packages/com.fm619.paperphonelite/), in addition to GitHub Releases.
 
 以下为当前源码改动，不代表新版本、原生应用或 Docker 镜像已发布；包版本保持 3.1.0。
 
@@ -27,6 +28,7 @@ The following describes current source changes, not a new release or published n
 - 持久化序号追赶、已提交顺序屏障、历史密钥重试及按不可变序号分页的群历史，无固定历史总条数上限；原有本地缓存及保留期限制继续生效。
 - 补全八语言全部 92 个安全文本键、当前语言错误显示及本地化检查，扩展客户端安全/同步测试和独立 MySQL、HTTP、WebSocket 集成测试。
 - 更新八语言 README、部署、Tor 与测试文档。修正旧 ML-KEM 声明：`kem_pub` 实际承载 Ed25519 签名公钥，当前签名路径使用 X25519，未实现后量子注册。升级须协调服务端、客户端及数据库迁移。
+- 更新发布渠道说明：Android 客户端现已上架 [F-Droid](https://f-droid.org/zh_Hans/packages/com.fm619.paperphonelite/)，同时继续通过 GitHub Releases 提供 APK。
 
 ## 3.0.21
 

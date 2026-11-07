@@ -71,7 +71,7 @@ UI 源码位于 `client/`，供 Android、iOS、Windows、macOS 原生壳复用�
 ## 应用发布
 
 - iOS 客户端计划通过 Apple App Store 发布；可将用户提供的 Bark 地址用于后台提醒，PaperPhoneLite 客户端本身不注册 APNs token。
-- Android APK 仅通过 Android 客户端仓库的 [GitHub Releases](https://github.com/619dev/ppl-android/releases) 发布，使用 ntfy，不发布到 Google Play，也不集成 Google 推送或服务框架。
+- Android 客户端已上架 [F-Droid](https://f-droid.org/zh_Hans/packages/com.fm619.paperphonelite/)，APK 也可从 Android 客户端仓库的 [GitHub Releases](https://github.com/619dev/ppl-android/releases) 获取；客户端使用 ntfy，不发布到 Google Play，也不集成 Google 推送或服务框架。
 
 ## 客户端仓库
 

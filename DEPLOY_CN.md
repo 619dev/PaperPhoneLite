@@ -22,7 +22,7 @@ Android/iOS/Windows/macOS 生产客户端必须内嵌 Tor，以隔离 SOCKS5 流
 
 Android 可通过 `NTFY_BASE_URL`/`NTFY_TOKEN` 配置 ntfy，不需要 Google 服务。iOS 用户可在客户端粘贴 Bark 推送地址，通过 Bark App 接收后台提醒；默认只允许 Bark 官方主机 `api.day.app`。自建 Bark 时由服务器运营者使用逗号分隔的 `BARK_ALLOWED_HOSTS` 显式加入主机名。PaperPhoneLite 自身无需注册 APNs token，但 Bark iOS App 最终仍使用 Apple APNs。通知只发送发件人名称和通用的新消息提示，不发送消息正文。
 
-iOS 客户端计划提交 Apple App Store；Android APK 仅上传至 [Android 客户端仓库的 GitHub Releases](https://github.com/619dev/ppl-android/releases)，不发布到 Google Play。
+iOS 客户端计划提交 Apple App Store；Android 客户端已上架 [F-Droid](https://f-droid.org/zh_Hans/packages/com.fm619.paperphonelite/)，APK 也会上传至 [Android 客户端仓库的 GitHub Releases](https://github.com/619dev/ppl-android/releases)，不发布到 Google Play。
 
 文件只写入 `uploads` 持久卷，并通过 Rust 服务端的 `/api/files/` 路由下载。用户/好友头像和群头像保存在 `permanent/`，私聊与群聊附件保存在 `temporary/`。通过 `.env` 中的 `CHAT_FILE_RETENTION_DAYS` 设置临时附件保留天数，默认 `14`；设为 `0` 可关闭自动清理。服务端启动后立即检查一次，随后每小时清理过期文件。
 

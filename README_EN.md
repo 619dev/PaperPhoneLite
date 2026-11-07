@@ -64,7 +64,7 @@ Coordinate the server and all platform clients: older clients cannot read the si
 ## Application distribution
 
 - The iOS client is intended for Apple App Store distribution and can send alerts through a user-supplied Bark endpoint; PaperPhoneLite itself does not register an APNs token.
-- Android APKs are distributed only through the Android client repository's [GitHub Releases](https://github.com/619dev/ppl-android/releases), use ntfy, and will not be published on Google Play or include Google push/service frameworks.
+- The Android client is available on [F-Droid](https://f-droid.org/zh_Hans/packages/com.fm619.paperphonelite/), and APKs are also available from the Android client repository's [GitHub Releases](https://github.com/619dev/ppl-android/releases). It uses ntfy and is not published on Google Play or built with Google push/service frameworks.
 
 ## Client repositories
 
