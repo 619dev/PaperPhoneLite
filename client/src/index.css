@@ -758,15 +758,17 @@ textarea.input {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 24px;
+  justify-content: safe center;
+  padding: max(16px, var(--safe-top)) max(16px, var(--safe-right))
+           max(16px, var(--safe-bottom)) max(16px, var(--safe-left));
   background: linear-gradient(160deg,
     #f0fbfb 0%,
     #e0f5f6 30%,
     #c5e8ea 70%,
     #a9d8dc 100%);
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* Ambient light orbs */
@@ -811,6 +813,7 @@ textarea.input {
 }
 
 .login-card {
+  flex-shrink: 0;
   width: 100%;
   max-width: 380px;
   padding: 36px 28px;
@@ -1519,6 +1522,7 @@ textarea.input {
   }
 
   .chat-input-bar {
+    gap: 4px;
     padding: 6px 8px;
     padding-bottom: calc(6px + var(--safe-bottom));
   }
@@ -1526,10 +1530,6 @@ textarea.input {
   .chat-input-bar textarea {
     padding: 9px 12px;
     font-size: 16px;
-  }
-
-  .chat-input-bar {
-    gap: 4px;
   }
 
   .chat-input-bar .icon-btn,
@@ -1595,7 +1595,7 @@ textarea.input {
 }
 
 /* ── Standard compact phones (390pt wide) ─────────────────── */
-@media screen and (min-width: 376px) and (max-width: 393px) {
+@media screen and (375px < width < 393px) {
   :root {
     --header-h: 52px;
     --tabbar-h: 50px;
@@ -1615,7 +1615,7 @@ textarea.input {
 }
 
 /* ── Standard phones (Pixel 6–10/Pro, recent iPhones) ─────── */
-@media screen and (min-width: 393px) and (max-width: 430px) {
+@media screen and (393px <= width < 428px) {
   :root {
     --header-h: 54px;
     --tabbar-h: 52px;
@@ -1623,7 +1623,7 @@ textarea.input {
 }
 
 /* ── Large phones and foldable cover screens ──────────────── */
-@media screen and (min-width: 428px) and (max-width: 480px) {
+@media screen and (428px <= width <= 480px) {
   :root {
     --header-h: 56px;
     --tabbar-h: 54px;
@@ -1770,6 +1770,11 @@ textarea.input {
     min-height: 44px;
   }
 
+  .chat-input-bar .send-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
   .tabbar-item {
     min-height: 44px;
   }
@@ -1791,6 +1796,11 @@ textarea.input {
    Landscape Safe Area (iPhone held horizontally)
    ═══════════════════════════════════════════════════════════════ */
 @media screen and (orientation: landscape) and (max-height: 480px) {
+  #root {
+    max-width: none;
+    border: 0;
+  }
+
   .page-header {
     padding-left: max(16px, var(--safe-left));
     padding-right: max(16px, var(--safe-right));
@@ -1973,4 +1983,41 @@ textarea.input {
 
 .privacy-footer p {
   margin: 0;
+}
+
+/* Respect platform accessibility preferences without changing app structure. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .page-header,
+  .tabbar,
+  .chat-input-bar,
+  .login-card,
+  .modal,
+  .btn-secondary,
+  .privacy-card {
+    background: var(--bg-secondary);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --border: rgba(0, 0, 0, 0.22);
+    --text-muted: #636366;
+  }
+
+  [data-theme="dark"] {
+    --border: rgba(255, 255, 255, 0.28);
+    --text-muted: #aeaeb2;
+  }
 }

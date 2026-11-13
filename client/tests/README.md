@@ -21,7 +21,7 @@ exact identity plaintext and AEAD binding, missing/wrong passwords, the complete
 three-message mutual handshake, repeated proofs, stale challenges, unsigned
 messages after pinning and substituted identity keys.
 
-The group suite additionally covers signed, identity-pinned key distribution,
+The group suite additionally covers signed, key distribution using server-published identity keys,
 message type/sender/group/epoch/nonce/ciphertext tampering, authenticated nickname
 display, concurrent key publication, revoked-member exclusion, old-key failure on
 new ciphertext, multi-epoch catch-up, unsigned history labelling and account
@@ -77,9 +77,7 @@ legacy history remains readable with an explicit unsigned warning and no badge.
 Existing encrypted history whose sender key was already lost before this change
 cannot be recovered cryptographically.
 
-Every group participant's identity must first be established through the private
-password-authenticated handshake. No server-provided signing key is silently
-trusted. The group message signature covers group ID, sender ID, key epoch,
+Group key distribution and signature checks use server-published identity keys. Private password verification remains available in contact profiles. The group message signature covers group ID, sender ID, key epoch,
 client message ID, message type, identity/signing keys, nonce, nickname and
 ciphertext. Only successful signature verification produces a green message badge;
 missing decryption keys keep the content locked and eligible for retry. Badges are not loaded as trusted state from the plaintext message cache.
@@ -90,7 +88,7 @@ must cover exactly the current recipients, including an encrypted self copy,
 and each sender can publish only once per epoch. The same lock serializes sends
 and uploads against leave/kick/join. Online clients rotate on notification;
 offline clients discover the durable epoch when reconnecting and before sending.
-If an identity is unverified, sending remains blocked with a verification prompt.
+Missing member public keys prevent key distribution. New group messages use Sender Key encryption without a text appearance layer. Older group messages can still use their original text appearance password.
 
 Historical distributions for continuing recipients are retained by epoch,
 including distributions authored by members who later leave. All distributions
@@ -134,8 +132,10 @@ of protocol constants and user-supplied text.
 
 ## Manual acceptance and boundaries
 
-Use two compatible native clients to verify password setup/unlock, both directions of the handshake, profile refresh, focus/visibility refresh and changed-key rejection. Reopen profiles while verification is pending to confirm that challenges survive and retries are throttled. Open the group member list to check refreshed trust, then exercise leave/kick, offline reconnect and pending-key recovery. Check all eight languages, especially interpolated errors, verification prompts and the green badge's meaning.
+Use two compatible native clients to verify password setup/unlock, both directions of the handshake, profile refresh, focus/visibility refresh and changed-key rejection. Reopen profiles while verification is pending to confirm that challenges survive and retries are throttled. Send a group message with members who have not completed the private handshake, then exercise leave/kick, offline reconnect and pending-key recovery. Check all eight languages, especially interpolated errors, verification prompts and the green badge's meaning.
 
 These source changes are unreleased; the package version remains 3.1.0. Tests of this shared source do not validate published native clients or Docker images. Local caches retain at most 2,000 messages per conversation; server-side auto-delete and attachment retention remain applicable. Message signing does not end-to-end encrypt uploaded file bytes, and no upgrade can recreate previously lost keys.
 
 See the [main README](../../README_EN.md), [中文说明](../../README.md), [deployment/migration guide](../../DEPLOY_EN.md) and [Tor architecture](../../TOR_DEPLOYMENT.md) for operating requirements. The client suites use cryptographic implementations with mocked transport/persistence; the server fixture uses real database/routes with transport signature fixtures. Together they provide regression coverage, not an independent audit or a native-device UI test.
+
+For mobile layout checks, open login and chat at 320, 375, 393 and 440 CSS px, then rotate to landscape. Check safe-area padding, scrolling to the login controls and access to the composer. For friendship checks, accept and remove a contact from two connected clients and verify both lists after reconnect. Seed a one-sided accepted row and restart twice to check reciprocal repair and timer preservation.

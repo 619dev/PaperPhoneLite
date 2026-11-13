@@ -36,6 +36,8 @@ iOS 客户端计划提交 Apple App Store；Android 客户端已上架 [F-Droid]
 
 服务端每次启动都会幂等执行数据库结构维护。3.1.0 会自动删除 3.0.0 以前遗留、现已停用的 Web Push `push_subscriptions` 与 OneSignal `onesignal_players` 表及其内容。升级前如需审计这些旧推送标识，请先备份；删除后当前版本不会重建这两张表。
 
+启动时会幂等修复历史单向好友记录，并继承已有记录的自动删除设置。Compose 从仓库只读挂载 `server/src/db/repair_friendships.sql`；直接运行二进制时默认使用内置脚本。修复完成后服务才会通过健康检查。
+
 ## 签名协议协调升级（未发布）
 
 当前源码中的安全更新尚未发布，版本号保持 3.1.0。服务端与 Android、iOS、macOS、Windows 客户端须协调升级；旧客户端不能读取新签名信封，也无法满足新的群发送要求。各原生仓库需要纳入共享源码后重新构建。拉取现有 `latest` 镜像不代表包含这些改动，应固定经过验证的镜像标签或摘要。
@@ -45,7 +47,7 @@ iOS 客户端计划提交 Apple App Store；Android 客户端已上架 [F-Droid]
 从仓库根目录构建当前源码：
 
 ```bash
-docker build -t paperphone-lite-server:security-local ./server
+SERVER_IMAGE=paperphone-lite-server:security-local docker compose build server
 ```
 
 在现有 `.env` 中设置 `SERVER_IMAGE=paperphone-lite-server:security-local`，保留其他配置。备份完成且旧写入实例停止后，启动依赖并替换服务端：
@@ -63,7 +65,7 @@ docker compose logs --tail=100 server
 
 启动时补齐群 `key_epoch`、`signed_protocol`，成员 `joined_epoch`，`identity_verification` 消息类型，群历史序号索引及保证已提交消息同步顺序的 `message_sync_barrier` 记录。已有群只迁移一次：强制启用加密与签名、增加代次、撤销当前发送密钥元数据。启动会检查必要状态，迁移失败时应检查日志，不能绕过检查。
 
-所有发送者须在私聊验证各接收者后，为准确的当前成员集合发布新随机发送密钥，包含加密的自身副本。群加密不能关闭。加入、退群与移除在群行锁内增加代次，服务端拒绝旧代次发送及密钥发布。在线客户端收到通知立即轮换，离线客户端重连和发送前刷新。旧队列发送被拒绝时须处理失败状态，不能视作已送达。
+所有发送者使用服务端发布的成员身份公钥，为准确的当前成员集合发布新随机发送密钥，包含加密的自身副本。群加密不能关闭。加入、退群与移除在群行锁内增加代次，服务端拒绝旧代次发送及密钥发布。在线客户端收到通知立即轮换，离线客户端重连和发送前刷新。旧队列发送被拒绝时须处理失败状态，不能视作已送达。
 
 保留供继续留群者读取的历史密钥分发，包括后来退群者发送的历史密钥；删除发给退群者的分发记录，并按当前成员资格与加入区间限制访问。已经持有的旧密钥或明文无法远程擦除。旧无签名群历史明确标注且不显示可信对勾；已固定身份的私聊会拒绝无签名消息。升级不能恢复此前已丢失的密钥。
 

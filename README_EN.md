@@ -51,7 +51,9 @@ Before verifying a new contact, agree on the text appearance password offline, t
 
 Opening a private profile refreshes published keys, checks local trust pins and recovers verification receipts from history. An unlocked password automatically starts or resumes verification. Repeated opens preserve pending challenges and throttle retries. Changed keys revoke trust and require an explicit new verification after an offline check. Focus and visibility changes also refresh the view.
 
-Every new group message requires a signature and Sender Key end-to-end encryption; existing groups migrate and encryption cannot be disabled. Verify each participant through the private handshake before distributing keys. Opening the member list refreshes keys and trust without initiating private handshakes for everyone. Signatures bind the group, sender, epoch, message ID, type, identity keys, nickname, nonce and ciphertext. A valid signature from a trusted key produces the message's green ✅; content can remain locked while its decryption key is pending.
+Every new group message requires a signature and Sender Key end-to-end encryption; existing groups migrate and encryption cannot be disabled. Group key distribution and signature checks use identity keys published by the server. The green ✅ indicates a valid group signature against those keys. New private messages can use the text appearance password, and that password still unlocks older group messages protected by it.
+
+The mobile layout adapts to narrow screens, safe areas and landscape. Startup repairs historical one-sided friendships, and accepting or removing a friend refreshes online contact lists.
 
 Joining, leaving or removing a member advances the group epoch. Online members immediately rotate their own sender keys on notification; offline members refresh on reconnect and before sending. The server rejects old-epoch sends and publications. Departed members cannot send or fetch new messages or keys; rejoining does not grant access to the absence interval. Continuing recipients retain historical key distributions. Keys and plaintext already held by a departed member cannot be remotely erased.
 

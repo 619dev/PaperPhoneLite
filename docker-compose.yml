@@ -3,6 +3,7 @@ services:
   server:
     container_name: paperphone-lite-server
     image: ${SERVER_IMAGE:-facilisvelox/paperphone-lite-server:latest}
+    build: ./server
     environment:
       PORT: 3000
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
@@ -11,6 +12,7 @@ services:
       DB_USER: ${DB_USER:-paperphonelite}
       DB_PASS: ${DB_PASS:?Set DB_PASS in .env}
       DB_NAME: ${DB_NAME:-paperphonelite}
+      FRIENDSHIP_REPAIR_SQL_PATH: /app/repair_friendships.sql
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_PASS: ${REDIS_PASS:?Set REDIS_PASS in .env}
@@ -20,6 +22,12 @@ services:
       CHAT_FILE_RETENTION_DAYS: ${CHAT_FILE_RETENTION_DAYS:-14}
     volumes:
       - uploads:/var/lib/paperphone-lite/uploads
+      - type: bind
+        source: ./server/src/db/repair_friendships.sql
+        target: /app/repair_friendships.sql
+        read_only: true
+        bind:
+          create_host_path: false
     expose: ["3000"]
     depends_on:
       mysql: { condition: service_healthy }

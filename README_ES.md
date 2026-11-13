@@ -35,7 +35,9 @@ Acuerde la contraseña de apariencia del texto fuera de Internet, configúrela l
 
 Abrir un perfil privado actualiza las claves, comprueba la confianza local y recupera confirmaciones del historial. La contraseña desbloqueada inicia o reanuda automáticamente la verificación. Las aperturas repetidas conservan el desafío y limitan los reintentos. Un cambio de clave revoca la confianza y exige verificar manualmente tras comprobarla fuera de Internet. Recuperar el foco o la visibilidad también actualiza el estado.
 
-Todos los mensajes nuevos de grupo requieren firma y cifrado Sender Key. Los grupos existentes se migran y el cifrado no se puede desactivar. Verifique a cada participante en privado antes de distribuir claves. La lista de miembros actualiza claves y confianza sin iniciar verificaciones privadas masivas. La firma protege grupo, remitente, generación de clave, ID, tipo, claves de identidad, nombre, nonce y texto cifrado. Una firma válida de una clave fiable produce un ✅ verde; el contenido permanece bloqueado mientras falte la clave de descifrado.
+Todos los mensajes nuevos de grupo requieren firma y cifrado Sender Key. Los grupos existentes se migran y el cifrado no se puede desactivar. La distribución de claves y la verificación de firmas usan las claves de identidad publicadas por el servidor. El ✅ verde indica una firma de grupo válida.
+
+La interfaz se adapta a pantallas estrechas, áreas seguras y orientación horizontal. El servidor repara las amistades unilaterales al iniciarse.
 
 Entrar, salir o expulsar a un miembro incrementa la generación de claves. Los miembros conectados renuevan inmediatamente sus propias claves de envío tras el aviso; los demás, al reconectarse y antes de enviar. El servidor rechaza generaciones anteriores. Quien sale no puede enviar ni obtener nuevos mensajes o claves; volver a entrar no permite consultar el período de ausencia. Los destinatarios restantes conservan las claves históricas. No se pueden borrar a distancia claves o textos que un antiguo miembro ya posea.
 
