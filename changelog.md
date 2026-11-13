@@ -4,14 +4,14 @@ All notable changes and new features are recorded here. Historical entries below
 
 所有重要版本改动和新特性统一记录于此。下方历史条目由仓库原有文档迁移而来。
 
-## 3.1.0 (Unreleased / 未发布)
+## 3.1.5 (Unreleased / 未发布)
 
-The following describes current source changes, not a new release or published native/Docker build. Package versions remain 3.1.0.
+The following describes current source changes, not a new release or published native/Docker build. Package versions remain 3.1.5.
 
 - Improved narrow and landscape layouts and added reduced-motion, transparency and contrast preferences.
 - Repaired historical one-sided friendships at startup and refreshed online contacts after relationship changes. Compose supports building the current server checkout and mounts the repair SQL read-only.
 - Limited text appearance encryption to new private messages while preserving group history decryption.
-- Updated client/server package versions, lockfiles, documentation and the profile-page footer to 3.1.0.
+- Updated client/server package versions, lockfiles, documentation and the profile-page footer to 3.1.5.
 - Added Ed25519-signed private envelopes and a mutual offline-password identity handshake. AES-GCM encrypts exactly `paperphone.app`; identity keys, the existing 12-group safety number, challenges and receipts are authenticated. Profile badges require both directions to complete.
 - Private profiles automatically refresh keys and verification receipts, resume pending handshakes when unlocked, preserve challenges and throttle retries. Changed identities revoke trust and require explicit offline re-verification. Group member lists refresh trust; focus/visibility changes refresh both views.
 - Required signatures and Sender Key encryption for all new group messages, with server-published identity keys and signed nicknames. Valid signatures can display green while missing decryption keys keep content locked.
@@ -21,12 +21,12 @@ The following describes current source changes, not a new release or published n
 - Updated all eight READMEs, deployment, Tor and test documentation. Corrected the previous ML-KEM claim: the legacy `kem_pub` field carries an Ed25519 signing public key; the signed path uses X25519 rather than functioning post-quantum registration. Coordinate server/client upgrades and database migration.
 - Updated distribution documentation to note that the Android client is now available on [F-Droid](https://f-droid.org/zh_Hans/packages/com.fm619.paperphonelite/), in addition to GitHub Releases.
 
-以下为当前源码改动，不代表新版本、原生应用或 Docker 镜像已发布；包版本保持 3.1.0。
+以下为当前源码改动，不代表新版本、原生应用或 Docker 镜像已发布；包版本保持 3.1.5。
 
 - 改善窄屏和横屏布局，并适配减少动画、减少透明度及增强对比度设置。
 - 启动时修复历史单向好友关系，关系变更后刷新在线联系人。Compose 支持从当前源码构建服务端，并只读挂载修复脚本。
 - 新消息的文本外观加密用于私聊，旧群消息仍支持原密码解密。
-- 客户端、服务端、锁文件、文档与个人信息页底部版本号统一更新为 3.1.0。
+- 客户端、服务端、锁文件、文档与个人信息页底部版本号统一更新为 3.1.5。
 - 私聊引入 Ed25519 签名信封及基于线下文本外观密码的双向身份验证。AES-GCM 加密固定文本 `paperphone.app`，认证双方身份、原有 12 组安全号码、挑战和回执；个人资料对勾要求双向完成。
 - 打开私聊资料自动刷新密钥和验证回执，密码解锁后自动发起或继续验证，保留挑战并限制重试。身份变化撤销信任，须线下核对后手动重验。群成员列表刷新可信状态，两类页面在焦点和可见性恢复时刷新。
 - 所有新群消息强制签名与 Sender Key 加密，群密钥分发使用服务端发布的身份公钥，昵称受签名保护。签名正确可显示绿色对勾，缺少解密密钥时正文仍保持锁定。

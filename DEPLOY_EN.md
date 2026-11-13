@@ -1,4 +1,4 @@
-# PaperPhoneLite 3.1.0 deployment
+# PaperPhoneLite 3.1.5 deployment
 
 ## Onion-only server (recommended)
 
@@ -34,13 +34,13 @@ Back up all volumes before upgrades. Verify `/health`, WebSocket messaging, all 
 
 ## Automatic database maintenance
 
-The server performs idempotent schema maintenance on every startup. Version 3.1.0 automatically drops the retired Web Push `push_subscriptions` and OneSignal `onesignal_players` tables and their contents when they remain from pre-3.0.0 installations. Back up those obsolete identifiers first if they are needed for an audit; this release does not recreate either table.
+The server performs idempotent schema maintenance on every startup. Version 3.1.5 automatically drops the retired Web Push `push_subscriptions` and OneSignal `onesignal_players` tables and their contents when they remain from pre-3.0.0 installations. Back up those obsolete identifiers first if they are needed for an audit; this release does not recreate either table.
 
 Startup repairs historical one-sided friendships and carries over the existing auto-delete setting. Compose mounts `server/src/db/repair_friendships.sql` read-only. The standalone binary defaults to its embedded copy. The health endpoint becomes available after repair completes.
 
 ## Coordinated signed-protocol upgrade (unreleased)
 
-The security update in the current source tree is not a published 3.1.0 release. Upgrade the server and every Android, iOS, macOS and Windows client together; older clients cannot read signed envelopes or meet new group-send requirements. The native repositories need builds incorporating these shared-source changes. Pulling an existing `latest` image does not establish that it contains this protocol. Pin a tested image tag or digest.
+The security update in the current source tree is not a published 3.1.5 release. Upgrade the server and every Android, iOS, macOS and Windows client together; older clients cannot read signed envelopes or meet new group-send requirements. The native repositories need builds incorporating these shared-source changes. Pulling an existing `latest` image does not establish that it contains this protocol. Pin a tested image tag or digest.
 
 Before migration, back up a consistent MySQL database, `.env`, and all persistent volumes. Preserve account-local identity secrets, trust records and historical sender keys on each client. Stop all old server writers during the maintenance window; mixed old/new server instances do not enforce the same ordering and revocation rules.
 

@@ -1,10 +1,10 @@
-# PaperPhoneLite 3.1.0
+# PaperPhoneLite 3.1.5
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
 [Historial de cambios](changelog.md)
 
-[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.1.0-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.1.5-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 
 PaperPhoneLite es un mensajero ligero con cifrado de extremo a extremo y sin funciones sociales públicas.
 
@@ -29,7 +29,7 @@ PaperPhoneLite es un mensajero ligero con cifrado de extremo a extremo y sin fun
 
 ## Verificación de identidad, firmas y recuperación sin conexión
 
-Estos cambios del protocolo **aún no están publicados**; la versión sigue siendo 3.1.0. Consulte el [registro](changelog.md).
+Estos cambios del protocolo **aún no están publicados**; la versión sigue siendo 3.1.5. Consulte el [registro](changelog.md).
 
 Acuerde la contraseña de apariencia del texto fuera de Internet, configúrela localmente y desbloquéela. **Esta contraseña permite comprobar si la otra persona es de confianza. Compártala solo fuera de Internet; nunca la envíe en línea de ninguna forma.** La verificación cifra exactamente `paperphone.app` con AES-GCM, vincula ambas identidades, el número de seguridad existente de 12 grupos y desafíos aleatorios, y firma el sobre cifrado con Ed25519. El perfil muestra un ✅ verde solo cuando ambas partes validan las pruebas y confirman la recepción de los desafíos. Compare los números por un canal fiable fuera de Internet.
 

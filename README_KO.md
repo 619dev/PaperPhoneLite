@@ -1,10 +1,10 @@
-# PaperPhoneLite 3.1.0
+# PaperPhoneLite 3.1.5
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
 [변경 기록](changelog.md)
 
-[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.1.0-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.1.5-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 
 PaperPhoneLite는 공개 소셜 기능이 없는 경량 종단간 암호화 메신저입니다.
 
@@ -29,7 +29,7 @@ PaperPhoneLite는 공개 소셜 기능이 없는 경량 종단간 암호화 메�
 
 ## 신원 확인, 서명 및 오프라인 동기화
 
-다음은 아직 출시되지 않은 소스 변경 사항이며 버전은 3.1.0입니다. [변경 기록](changelog.md)을 참고하세요.
+다음은 아직 출시되지 않은 소스 변경 사항이며 버전은 3.1.5입니다. [변경 기록](changelog.md)을 참고하세요.
 
 새 연락처와 텍스트 외관 비밀번호를 오프라인에서 합의한 뒤 기기에 설정하고 잠금을 해제하세요. **텍스트 외관 비밀번호는 상대방의 신뢰 여부를 확인하는 증명입니다. 오프라인에서만 공유하고 어떤 형태로도 온라인으로 보내지 마세요.** 고정 문자열 `paperphone.app`을 AES-GCM으로 암호화하고 양쪽 신원, 기존 12개 묶음의 안전 번호, 임의 챌린지를 결합한 뒤 암호화 봉투에 Ed25519 서명을 추가합니다. 양쪽 증명과 상대 챌린지 수신 확인이 모두 완료되어야 프로필 이름에 녹색 ✅가 표시됩니다. 안전 번호는 신뢰할 수 있는 오프라인 경로로 비교하세요.
 

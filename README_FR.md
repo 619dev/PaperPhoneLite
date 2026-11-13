@@ -1,10 +1,10 @@
-# PaperPhoneLite 3.1.0
+# PaperPhoneLite 3.1.5
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
 [Historique des modifications](changelog.md)
 
-[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.1.0-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.1.5-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 
 PaperPhoneLite est une messagerie légère chiffrée de bout en bout, sans fonctions sociales publiques.
 
@@ -29,7 +29,7 @@ PaperPhoneLite est une messagerie légère chiffrée de bout en bout, sans fonct
 
 ## Vérification d’identité, signatures et rattrapage hors ligne
 
-Ces modifications du protocole sont **non publiées** ; la version reste 3.1.0. Voir le [journal](changelog.md).
+Ces modifications du protocole sont **non publiées** ; la version reste 3.1.5. Voir le [journal](changelog.md).
 
 Convenez hors ligne du mot de passe d’apparence du texte, puis configurez-le et déverrouillez-le sur votre appareil. **Ce mot de passe sert à vérifier que votre interlocuteur est digne de confiance. Échangez-le uniquement hors ligne ; ne l’envoyez jamais sur Internet, sous quelque forme que ce soit.** La vérification chiffre exactement `paperphone.app` avec AES-GCM, lie les identités, le numéro de sécurité existant en 12 groupes et des défis aléatoires, puis signe l’enveloppe chiffrée avec Ed25519. Le profil affiche un ✅ vert seulement après validation mutuelle des preuves et accusés de réception des défis. Comparez les numéros de sécurité par un canal hors ligne fiable.
 

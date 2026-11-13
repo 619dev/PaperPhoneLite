@@ -1,10 +1,10 @@
-# PaperPhoneLite 3.1.0
+# PaperPhoneLite 3.1.5
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
 [更新历史](changelog.md)
 
-[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.1.0-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.1.5-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 
 PaperPhoneLite 是轻量级端到端加密即时通讯项目，使用 React 19/TypeScript Web 客户端与 Rust/Axum 服务端。
 
@@ -52,7 +52,7 @@ UI 源码位于 `client/`，供 Android、iOS、Windows、macOS 原生壳复用�
 
 ## 身份验证、消息签名与离线追赶
 
-以下为当前源码中的未发布安全协议更新，版本号仍为 3.1.0；发布状态见[更新日志](changelog.md)。
+以下为当前源码中的未发布安全协议更新，版本号仍为 3.1.5；发布状态见[更新日志](changelog.md)。
 
 添加联系人后，先在线下约定并在本机设置、解锁文本外观密码。**文本外观密码是检验对方是否可信任的凭证，文本外观密码只在线下交流，不要以任何形式发到网上。** 验证消息使用该密码通过 AES-GCM 加密固定文本 `paperphone.app`，绑定双方身份、安全号码和随机挑战，再对加密信封进行 Ed25519 签名。双方都通过验证并确认对方收到自己的挑战后，个人资料昵称才显示绿色 ✅。保留原有 12 组安全号码算法，号码一致仍需通过可信线下渠道核对。
 

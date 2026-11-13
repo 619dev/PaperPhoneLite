@@ -1,10 +1,10 @@
-# PaperPhoneLite 3.1.0
+# PaperPhoneLite 3.1.5
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
 [История изменений](changelog.md)
 
-[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.1.0-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.1.5-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 
 PaperPhoneLite — лёгкий мессенджер со сквозным шифрованием без публичных социальных функций.
 
@@ -29,7 +29,7 @@ PaperPhoneLite — лёгкий мессенджер со сквозным ши�
 
 ## Проверка личности, подписи и офлайн-синхронизация
 
-Эти изменения протокола **ещё не выпущены**; версия остаётся 3.1.0. См. [журнал изменений](changelog.md).
+Эти изменения протокола **ещё не выпущены**; версия остаётся 3.1.5. См. [журнал изменений](changelog.md).
 
 Согласуйте пароль оформления текста офлайн, задайте его на устройстве и разблокируйте. **Этот пароль служит подтверждением доверия к собеседнику. Передавайте его только офлайн и никогда не отправляйте в Интернет ни в каком виде.** Проверка шифрует ровно `paperphone.app` с помощью AES-GCM, связывает личности, прежний номер безопасности из 12 групп и случайные запросы, затем подписывает зашифрованный конверт Ed25519. Зелёный ✅ в профиле появляется после взаимной проверки доказательств и подтверждений получения запросов. Сверяйте номера безопасности по доверенному офлайн-каналу.
 

@@ -1,10 +1,10 @@
-# PaperPhoneLite 3.1.0
+# PaperPhoneLite 3.1.5
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
 [更新履歴](changelog.md)
 
-[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.1.0-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.1.5-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 
 PaperPhoneLite は、公開ソーシャル機能を持たない軽量なエンドツーエンド暗号化メッセンジャーです。
 
@@ -29,7 +29,7 @@ PaperPhoneLite は、公開ソーシャル機能を持たない軽量なエン�
 
 ## 本人確認、署名とオフライン同期
 
-以下は未リリースのソース変更です。バージョンは 3.1.0 のままです。[変更履歴](changelog.md)を参照してください。
+以下は未リリースのソース変更です。バージョンは 3.1.5 のままです。[変更履歴](changelog.md)を参照してください。
 
 新しい連絡先とは、テキスト外観パスワードをオフラインで取り決め、端末で設定してロックを解除します。**テキスト外観パスワードは相手が信頼できるか確認するための証明です。オフラインでのみ共有し、いかなる形でもオンラインに送信しないでください。** AES-GCM で固定文字列 `paperphone.app` を暗号化し、双方の識別鍵、従来の 12 組の安全番号、ランダムなチャレンジを結び付け、暗号化した封筒に Ed25519 署名を付けます。双方の証明とチャレンジの受領確認が成立すると、プロフィール名に緑の ✅ が付きます。安全番号は信頼できるオフライン経路で照合してください。
 

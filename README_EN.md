@@ -1,10 +1,10 @@
-# PaperPhoneLite 3.1.0
+# PaperPhoneLite 3.1.5
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
 [Changelog](changelog.md)
 
-[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.1.0-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.1.5-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 
 PaperPhoneLite is a lightweight end-to-end encrypted messenger built with React/TypeScript and Rust/Axum. It keeps private/group chat, attachments, voice messages, reliable synchronization, offline cache, expiring messages, Android ntfy and iOS Bark background alerts, QR codes, 2FA, and blocking.
 
@@ -45,7 +45,7 @@ After Docker Compose starts, the Tor container automatically records the complet
 
 ## Identity verification, signatures and offline catch-up
 
-These security protocol changes are **unreleased source changes**; the version remains 3.1.0. See the [changelog](changelog.md).
+These security protocol changes are **unreleased source changes**; the version remains 3.1.5. See the [changelog](changelog.md).
 
 Before verifying a new contact, agree on the text appearance password offline, then set and unlock it locally. **The text appearance password is the credential for checking whether the other person is trustworthy. Exchange it only offline; never send it online in any form.** Verification encrypts exactly `paperphone.app` with AES-GCM, binds identities, the existing 12-group safety number and fresh challenges, and signs the encrypted envelope with Ed25519. Both parties must validate the proof and acknowledge the other's challenge before the profile nickname receives a green ✅. Compare safety numbers through a trusted offline channel.
 

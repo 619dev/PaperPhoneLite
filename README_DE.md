@@ -1,10 +1,10 @@
-# PaperPhoneLite 3.1.0
+# PaperPhoneLite 3.1.5
 
 [简体中文](README.md) · [English](README_EN.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Français](README_FR.md) · [Deutsch](README_DE.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
 [Änderungsverlauf](changelog.md)
 
-[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.1.0-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/Rust-1.83+-orange)](#) [![Axum](https://img.shields.io/badge/Axum-0.8-black)](#) [![React](https://img.shields.io/badge/React-19-blue)](#) [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](#) [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](#) [![Redis](https://img.shields.io/badge/Redis-7.x-red)](#) [![Tor](https://img.shields.io/badge/Tor-v3-7D4698?logo=tor-project)](#) [![Version](https://img.shields.io/badge/Version-3.1.5-orange)](client/package.json) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 
 PaperPhoneLite ist ein leichtgewichtiger Ende-zu-Ende-verschlüsselter Messenger ohne öffentliche Social-Funktionen.
 
@@ -29,7 +29,7 @@ PaperPhoneLite ist ein leichtgewichtiger Ende-zu-Ende-verschlüsselter Messenger
 
 ## Identitätsprüfung, Signaturen und Offline-Abgleich
 
-Diese Protokolländerungen sind **noch nicht veröffentlicht**; die Version bleibt 3.1.0. Siehe [Änderungsprotokoll](changelog.md).
+Diese Protokolländerungen sind **noch nicht veröffentlicht**; die Version bleibt 3.1.5. Siehe [Änderungsprotokoll](changelog.md).
 
 Vereinbaren Sie das Passwort für die Textdarstellung offline und richten Sie es lokal ein. **Dieses Passwort dient als Nachweis, ob die andere Person vertrauenswürdig ist. Tauschen Sie es ausschließlich offline aus und senden Sie es niemals in irgendeiner Form ins Internet.** Zur Prüfung wird exakt `paperphone.app` mit AES-GCM verschlüsselt, an beide Identitäten, die bisherige Sicherheitsnummer aus 12 Gruppen und zufällige Herausforderungen gebunden und mit Ed25519 signiert. Erst nach gegenseitigem Nachweis und Empfangsbestätigung der Herausforderungen erhält der Profilname ein grünes ✅. Vergleichen Sie Sicherheitsnummern über einen vertrauenswürdigen Offline-Kanal.
 
